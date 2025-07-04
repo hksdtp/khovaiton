@@ -25,21 +25,29 @@ import { environment } from '@/shared/config/environment'
  * Google Drive API configuration
  */
 const DRIVE_API_BASE = 'https://www.googleapis.com/drive/v3'
-const FOLDER_ID = environment.googleDrive.folderId
+const MAIN_FOLDER_ID = environment.googleDrive.folderId
 const API_KEY = environment.googleDrive.apiKey
+
+/**
+ * Subfolder IDs for fabric images
+ */
+const FABRIC_SUBFOLDERS = [
+  '1N0kD1XzoQ2quVLgPwywZBVkMGyebECif', // Ảnh vải - Phần 1
+  '1GKq_J5Xd_93docDHgKABeg85lqyksz22'  // Ảnh vải - Phần 2
+]
 
 /**
  * Check if API is configured
  */
 export function isApiConfigured(): boolean {
-  return !!(FOLDER_ID && API_KEY)
+  return !!(MAIN_FOLDER_ID && API_KEY)
 }
 
 /**
  * Get files from Google Drive folder using API
  */
 export async function getDriveApiFiles(
-  folderId: string = FOLDER_ID,
+  folderId: string = MAIN_FOLDER_ID,
   pageToken?: string
 ): Promise<DriveApiResponse> {
   if (!API_KEY) {
@@ -77,7 +85,7 @@ export async function getDriveApiFiles(
 /**
  * Get all files from folder (handle pagination)
  */
-export async function getAllDriveFiles(folderId: string = FOLDER_ID): Promise<DriveApiFile[]> {
+export async function getAllDriveFiles(folderId: string = MAIN_FOLDER_ID): Promise<DriveApiFile[]> {
   const allFiles: DriveApiFile[] = []
   let nextPageToken: string | undefined
 
@@ -87,6 +95,27 @@ export async function getAllDriveFiles(folderId: string = FOLDER_ID): Promise<Dr
     nextPageToken = response.nextPageToken
   } while (nextPageToken)
 
+  return allFiles
+}
+
+/**
+ * Get all files from multiple subfolders
+ */
+export async function getAllFilesFromSubfolders(subfolderIds: string[] = FABRIC_SUBFOLDERS): Promise<DriveApiFile[]> {
+  const allFiles: DriveApiFile[] = []
+
+  for (const folderId of subfolderIds) {
+    try {
+      console.log(`📁 Scanning subfolder: ${folderId}`)
+      const folderFiles = await getAllDriveFiles(folderId)
+      allFiles.push(...folderFiles)
+      console.log(`✅ Found ${folderFiles.length} files in subfolder ${folderId}`)
+    } catch (error) {
+      console.error(`❌ Failed to scan subfolder ${folderId}:`, error)
+    }
+  }
+
+  console.log(`📊 Total files from all subfolders: ${allFiles.length}`)
   return allFiles
 }
 
@@ -157,7 +186,7 @@ export async function getFileMetadata(fileId: string): Promise<DriveApiFile> {
 /**
  * Check if folder is accessible
  */
-export async function checkFolderAccess(folderId: string = FOLDER_ID): Promise<boolean> {
+export async function checkFolderAccess(folderId: string = MAIN_FOLDER_ID): Promise<boolean> {
   try {
     await getDriveApiFiles(folderId)
     return true
@@ -168,9 +197,39 @@ export async function checkFolderAccess(folderId: string = FOLDER_ID): Promise<b
 }
 
 /**
+ * Check if all subfolders are accessible
+ */
+export async function checkSubfoldersAccess(): Promise<{
+  accessible: boolean
+  results: { folderId: string; accessible: boolean; error?: string }[]
+}> {
+  const results: { folderId: string; accessible: boolean; error?: string }[] = []
+
+  for (const folderId of FABRIC_SUBFOLDERS) {
+    try {
+      const accessible = await checkFolderAccess(folderId)
+      results.push({ folderId, accessible })
+    } catch (error) {
+      results.push({
+        folderId,
+        accessible: false,
+        error: String(error)
+      })
+    }
+  }
+
+  const allAccessible = results.every(r => r.accessible)
+
+  return {
+    accessible: allAccessible,
+    results
+  }
+}
+
+/**
  * Get folder info
  */
-export async function getFolderInfo(folderId: string = FOLDER_ID): Promise<{
+export async function getFolderInfo(folderId: string = MAIN_FOLDER_ID): Promise<{
   name: string
   fileCount: number
   imageCount: number
@@ -189,16 +248,68 @@ export async function getFolderInfo(folderId: string = FOLDER_ID): Promise<{
   const folderResponse = await fetch(`${DRIVE_API_BASE}/files/${folderId}?${folderParams}`)
   const folderData = await folderResponse.json()
 
-  // Get all files
-  const allFiles = await getAllDriveFiles(folderId)
+  // Get all files from subfolders
+  const allFiles = await getAllFilesFromSubfolders()
   const imageFiles = filterImageFiles(allFiles)
-  
+
   const totalSize = allFiles.reduce((sum, file) => sum + parseInt(file.size || '0'), 0)
 
   return {
-    name: folderData.name || 'Unknown Folder',
+    name: folderData.name || 'Fabric Images',
     fileCount: allFiles.length,
     imageCount: imageFiles.length,
+    totalSize
+  }
+}
+
+/**
+ * Get detailed info for all subfolders
+ */
+export async function getSubfoldersInfo(): Promise<{
+  mainFolder: string
+  subfolders: Array<{
+    id: string
+    name: string
+    fileCount: number
+    imageCount: number
+    totalSize: number
+  }>
+  totalFiles: number
+  totalImages: number
+  totalSize: number
+}> {
+  const subfolders = []
+  let totalFiles = 0
+  let totalImages = 0
+  let totalSize = 0
+
+  for (const folderId of FABRIC_SUBFOLDERS) {
+    try {
+      const info = await getFolderInfo(folderId)
+      subfolders.push({
+        id: folderId,
+        ...info
+      })
+      totalFiles += info.fileCount
+      totalImages += info.imageCount
+      totalSize += info.totalSize
+    } catch (error) {
+      console.error(`Failed to get info for subfolder ${folderId}:`, error)
+      subfolders.push({
+        id: folderId,
+        name: 'Error loading',
+        fileCount: 0,
+        imageCount: 0,
+        totalSize: 0
+      })
+    }
+  }
+
+  return {
+    mainFolder: MAIN_FOLDER_ID,
+    subfolders,
+    totalFiles,
+    totalImages,
     totalSize
   }
 }
@@ -208,7 +319,7 @@ export async function getFolderInfo(folderId: string = FOLDER_ID): Promise<{
  */
 export async function searchFiles(
   pattern: string,
-  folderId: string = FOLDER_ID
+  folderId: string = MAIN_FOLDER_ID
 ): Promise<DriveApiFile[]> {
   if (!API_KEY) {
     throw new Error('Google Drive API key not configured')

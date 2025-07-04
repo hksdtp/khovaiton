@@ -74,7 +74,8 @@ export function GoogleDriveSyncModal({
         setSyncStatus({
           totalFiles: stats.totalImageFiles,
           syncedFiles: stats.cachedImages,
-          lastSync: new Date()
+          lastSync: new Date(),
+          subfolders: stats.subfoldersInfo.subfolders
         })
       } else {
         const status = await getSyncStatus()
@@ -153,6 +154,19 @@ export function GoogleDriveSyncModal({
         {syncStatus.lastSync && (
           <div className="text-sm text-blue-600">
             Sync cuối: {syncStatus.lastSync.toLocaleString('vi-VN')}
+          </div>
+        )}
+
+        {/* Subfolder info */}
+        {syncStatus.subfolders && (
+          <div className="mt-3 text-sm">
+            <p className="text-blue-700 font-medium mb-2">📁 Subfolders:</p>
+            {syncStatus.subfolders.map((folder: any, index: number) => (
+              <div key={index} className="flex justify-between text-blue-600">
+                <span>• {folder.name}</span>
+                <span>{folder.imageCount} ảnh</span>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -292,12 +306,14 @@ export function GoogleDriveSyncModal({
       <div className="p-6">
         {/* Instructions */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-          <h3 className="font-semibold text-yellow-900 mb-2">📋 Lưu ý quan trọng</h3>
+          <h3 className="font-semibold text-yellow-900 mb-2">📋 Cấu trúc Google Drive</h3>
           <div className="text-sm text-yellow-800 space-y-1">
-            <p>• Folder Drive phải được public (Anyone with link can view)</p>
-            <p>• Tên file ảnh phải chính xác với mã vải</p>
-            <p>• Hỗ trợ: .jpg, .png, .webp (tối đa 10MB/ảnh)</p>
-            <p>• Ảnh sẽ được download về máy bạn</p>
+            <p>• <strong>Main folder:</strong> Fabric Images</p>
+            <p>• <strong>Subfolder 1:</strong> Ảnh vải - Phần 1</p>
+            <p>• <strong>Subfolder 2:</strong> Ảnh vải - Phần 2</p>
+            <p>• <strong>Tên file:</strong> Phải chính xác với mã vải</p>
+            <p>• <strong>Format:</strong> .jpg, .png, .webp (tối đa 10MB/ảnh)</p>
+            <p>• <strong>Quyền truy cập:</strong> Public (Anyone with link can view)</p>
           </div>
         </div>
 

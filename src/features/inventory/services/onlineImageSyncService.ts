@@ -4,11 +4,11 @@
  */
 
 import {
-  getAllDriveFiles,
+  getAllFilesFromSubfolders,
   filterImageFiles,
   downloadFileBlob,
-  checkFolderAccess,
-  getFolderInfo
+  checkSubfoldersAccess,
+  getSubfoldersInfo
 } from './googleDriveApiService'
 // import type { DriveApiFile } from './googleDriveApiService'
 import { environment } from '@/shared/config/environment'
@@ -107,11 +107,17 @@ export async function checkOnlineSyncAvailability(): Promise<{
     return { available: false, reason: 'Google Drive folder ID not configured' }
   }
   
-  // Check folder access
+  // Check subfolders access
   try {
-    const hasAccess = await checkFolderAccess()
-    if (!hasAccess) {
-      return { available: false, reason: 'Cannot access Google Drive folder' }
+    const accessCheck = await checkSubfoldersAccess()
+    if (!accessCheck.accessible) {
+      const failedFolders = accessCheck.results
+        .filter(r => !r.accessible)
+        .map(r => r.folderId)
+      return {
+        available: false,
+        reason: `Cannot access subfolders: ${failedFolders.join(', ')}`
+      }
     }
   } catch (error) {
     return { available: false, reason: `Drive access error: ${error}` }
@@ -127,17 +133,17 @@ export async function getSyncStatistics(): Promise<{
   totalDriveFiles: number
   totalImageFiles: number
   cachedImages: number
-  folderInfo: Awaited<ReturnType<typeof getFolderInfo>>
+  subfoldersInfo: Awaited<ReturnType<typeof getSubfoldersInfo>>
 }> {
-  const folderInfo = await getFolderInfo()
-  const allFiles = await getAllDriveFiles()
+  const subfoldersInfo = await getSubfoldersInfo()
+  const allFiles = await getAllFilesFromSubfolders()
   const imageFiles = filterImageFiles(allFiles)
-  
+
   return {
     totalDriveFiles: allFiles.length,
     totalImageFiles: imageFiles.length,
     cachedImages: imageCache.size,
-    folderInfo
+    subfoldersInfo
   }
 }
 
@@ -166,11 +172,13 @@ export async function syncImagesFromDrive(
       return result
     }
     
-    // Get all image files from Drive
-    onProgress?.({ current: 0, total: 0, fileName: 'Loading file list...', status: 'downloading' })
-    
-    const allFiles = await getAllDriveFiles()
+    // Get all image files from Drive subfolders
+    onProgress?.({ current: 0, total: 0, fileName: 'Scanning subfolders...', status: 'downloading' })
+
+    const allFiles = await getAllFilesFromSubfolders()
     const imageFiles = filterImageFiles(allFiles)
+
+    console.log(`📊 Found ${imageFiles.length} images across all subfolders`)
     
     result.totalFiles = imageFiles.length
     
