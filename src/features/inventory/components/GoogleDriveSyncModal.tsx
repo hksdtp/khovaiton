@@ -20,6 +20,7 @@ import {
   type OnlineSyncResult,
   type SyncProgress
 } from '../services/onlineImageSyncService'
+import { checkFabricMapping, generateMappingReport, type MappingResult } from '../utils/fabricMappingChecker'
 import { isProduction } from '@/shared/config/environment'
 
 interface GoogleDriveSyncModalProps {
@@ -40,6 +41,8 @@ export function GoogleDriveSyncModal({
   const [syncProgress, setSyncProgress] = useState<SyncProgress>({ current: 0, total: 0, fileName: '', status: 'downloading' })
   const [syncStatus, setSyncStatus] = useState<any>(null)
   const [isOnlineMode] = useState(isProduction)
+  const [mappingResult, setMappingResult] = useState<MappingResult | null>(null)
+  const [isCheckingMapping, setIsCheckingMapping] = useState(false)
 
   // Load Drive files when modal opens
   useEffect(() => {
@@ -133,6 +136,26 @@ export function GoogleDriveSyncModal({
     }
   }
 
+  const handleCheckMapping = async () => {
+    setIsCheckingMapping(true)
+    setMappingResult(null)
+
+    try {
+      const result = await checkFabricMapping()
+      setMappingResult(result)
+
+      // Log detailed report
+      const report = generateMappingReport(result)
+      console.log(report)
+
+    } catch (error) {
+      console.error('Mapping check failed:', error)
+      alert(`Mapping check failed: ${error}`)
+    } finally {
+      setIsCheckingMapping(false)
+    }
+  }
+
   const renderSyncStatus = () => {
     if (!syncStatus) return null
 
@@ -169,6 +192,19 @@ export function GoogleDriveSyncModal({
             ))}
           </div>
         )}
+
+        {/* Mapping check button */}
+        <div className="mt-4 pt-3 border-t border-blue-200">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleCheckMapping}
+            disabled={isCheckingMapping}
+            className="w-full"
+          >
+            {isCheckingMapping ? 'Đang kiểm tra...' : '🔍 Kiểm tra mapping'}
+          </Button>
+        </div>
       </div>
     )
   }
@@ -318,6 +354,43 @@ export function GoogleDriveSyncModal({
         </div>
 
         {renderSyncStatus()}
+
+        {/* Mapping results */}
+        {mappingResult && (
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+            <h3 className="font-semibold text-gray-900 mb-3">🔍 Kết quả kiểm tra mapping</h3>
+
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">{mappingResult.perfectMatches.length}</div>
+                <div className="text-sm text-green-700">Khớp hoàn hảo</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-red-600">{mappingResult.missingInDrive.length}</div>
+                <div className="text-sm text-red-700">Thiếu trong Drive</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-yellow-600">{mappingResult.extraInDrive.length}</div>
+                <div className="text-sm text-yellow-700">Thừa trong Drive</div>
+              </div>
+            </div>
+
+            <div className="text-center mb-3">
+              <div className="text-lg font-semibold">
+                Tỷ lệ khớp: <span className={`${mappingResult.matchPercentage >= 80 ? 'text-green-600' : mappingResult.matchPercentage >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>
+                  {mappingResult.matchPercentage.toFixed(1)}%
+                </span>
+              </div>
+            </div>
+
+            {mappingResult.matchPercentage < 80 && (
+              <div className="text-sm text-gray-600">
+                💡 <strong>Khuyến nghị:</strong> {mappingResult.matchPercentage >= 50 ? 'Upload thêm ảnh thiếu vào Google Drive' : 'Cần upload nhiều ảnh để đạt tỷ lệ khớp tốt'}
+              </div>
+            )}
+          </div>
+        )}
+
         {renderDriveFiles()}
         {renderSyncProgress()}
         {renderSyncResult()}
