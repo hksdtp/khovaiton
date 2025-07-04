@@ -13,6 +13,26 @@ import {
 // import type { DriveApiFile } from './googleDriveApiService'
 import { environment } from '@/shared/config/environment'
 
+// Rate limiting to prevent API spam
+const rateLimiter = {
+  requests: 0,
+  resetTime: Date.now() + 60000, // 1 minute
+  maxRequests: 50, // Conservative limit
+
+  async checkLimit() {
+    if (Date.now() > this.resetTime) {
+      this.requests = 0
+      this.resetTime = Date.now() + 60000
+    }
+
+    if (this.requests >= this.maxRequests) {
+      throw new Error('Rate limit exceeded. Please wait before retrying.')
+    }
+
+    this.requests++
+  }
+}
+
 export interface OnlineSyncResult {
   success: boolean
   message: string
@@ -37,7 +57,7 @@ export interface SyncProgress {
   current: number
   total: number
   fileName: string
-  status: 'downloading' | 'processing' | 'caching' | 'complete'
+  status: 'downloading' | 'processing' | 'caching' | 'complete' | 'error'
 }
 
 /**
@@ -213,7 +233,10 @@ export async function syncImagesFromDrive(
           fileName: file.name,
           status: 'processing'
         })
-        
+
+        // Check rate limit before download
+        await rateLimiter.checkLimit()
+
         const blob = await downloadFileBlob(file)
         
         // Create image URL
@@ -256,7 +279,22 @@ export async function syncImagesFromDrive(
         result.errorCount++
         const errorMsg = `Failed to sync ${file.name}: ${error}`
         result.errors.push(errorMsg)
-        console.error(errorMsg)
+
+        // Log different error types differently
+        if (error instanceof Error && error.message.includes('Access denied')) {
+          console.warn(`🔒 Access denied for ${file.name} - check API key restrictions`)
+        } else if (error instanceof Error && error.message.includes('Network error')) {
+          console.warn(`🌐 Network error for ${file.name} - CORS or connectivity issue`)
+        } else {
+          console.error(`❌ ${errorMsg}`)
+        }
+
+        onProgress?.({
+          current: i + 1,
+          total: imageFiles.length,
+          fileName: file.name,
+          status: 'error'
+        })
       }
     }
     

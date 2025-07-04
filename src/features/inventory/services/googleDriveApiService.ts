@@ -69,8 +69,16 @@ export async function getDriveApiFiles(
 
   try {
     const response = await fetch(url)
-    
+
     if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error')
+      console.error(`Drive API error: ${response.status} ${response.statusText}`, errorText)
+
+      // Handle specific CORS/403 errors
+      if (response.status === 403) {
+        throw new Error(`Drive API access denied (403). Please check API key restrictions for domain: ${window.location.origin}`)
+      }
+
       throw new Error(`Drive API error: ${response.status} ${response.statusText}`)
     }
 
@@ -78,6 +86,12 @@ export async function getDriveApiFiles(
     return data
   } catch (error) {
     console.error('Error fetching Drive files:', error)
+
+    // Handle network/CORS errors
+    if (error instanceof TypeError && error.message.includes('Load failed')) {
+      throw new Error('Network error: Unable to connect to Google Drive API. Please check CORS settings.')
+    }
+
     throw error
   }
 }
@@ -149,14 +163,39 @@ export function getDirectDownloadUrl(fileId: string): string {
  */
 export async function downloadFileBlob(file: DriveApiFile): Promise<Blob> {
   const downloadUrl = file.webContentLink || getDirectDownloadUrl(file.id)
-  
-  const response = await fetch(downloadUrl)
-  
-  if (!response.ok) {
-    throw new Error(`Failed to download ${file.name}: ${response.statusText}`)
-  }
 
-  return response.blob()
+  try {
+    const response = await fetch(downloadUrl, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Accept': 'image/*'
+      }
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error')
+      console.error(`Download error for ${file.name}: ${response.status} ${response.statusText}`, errorText)
+
+      // Handle specific CORS/403 errors
+      if (response.status === 403) {
+        throw new Error(`Access denied for ${file.name}. Check API key restrictions for domain: ${window.location.origin}`)
+      }
+
+      throw new Error(`Failed to download ${file.name}: ${response.status} ${response.statusText}`)
+    }
+
+    return response.blob()
+  } catch (error) {
+    console.error(`Error downloading ${file.name}:`, error)
+
+    // Handle network/CORS errors
+    if (error instanceof TypeError && error.message.includes('Load failed')) {
+      throw new Error(`Network error downloading ${file.name}: Unable to connect to Google Drive. Please check CORS settings.`)
+    }
+
+    throw error
+  }
 }
 
 /**
