@@ -9,9 +9,9 @@ import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity'
 import { format, quality } from '@cloudinary/url-gen/actions/delivery'
 
 // Environment variables
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || ''
-const API_KEY = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || ''
-const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'fabric_images'
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || ''
+const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY || ''
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'fabric_images'
 
 // Initialize Cloudinary instance
 const cld = new Cloudinary({

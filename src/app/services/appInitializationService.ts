@@ -43,38 +43,11 @@ export async function initializeApp(): Promise<InitializationResult> {
     result.success = false
   }
 
-  // Initialize Google Drive sync if available
-  if (environment.googleDrive.enabled) {
-    try {
-      if (isProduction) {
-        // Production: TEMPORARILY DISABLE AUTO-SYNC TO FIX STUCK LOADING
-        console.log('🌐 Google Drive sync available but auto-sync disabled')
-        console.log('⚠️ Auto-sync disabled due to CORS issues - using static images')
-
-        // Don't start auto-sync to prevent app from getting stuck
-        // await autoSyncOnStartup()
-        // result.features.onlineImageSync = true
-
-        // Don't start periodic sync
-        // startPeriodicSync()
-        // result.features.periodicSync = true
-
-        console.log('✅ Google Drive sync configured (manual only)')
-      } else {
-        // Development: Local sync available
-        console.log('🖼️ Local image sync available')
-      }
-
-      result.features.googleDriveSync = true
-
-    } catch (error) {
-      const errorMsg = `Failed to initialize Google Drive sync: ${error}`
-      result.warnings.push(errorMsg)
-      console.warn(errorMsg)
-    }
-  } else {
-    result.warnings.push('Google Drive sync is disabled')
-  }
+  // Image management: Static images + Cloudinary
+  console.log('🖼️ Image management: Static images + Cloudinary')
+  result.features.googleDriveSync = false
+  result.features.onlineImageSync = false
+  result.features.periodicSync = false
 
   // Initialize analytics if enabled
   if (environment.features.analytics) {
@@ -137,18 +110,8 @@ export async function getAppHealthStatus(): Promise<{
   const validation = validateEnvironment()
   checks.environment = validation.valid
   
-  // Check Google Drive connectivity (if enabled)
-  if (environment.googleDrive.enabled) {
-    try {
-      const { checkOnlineSyncAvailability } = await import('@/features/inventory/services/onlineImageSyncService')
-      const availability = await checkOnlineSyncAvailability()
-      checks.googleDrive = availability.available
-    } catch (error) {
-      checks.googleDrive = false
-    }
-  } else {
-    checks.googleDrive = true // Not required
-  }
+  // Image management health check
+  checks.imageManagement = true // Static images + Cloudinary
   
   // Determine overall status
   const allChecks = Object.values(checks)

@@ -1,4 +1,4 @@
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, Upload, Cloud } from 'lucide-react'
+import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, Upload } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useUploadFabricImage, useFabricStats } from '../hooks/useFabrics'
@@ -10,7 +10,6 @@ import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
 import { ImageBatchImportModal } from './ImageBatchImportModal'
-import { GoogleDriveSyncModal } from './GoogleDriveSyncModal'
 
 export function InventoryPage() {
   const {
@@ -21,14 +20,12 @@ export function InventoryPage() {
     isUploadModalOpen,
     uploadingForId,
     isBatchImportModalOpen,
-    isDriveSyncModalOpen,
     itemsPerPage,
     setSearchTerm,
     setSelectedFabric,
     setFilterOpen,
     setUploadModal,
     setBatchImportModal,
-    setDriveSyncModal,
     setFilters,
     setCurrentPage,
     setItemsPerPage,
@@ -121,14 +118,6 @@ export function InventoryPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  onClick={() => setDriveSyncModal(true)}
-                  size="sm"
-                >
-                  <Cloud className="w-4 h-4" />
-                  Sync Drive
-                </Button>
                 <Button
                   variant="outline"
                   onClick={() => setBatchImportModal(true)}
@@ -225,17 +214,7 @@ export function InventoryPage() {
         />
       )}
 
-      {isDriveSyncModalOpen && (
-        <GoogleDriveSyncModal
-          isOpen={isDriveSyncModalOpen}
-          onClose={() => setDriveSyncModal(false)}
-          onSyncComplete={(result) => {
-            console.log('Drive sync completed:', result)
-            // Refresh data after sync
-            window.location.reload()
-          }}
-        />
-      )}
+
     </MainLayout>
   )
 }

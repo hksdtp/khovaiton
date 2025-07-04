@@ -1,7 +1,5 @@
 import { Fabric, FabricType, FabricStatus } from '@/features/inventory/types'
 import { batchFindFabricImages } from '@/features/inventory/services/imageService'
-// import { getCachedImageUrl, autoSyncOnStartup } from '@/features/inventory/services/onlineImageSyncService'
-// import { environment, isProduction } from '@/shared/config/environment'
 import { cloudinaryService } from '../../services/cloudinaryService'
 
 /**

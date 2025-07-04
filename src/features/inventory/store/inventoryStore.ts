@@ -54,7 +54,6 @@ interface InventoryState {
   isUploadModalOpen: boolean
   uploadingForId: number | null
   isBatchImportModalOpen: boolean
-  isDriveSyncModalOpen: boolean
   
   // View preferences
   viewMode: 'grid' | 'list'
@@ -69,7 +68,6 @@ interface InventoryState {
   setFilterOpen: (open: boolean) => void
   setUploadModal: (open: boolean, fabricId?: number) => void
   setBatchImportModal: (open: boolean) => void
-  setDriveSyncModal: (open: boolean) => void
   setViewMode: (mode: 'grid' | 'list') => void
   setItemsPerPage: (count: number) => void
   setCurrentPage: (page: number) => void
@@ -103,7 +101,6 @@ export const useInventoryStore = create<InventoryState>()(
         isUploadModalOpen: false,
         uploadingForId: null,
         isBatchImportModalOpen: false,
-        isDriveSyncModalOpen: false,
         viewMode: 'grid',
         itemsPerPage: urlData.itemsPerPage,
         currentPage: urlData.page,
@@ -155,11 +152,6 @@ export const useInventoryStore = create<InventoryState>()(
         setBatchImportModal: (open) =>
           set(() => ({
             isBatchImportModalOpen: open,
-          })),
-
-        setDriveSyncModal: (open) =>
-          set(() => ({
-            isDriveSyncModalOpen: open,
           })),
 
         setViewMode: (mode) =>

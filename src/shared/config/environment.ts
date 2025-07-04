@@ -8,25 +8,16 @@ export interface EnvironmentConfig {
   appEnv: 'development' | 'production' | 'test'
   appName: string
   appVersion: string
-  
-  // Google Drive
-  googleDrive: {
-    folderId: string
-    apiKey: string
-    enabled: boolean
-  }
-  
+
   // API
   api: {
     baseUrl: string
     timeout: number
   }
-  
+
   // Features
   features: {
-    googleDriveSync: boolean
     batchImport: boolean
-    realTimeSync: boolean
     analytics: boolean
   }
   
@@ -82,25 +73,16 @@ export const environment: EnvironmentConfig = {
   appEnv: (getEnvVar('VITE_APP_ENV', 'development') as any) || 'development',
   appName: getEnvVar('VITE_APP_NAME', 'Kho Vải Tôn'),
   appVersion: getEnvVar('VITE_APP_VERSION', '1.0.0'),
-  
-  // Google Drive
-  googleDrive: {
-    folderId: getEnvVar('VITE_GOOGLE_DRIVE_FOLDER_ID', '1YiRnl2CfccL6rH98S8UlWexgckV_dnbU'),
-    apiKey: getEnvVar('VITE_GOOGLE_DRIVE_API_KEY', ''),
-    enabled: getBooleanEnvVar('VITE_ENABLE_GOOGLE_DRIVE_SYNC', true)
-  },
-  
+
   // API
   api: {
     baseUrl: getEnvVar('VITE_API_BASE_URL', window.location.origin),
     timeout: getNumberEnvVar('VITE_API_TIMEOUT', 10000)
   },
-  
+
   // Features
   features: {
-    googleDriveSync: getBooleanEnvVar('VITE_ENABLE_GOOGLE_DRIVE_SYNC', true),
     batchImport: getBooleanEnvVar('VITE_ENABLE_BATCH_IMPORT', true),
-    realTimeSync: getBooleanEnvVar('VITE_ENABLE_REAL_TIME_SYNC', true),
     analytics: getBooleanEnvVar('VITE_ENABLE_ANALYTICS', false)
   },
   
@@ -123,15 +105,9 @@ export const environment: EnvironmentConfig = {
 export function validateEnvironment(): { valid: boolean; errors: string[] } {
   const errors: string[] = []
   
-  // Check required Google Drive config for production
-  if (environment.appEnv === 'production') {
-    if (!environment.googleDrive.apiKey) {
-      errors.push('VITE_GOOGLE_DRIVE_API_KEY is required for production')
-    }
-    
-    if (!environment.googleDrive.folderId) {
-      errors.push('VITE_GOOGLE_DRIVE_FOLDER_ID is required')
-    }
+  // Check app configuration
+  if (!environment.appName) {
+    errors.push('App name is required')
   }
   
   // Check API configuration
@@ -159,8 +135,7 @@ export function getEnvironmentInfo(): Record<string, any> {
     appName: environment.appName,
     appVersion: environment.appVersion,
     features: environment.features,
-    googleDriveEnabled: environment.googleDrive.enabled,
-    hasApiKey: !!environment.googleDrive.apiKey,
+
     buildTime: new Date().toISOString()
   }
 }
@@ -176,11 +151,11 @@ export const isDevelopment = environment.appEnv === 'development'
 export const isProduction = environment.appEnv === 'production'
 
 /**
- * Check if Google Drive is configured
+ * Check if app is properly configured
  */
-export const isGoogleDriveConfigured = !!(
-  environment.googleDrive.folderId && 
-  environment.googleDrive.apiKey
+export const isAppConfigured = !!(
+  environment.appName &&
+  environment.api.baseUrl
 )
 
 /**
