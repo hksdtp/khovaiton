@@ -53,7 +53,6 @@ interface InventoryState {
   isFilterOpen: boolean
   isUploadModalOpen: boolean
   uploadingForId: number | null
-  isBatchImportModalOpen: boolean
   
   // View preferences
   viewMode: 'grid' | 'list'
@@ -67,7 +66,6 @@ interface InventoryState {
   setSelectedFabric: (fabric: Fabric | null) => void
   setFilterOpen: (open: boolean) => void
   setUploadModal: (open: boolean, fabricId?: number) => void
-  setBatchImportModal: (open: boolean) => void
   setViewMode: (mode: 'grid' | 'list') => void
   setItemsPerPage: (count: number) => void
   setCurrentPage: (page: number) => void
@@ -100,7 +98,6 @@ export const useInventoryStore = create<InventoryState>()(
         isFilterOpen: false,
         isUploadModalOpen: false,
         uploadingForId: null,
-        isBatchImportModalOpen: false,
         viewMode: 'grid',
         itemsPerPage: urlData.itemsPerPage,
         currentPage: urlData.page,
@@ -147,11 +144,6 @@ export const useInventoryStore = create<InventoryState>()(
           set(() => ({
             isUploadModalOpen: open,
             uploadingForId: fabricId || null,
-          })),
-
-        setBatchImportModal: (open) =>
-          set(() => ({
-            isBatchImportModalOpen: open,
           })),
 
         setViewMode: (mode) =>
