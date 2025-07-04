@@ -1,0 +1,39 @@
+# Vercel ignore file
+# Files and directories to ignore during deployment
+
+# Development files
+.env.local
+.env.development
+.env.test
+
+# Local scripts
+scripts/
+docs/
+
+# Demo files
+public/images/fabrics/*.jpg
+public/images/fabrics/*.png
+public/images/fabrics/README.html
+
+# Cache and temp files
+.cache/
+tmp/
+temp/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Coverage
+coverage/
+
+# Testing
+test-results/

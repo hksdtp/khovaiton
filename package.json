@@ -19,6 +19,7 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "prepare": "husky install",
     "vercel-build": "npm run build:production",
+    "start": "npm run preview",
     "deploy": "vercel --prod",
     "deploy:preview": "vercel"
   },

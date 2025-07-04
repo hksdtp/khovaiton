@@ -47,10 +47,15 @@ export interface EnvironmentConfig {
  * Get environment variable with fallback
  */
 function getEnvVar(key: string, fallback: string = ''): string {
-  if (typeof window !== 'undefined' && (window as any).__ENV__) {
-    return (window as any).__ENV__[key] || fallback
+  try {
+    if (typeof window !== 'undefined' && (window as any).__ENV__) {
+      return (window as any).__ENV__[key] || fallback
+    }
+    return import.meta.env?.[key] || fallback
+  } catch (error) {
+    console.warn(`Failed to get env var ${key}:`, error)
+    return fallback
   }
-  return (import.meta as any).env?.[key] || fallback
 }
 
 /**
