@@ -1,7 +1,8 @@
 import { Fabric, FabricType, FabricStatus } from '@/features/inventory/types'
 import { batchFindFabricImages } from '@/features/inventory/services/imageService'
-import { getCachedImageUrl, autoSyncOnStartup } from '@/features/inventory/services/onlineImageSyncService'
-import { environment, isProduction } from '@/shared/config/environment'
+// import { getCachedImageUrl, autoSyncOnStartup } from '@/features/inventory/services/onlineImageSyncService'
+// import { environment, isProduction } from '@/shared/config/environment'
+import { cloudinaryService } from '../../services/cloudinaryService'
 
 /**
  * Real fabric data from Excel file "File tổng hợp tồn kho tầng 4 (27.06.2025).xlsx"
@@ -160,20 +161,49 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     // Load fabric data first
     cachedFabrics = await loadRealFabricData()
 
-    // TEMPORARILY USE STATIC IMAGES FOR BOTH DEV AND PRODUCTION
-    // Due to CORS issues with Google Drive, use static images for now
-    console.log('🖼️ Using static images from public/images/fabrics/...')
+    // MULTI-SOURCE IMAGE LOADING: Cloudinary → Static → Placeholder
+    console.log('🖼️ Loading images from multiple sources...')
     const fabricCodes = cachedFabrics.map(f => f.code)
-    const imageMap = await batchFindFabricImages(fabricCodes)
 
-    // Update fabrics with found images
+    // Try Cloudinary first if configured
+    let cloudinaryImageMap = new Map<string, string>()
+    if (cloudinaryService.isConfigured()) {
+      console.log('☁️ Checking Cloudinary for images...')
+      try {
+        const cloudinaryExists = await cloudinaryService.batchCheckImages(fabricCodes)
+        cloudinaryExists.forEach((exists, code) => {
+          if (exists) {
+            const url = cloudinaryService.getFabricImageUrl(code, { width: 800, quality: 80 })
+            if (url) {
+              cloudinaryImageMap.set(code, url)
+            }
+          }
+        })
+        console.log(`☁️ Found ${cloudinaryImageMap.size} images in Cloudinary`)
+      } catch (error) {
+        console.warn('⚠️ Cloudinary check failed:', error)
+      }
+    }
+
+    // Fallback to static images for codes not in Cloudinary
+    const remainingCodes = fabricCodes.filter(code => !cloudinaryImageMap.has(code))
+    const staticImageMap = await batchFindFabricImages(remainingCodes)
+    console.log(`🖼️ Found ${staticImageMap.size} static images`)
+
+    // Update fabrics with found images (Cloudinary priority)
     const updatedFabrics = cachedFabrics.map(fabric => ({
       ...fabric,
-      image: imageMap.get(fabric.code) || undefined
+      image: cloudinaryImageMap.get(fabric.code) || staticImageMap.get(fabric.code) || undefined
     }))
 
     const withImages = updatedFabrics.filter(f => f.image).length
-    console.log(`✅ Found images for ${withImages}/${updatedFabrics.length} fabrics`)
+    const cloudinaryCount = cloudinaryImageMap.size
+    const staticCount = staticImageMap.size
+
+    console.log(`✅ Image loading complete:`)
+    console.log(`   • Cloudinary: ${cloudinaryCount} images`)
+    console.log(`   • Static: ${staticCount} images`)
+    console.log(`   • Total: ${withImages}/${updatedFabrics.length} fabrics with images`)
 
     cachedFabrics = updatedFabrics
     return updatedFabrics

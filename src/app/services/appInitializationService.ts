@@ -4,7 +4,7 @@
  */
 
 import { environment, validateEnvironment, isProduction } from '@/shared/config/environment'
-import { startPeriodicSync, autoSyncOnStartup } from '@/features/inventory/services/onlineImageSyncService'
+// import { startPeriodicSync, autoSyncOnStartup } from '@/features/inventory/services/onlineImageSyncService'
 
 export interface InitializationResult {
   success: boolean
