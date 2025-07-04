@@ -1,0 +1,128 @@
+📁 Fabric codes ưu tiên cao (số lượng lớn)
+============================================================
+
+📊 Số lượng: 18 fabric codes
+
+🎯 HƯỚNG DẪN UPLOAD:
+1. Chụp ảnh hoặc scan fabric samples
+2. Đặt tên file CHÍNH XÁC theo fabric code
+3. Format: [FABRIC_CODE].jpg (ví dụ: TP01623-222.jpg)
+4. Copy ảnh vào folder này
+5. Chạy script sync để upload vào web app
+
+⚠️ LƯU Ý:
+- Tên file phải CHÍNH XÁC 100%
+- Không có space thừa, ký tự đặc biệt
+- Chỉ dùng .jpg, .jpeg, .png
+- Kích thước tối đa 5MB/ảnh
+
+📋 DANH SÁCH FABRIC CODES:
+----------------------------------------
+  1. DCR-L4001-12122
+     Tên: Vải voan DCR-L4001-12122 khổ 300cm
+     Vị trí: Pallet giữa kệ A và B Tầng 4
+     Số lượng: 57.3
+     File cần: DCR-L4001-12122.jpg
+
+  2. DCR-OZONE-16
+     Tên: DCR-OZONE-16 W280cm
+     Vị trí: T4 E2
+     Số lượng: 75.0
+     File cần: DCR-OZONE-16.jpg
+
+  3. 71022-9
+     Tên: Vải lá màu kem W280 cm
+     Vị trí: T4 B2.2
+     Số lượng: 52.3
+     File cần: 71022-9.jpg
+
+  4. TP01623-6010
+     Tên: Vải TP01623-6010 W 140cm
+     Vị trí: T4 G3.1
+     Số lượng: 54.0
+     File cần: TP01623-6010.jpg
+
+  5. HTK 20189-11
+     Tên: Vải HTK 20189-11 khổ 280cm
+     Vị trí: T4.A2.2
+     Số lượng: 570.0
+     File cần: HTK 20189-11.jpg
+
+  6. NN-12-DK
+     Tên: VẢI SUNSTRIP MÀU TRẮNG W280 ( ICE WHITE B2G)
+     Vị trí: Pallet tầng 2
+     Số lượng: 180.0
+     File cần: NN-12-DK.jpg
+
+  7. EB5448 ALA PASTER
+     Tên: Vải mành EB5448 ALA PASTER khổ 250
+     Vị trí: T4 Palet G-F
+     Số lượng: 65.1
+     File cần: EB5448 ALA PASTER.jpg
+
+  8. Dusk Slate - 3M
+     Tên: Vải 4915161-Dcr - Dusk Slate - W300cm
+     Vị trí: T4 D3+E3 + T4 dưới sàn
+     Số lượng: 168.0
+     File cần: Dusk Slate - 3M.jpg
+
+  9. F02-Front-28022023
+     Tên: Vải B Fabric Sample With FR (F02-Front-28022023) T...
+     Vị trí: T4.A3.2
+     Số lượng: 747.0
+     File cần: F02-Front-28022023.jpg
+
+ 10. EF51150133-dcr
+     Tên: Vải EB51150133 white/mushroom - 2.5M
+     Vị trí: T4.G1.1
+     Số lượng: 192.0
+     File cần: EF51150133-dcr.jpg
+
+ 11. ST 5049 CjNcc
+     Tên: Vải Roller ST 5049 CjNcc W 280cm
+     Vị trí: T4 Palet G-F
+     Số lượng: 120.0
+     File cần: ST 5049 CjNcc.jpg
+
+ 12. DCR-71022-8
+     Tên: Vải Lá Màu Xanh W280cm
+     Vị trí: T4 B2.2
+     Số lượng: 367.3
+     File cần: DCR-71022-8.jpg
+
+ 13. DCR-N2087-Bo w280cm
+     Tên: Vải DCR-N2087-Bo w280cm
+     Vị trí: T4.G1.2
+     Số lượng: 570.0
+     File cần: DCR-N2087-Bo w280cm.jpg
+
+ 14. ET66470183
+     Tên: Vải Elitex - ET66470183 Pale Grey - khổ 250
+     Vị trí: T4.G1.1
+     Số lượng: 138.5
+     File cần: ET66470183.jpg
+
+ 15. FWP12157-16
+     Tên: Vải chính  FWP12157-16 khổ 280cm
+     Vị trí: T4.A3.1
+     Số lượng: 70.2
+     File cần: FWP12157-16.jpg
+
+ 16. EB48410186
+     Tên: EB48410486 W300cm
+     Vị trí: T4.G1.1
+     Số lượng: 186.0
+     File cần: EB48410186.jpg
+
+ 17. BJ01A
+     Tên: BJ01A W310cm
+     Vị trí: T4.G2.2
+     Số lượng: 77.0
+     File cần: BJ01A.jpg
+
+ 18. FB17118A7-4
+     Tên: Vải chính FB17118A7-4 khổ 280cm
+     Vị trí: T4.A1.1
+     Số lượng: 413.4
+     File cần: FB17118A7-4.jpg
+

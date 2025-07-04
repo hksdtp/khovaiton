@@ -47,25 +47,26 @@ export async function initializeApp(): Promise<InitializationResult> {
   if (environment.googleDrive.enabled) {
     try {
       if (isProduction) {
-        // Production: Use online sync
-        console.log('🌐 Initializing online image sync...')
-        
-        // Start auto-sync
-        await autoSyncOnStartup()
-        result.features.onlineImageSync = true
-        
-        // Start periodic sync
-        startPeriodicSync()
-        result.features.periodicSync = true
-        
-        console.log('✅ Online image sync initialized')
+        // Production: TEMPORARILY DISABLE AUTO-SYNC TO FIX STUCK LOADING
+        console.log('🌐 Google Drive sync available but auto-sync disabled')
+        console.log('⚠️ Auto-sync disabled due to CORS issues - using static images')
+
+        // Don't start auto-sync to prevent app from getting stuck
+        // await autoSyncOnStartup()
+        // result.features.onlineImageSync = true
+
+        // Don't start periodic sync
+        // startPeriodicSync()
+        // result.features.periodicSync = true
+
+        console.log('✅ Google Drive sync configured (manual only)')
       } else {
         // Development: Local sync available
         console.log('🖼️ Local image sync available')
       }
-      
+
       result.features.googleDriveSync = true
-      
+
     } catch (error) {
       const errorMsg = `Failed to initialize Google Drive sync: ${error}`
       result.warnings.push(errorMsg)

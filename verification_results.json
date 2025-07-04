@@ -1,0 +1,72 @@
+{
+  "definitely_correct": [],
+  "probably_correct": [
+    {
+      "fabric_code": "FB15144A3",
+      "filename": "FB15144A3.jpg",
+      "source_file": "Unknown source for FB15144A3",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    },
+    {
+      "fabric_code": "SG21-YH56-1",
+      "filename": "SG21-YH56-1.jpg",
+      "source_file": "Unknown source for SG21-YH56-1",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    },
+    {
+      "fabric_code": "AS228388-3",
+      "filename": "AS228388-3.jpg",
+      "source_file": "Unknown source for AS228388-3",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    },
+    {
+      "fabric_code": "FB15169A4",
+      "filename": "FB15169A4.jpg",
+      "source_file": "Unknown source for FB15169A4",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    },
+    {
+      "fabric_code": "Dymondmie - Straw",
+      "filename": "Dymondmie - Straw.jpg",
+      "source_file": "Unknown source for Dymondmie - Straw",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    },
+    {
+      "fabric_code": "JNF161",
+      "filename": "JNF161.jpg",
+      "source_file": "Unknown source for JNF161",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    },
+    {
+      "fabric_code": "07013D-88",
+      "filename": "07013D-88.jpg",
+      "source_file": "Unknown source for 07013D-88",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    },
+    {
+      "fabric_code": "HA1449-W",
+      "filename": "HA1449-W.jpg",
+      "source_file": "Unknown source for HA1449-W",
+      "category": "probably_correct",
+      "confidence": 70,
+      "reason": "Good pattern similarity"
+    }
+  ],
+  "suspicious": [],
+  "definitely_wrong": [],
+  "need_manual_review": []
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fabric Images Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .image-item { margin: 10px 0; padding: 10px; border: 1px solid #ddd; }
+        .exists { background-color: #d4edda; }
+        .missing { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>🖼️ Fabric Images Status</h1>
+    <p>This page shows which fabric images are available.</p>
+    
+    <div id="image-list">
+        <p>Loading...</p>
+    </div>
+
+    <script>
+        const fabricCodes = [
+            "3 PASS BO - WHITE - COL 15",
+            "33139-2-270", 
+            "71022-10",
+            "71022-7",
+            "8015-1",
+            "8059",
+            "99-129-39",
+            "A9003-5",
+            "AS22541-5",
+            "B-1001"
+        ];
+
+        async function checkImages() {
+            const listEl = document.getElementById('image-list');
+            listEl.innerHTML = '';
+            
+            for (const code of fabricCodes) {
+                const imagePath = `./${code}.jpg`;
+                const div = document.createElement('div');
+                div.className = 'image-item';
+                
+                try {
+                    const response = await fetch(imagePath, { method: 'HEAD' });
+                    if (response.ok) {
+                        div.className += ' exists';
+                        div.innerHTML = `✅ <strong>${code}</strong> - Image found`;
+                    } else {
+                        div.className += ' missing';
+                        div.innerHTML = `❌ <strong>${code}</strong> - Image missing`;
+                    }
+                } catch (error) {
+                    div.className += ' missing';
+                    div.innerHTML = `❌ <strong>${code}</strong> - Error checking image`;
+                }
+                
+                listEl.appendChild(div);
+            }
+        }
+
+        checkImages();
+    </script>
+</body>
+</html>

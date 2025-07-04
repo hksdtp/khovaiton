@@ -1,0 +1,314 @@
+📁 Fabric codes ưu tiên thấp (số lượng ít, lỗi)
+============================================================
+
+📊 Số lượng: 49 fabric codes
+
+🎯 HƯỚNG DẪN UPLOAD:
+1. Chụp ảnh hoặc scan fabric samples
+2. Đặt tên file CHÍNH XÁC theo fabric code
+3. Format: [FABRIC_CODE].jpg (ví dụ: TP01623-222.jpg)
+4. Copy ảnh vào folder này
+5. Chạy script sync để upload vào web app
+
+⚠️ LƯU Ý:
+- Tên file phải CHÍNH XÁC 100%
+- Không có space thừa, ký tự đặc biệt
+- Chỉ dùng .jpg, .jpeg, .png
+- Kích thước tối đa 5MB/ảnh
+
+📋 DANH SÁCH FABRIC CODES:
+----------------------------------------
+  1. VL-BFAT96
+     Tên: Vải VL-BFAT96 khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 35.0
+     File cần: VL-BFAT96.jpg
+
+  2. DCLR -EC-4022
+     Tên: Vải Roller DCLR -EC-4022 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 9.0
+     File cần: DCLR -EC-4022.jpg
+
+  3. FS-TEAL
+     Tên: Vải FS-TEAL Khổ 280cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 157.0
+     File cần: FS-TEAL.jpg
+
+  4. Lót bông nhăn
+     Tên: Vải Lót bông nhăn Khổ 235cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 38.83
+     File cần: Lót bông nhăn.jpg
+
+  5. DL202143311
+     Tên: Vải suntrip khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 30.0
+     File cần: DL202143311.jpg
+
+  6. DUSK XTRA VIVID
+     Tên: Vải DUSK XTRA VIVID khổ 300cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 40.0
+     File cần: DUSK XTRA VIVID.jpg
+
+  7. FB15141A21
+     Tên: Vải FB15141A21 Khổ 300cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 10.8
+     File cần: FB15141A21.jpg
+
+  8. FB15157A1
+     Tên: Vải FB15157A1 Khổ 300cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 18.6
+     File cần: FB15157A1.jpg
+
+  9. DH25-A4-120
+     Tên: Vải chính  DH25-A4-120 khổ 145cm
+     Vị trí: T4.A3.1
+     Số lượng: 9.9
+     File cần: DH25-A4-120.jpg
+
+ 10. FB15148A21
+     Tên: Vải FB15148A21 Khổ 300cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 18.4
+     File cần: FB15148A21.jpg
+
+ 11. FS-Ruby
+     Tên: Vải FS-Ruby Khổ 280cm
+     Vị trí: T4 giữa A-B (phía ngoài)
+     Số lượng: 58.85
+     File cần: FS-Ruby.jpg
+
+ 12. FS FLAX-NG
+     Tên: Vải FS FLAX-NG W280
+     Vị trí: Pallet tầng 2
+     Số lượng: 46.0
+     File cần: FS FLAX-NG.jpg
+
+ 13. VL-BFAT 45
+     Tên: Vải VL-BFAT 45 khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 40.0
+     File cần: VL-BFAT 45.jpg
+
+ 14. YB096
+     Tên: Vải YB096 Khổ 280cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 6.9
+     File cần: YB096.jpg
+
+ 15. HOLIWOD-04
+     Tên: Vải HOLIWOD-04 khổ 280cm
+     Vị trí: T4 E2
+     Số lượng: 9.0
+     File cần: HOLIWOD-04.jpg
+
+ 16. DCT-BO-LT-06
+     Tên: Vải Roller khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 30.0
+     File cần: DCT-BO-LT-06.jpg
+
+ 17. FB15092A8
+     Tên: Vải FB15092A8 khổ 290cm
+     Vị trí: T4.A3.1
+     Số lượng: 10.0
+     File cần: FB15092A8.jpg
+
+ 18. VL-BFAT12 (H)
+     Tên: Vải VL-BFAT12 (H) khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 18.0
+     File cần: VL-BFAT12 (H).jpg
+
+ 19. 142421-DCR
+     Tên: Vải chính 142421-DCR khổ 293cm
+     Vị trí: T4 G3.1
+     Số lượng: 8.7
+     File cần: 142421-DCR.jpg
+
+ 20. EB48500186 WINSPRAY GREY
+     Tên: Vải EB48500186 WINSPRAY GREY khổ 300cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 15.0
+     File cần: EB48500186 WINSPRAY GREY.jpg
+
+ 21. vải nhung màu be
+     Tên: Vải vải nhung màu be W 140cm
+     Vị trí: T4 F1
+     Số lượng: 10.0
+     File cần: vải nhung màu be.jpg
+
+ 22. UN 1371
+     Tên: Vải Mành Roller EUROSCREEN W 280cm
+     Vị trí: T4.G2.1
+     Số lượng: 5.5
+     File cần: UN 1371.jpg
+
+ 23. DCT-BO-TB01-NG
+     Tên: Vải TREEBARK BO ROLLER BLIND FABRIC WIDTH 280 CM
+     Vị trí: Pallet tầng 2
+     Số lượng: 33.0
+     File cần: DCT-BO-TB01-NG.jpg
+
+ 24. ICT-02
+     Tên: ICT-02 khổ 140cm
+     Vị trí: T4 G3.1
+     Số lượng: 10.0
+     File cần: ICT-02.jpg
+
+ 25. FB15198A6
+     Tên: Vải FB15198A6 Khổ 300cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 76.0
+     File cần: FB15198A6.jpg
+
+ 26. FB17141A-1
+     Tên: Vải chính FB17141A-1 khổ 280cm
+     Vị trí: T4.A3.1
+     Số lượng: 8.2
+     File cần: FB17141A-1.jpg
+
+ 27. JK090E-01
+     Tên: Vải JK090E-01 Khổ 280cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 27.0
+     File cần: JK090E-01.jpg
+
+ 28. AS22878-7
+     Tên: AS22878-7 - 100% Polyeste, W280cm, color: 7
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 15.0
+     File cần: AS22878-7.jpg
+
+ 29. DLWG202136055
+     Tên: Vải DLWG202136055 khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 5.0
+     File cần: DLWG202136055.jpg
+
+ 30. DCR-RP1151
+     Tên: Vải Roller DCR-RP1151 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 10.0
+     File cần: DCR-RP1151.jpg
+
+ 31. FS-PURPLE
+     Tên: Vải FS-PURPLE Khổ 280cm
+     Vị trí: T4 giữa A-B (phía ngoài)
+     Số lượng: 64.5
+     File cần: FS-PURPLE.jpg
+
+ 32. SC-UDPL 15 FR
+     Tên: Vải SC-UDPL 15 FR khổ 240cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 30.0
+     File cần: SC-UDPL 15 FR.jpg
+
+ 33. PRJ-OXC B008-DCR
+     Tên: PRJ-OXC B008-DCR khổ 280cm
+     Vị trí: T4 Palet G-F
+     Số lượng: 5.0
+     File cần: PRJ-OXC B008-DCR.jpg
+
+ 34. VL-FQAT42 (H)
+     Tên: Vải VL-FQAT42 (H) khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 30.0
+     File cần: VL-FQAT42 (H).jpg
+
+ 35. HARMONY-OXC B003-NG (TRẮNG)
+     Tên: Vải HARMONY-OXC B003-NG (TRẮNG) khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 10.0
+     File cần: HARMONY-OXC B003-NG (TRẮNG).jpg
+
+ 36. MARINO-43
+     Tên: Vải chính MARINO-43 khổ 142cm
+     Vị trí: T4.K3
+     Số lượng: 9.7
+     File cần: MARINO-43.jpg
+
+ 37. HARMONY-OXC B010
+     Tên: Vải HARMONY-OXC B010 khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 40.0
+     File cần: HARMONY-OXC B010.jpg
+
+ 38. JNF/19
+     Tên: Vải JNF/19 Khổ 280cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 16.2
+     File cần: JNF/19.jpg
+
+ 39. DCT-BO-TB07
+     Tên: Vải DCT-BO-TB07 khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 65.0
+     File cần: DCT-BO-TB07.jpg
+
+ 40. HARMONY-OXC B003-NG
+     Tên: VẢI HARMONY-003 BLACKOUT-NG W280
+     Vị trí: Pallet tầng 2
+     Số lượng: 38.0
+     File cần: HARMONY-OXC B003-NG.jpg
+
+ 41. HB/BST/DY
+     Tên: Vải HB/BST/DY Khổ 290cm
+     Vị trí: T4 giữa A-B (phía trong)
+     Số lượng: 12.3
+     File cần: HB/BST/DY.jpg
+
+ 42. DCR-1000-2300-9124
+     Tên: DCR-1000-2300-9124 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 6.0
+     File cần: DCR-1000-2300-9124.jpg
+
+ 43. LỤA ÉP HỌA TIẾT
+     Tên: Vải lụa ép họa tiết (8600-07) khổ 280cm
+     Vị trí: T4 E2
+     Số lượng: 7.0
+     File cần: LỤA ÉP HỌA TIẾT.jpg
+
+ 44. YB093
+     Tên: Vải YB093 khổ 230cm
+     Vị trí: T4 giữa A-B (phía ngoài)
+     Số lượng: 136.0
+     File cần: YB093.jpg
+
+ 45. D2070-008-NG
+     Tên: VẢI D2070-008-NG LỖI PHAI MÀU W280
+     Vị trí: Pallet tầng 2
+     Số lượng: 405.0
+     File cần: D2070-008-NG.jpg
+
+ 46. D2082-001-NG
+     Tên: D2082-001 LÕI VÕNG NẶNG W280
+     Vị trí: Pallet tầng 2
+     Số lượng: 300.0
+     File cần: D2082-001-NG.jpg
+
+ 47. DCT-BO-ZH
+     Tên: Vải DCT-BO-ZH khổ 280cm
+     Vị trí: T4 dưới sàn
+     Số lượng: 65.0
+     File cần: DCT-BO-ZH.jpg
+
+ 48. Vải nhung màu xanh
+     Tên: Vải Vải nhung màu xanh W 140cm
+     Vị trí: T4 G3.1
+     Số lượng: 7.8
+     File cần: Vải nhung màu xanh.jpg
+
+ 49. FB15198A5
+     Tên: Vải FB15198A5 Khổ 300cm
+     Vị trí: T4 giữa A-B (phía ngoài)
+     Số lượng: 15.4
+     File cần: FB15198A5.jpg
+

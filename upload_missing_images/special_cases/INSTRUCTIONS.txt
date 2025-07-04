@@ -1,0 +1,116 @@
+📁 Fabric codes đặc biệt (tên phức tạp)
+============================================================
+
+📊 Số lượng: 16 fabric codes
+
+🎯 HƯỚNG DẪN UPLOAD:
+1. Chụp ảnh hoặc scan fabric samples
+2. Đặt tên file CHÍNH XÁC theo fabric code
+3. Format: [FABRIC_CODE].jpg (ví dụ: TP01623-222.jpg)
+4. Copy ảnh vào folder này
+5. Chạy script sync để upload vào web app
+
+⚠️ LƯU Ý:
+- Tên file phải CHÍNH XÁC 100%
+- Không có space thừa, ký tự đặc biệt
+- Chỉ dùng .jpg, .jpeg, .png
+- Kích thước tối đa 5MB/ảnh
+
+📋 DANH SÁCH FABRIC CODES:
+----------------------------------------
+  1. carnival r/b slate 210
+     Tên: Vải Roller dcr- carnival r/b slate 210 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 13.0
+     File cần: carnival r/b slate 210.jpg
+
+  2. CARNIVAL R/B HESSIAN 210
+     Tên: Vải Roller CARNIVAL R/B HESSIAN 210 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 10.0
+     File cần: CARNIVAL R/B HESSIAN 210.jpg
+
+  3. CARNIVAL R/B MULBERRY 210
+     Tên: Vải Roller DCR CARNIVAL R/B MULBERRY 210 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 33.0
+     File cần: CARNIVAL R/B MULBERRY 210.jpg
+
+  4. ELITEX EB5115 WHITE/MUSHR
+     Tên: ELITEX EB5115 WHITE/MUSHROOM khổ 300cm
+     Vị trí: T4.G1.1
+     Số lượng: 521.0
+     File cần: ELITEX EB5115 WHITE/MUSHR.jpg
+
+  5. CARNIVAL R/B TEAL 210
+     Tên: Vải Roller CARNIVAL R/B TEAL 210 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 11.0
+     File cần: CARNIVAL R/B TEAL 210.jpg
+
+  6. Dcr-carnival R/B mocha
+     Tên: Vải Roller Dcr-carnival R/B mocha W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 10.0
+     File cần: Dcr-carnival R/B mocha.jpg
+
+  7. Voile R/B White
+     Tên: Vải Roller Voile R/B White W 200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 40.5
+     File cần: Voile R/B White.jpg
+
+  8. Bloom R/B Amellie
+     Tên: Vải Roller Bloom R/B Amellie
+     Vị trí: T4 D3+E3
+     Số lượng: 18.0
+     File cần: Bloom R/B Amellie.jpg
+
+  9. Carnival r/b mauve 210
+     Tên: Vải Roller Dcr Carnival r/b mauve 210 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 10.0
+     File cần: Carnival r/b mauve 210.jpg
+
+ 10. carnival  r/b purple
+     Tên: Vải Roller dcr-carnival  r/b purple-Kg W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 10.0
+     File cần: carnival  r/b purple.jpg
+
+ 11. Voile R/B Cream
+     Tên: Vải Roller Voile R/B Cream W 200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 55.0
+     File cần: Voile R/B Cream.jpg
+
+ 12. HENILY R/B RUN BN
+     Tên: Vải Roller DCR-HENILY R/B RUN BN  RAI SIN W 200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 17.0
+     File cần: HENILY R/B RUN BN.jpg
+
+ 13. Dcr -Lauva r/b walnut
+     Tên: Vải Roller Dcr -Lauva r/b walnut W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 8.0
+     File cần: Dcr -Lauva r/b walnut.jpg
+
+ 14. dcr- nouveaux r/b teal
+     Tên: Vải Roller dcr- nouveaux r/b teal W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 26.0
+     File cần: dcr- nouveaux r/b teal.jpg
+
+ 15. VL-BF45(H)-NG
+     Tên: VẢI VALENTINE FRESH BLACKOUT WITDH 250 ( SN-BF45)
+     Vị trí: Pallet tầng 2
+     Số lượng: 80.0
+     File cần: VL-BF45(H)-NG.jpg
+
+ 16. carnival r/b hot pink 210
+     Tên: Vải Roller dcr- carnival r/b hot pink 210 W200cm
+     Vị trí: T4 D3+E3
+     Số lượng: 30.0
+     File cần: carnival r/b hot pink 210.jpg
+

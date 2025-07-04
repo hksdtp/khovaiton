@@ -160,41 +160,23 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     // Load fabric data first
     cachedFabrics = await loadRealFabricData()
 
-    // Choose image mapping strategy based on environment
-    if (isProduction && environment.googleDrive.enabled) {
-      // Production: Use online sync
-      console.log('🌐 Using online image sync for production...')
+    // TEMPORARILY USE STATIC IMAGES FOR BOTH DEV AND PRODUCTION
+    // Due to CORS issues with Google Drive, use static images for now
+    console.log('🖼️ Using static images from public/images/fabrics/...')
+    const fabricCodes = cachedFabrics.map(f => f.code)
+    const imageMap = await batchFindFabricImages(fabricCodes)
 
-      // Start auto-sync in background
-      autoSyncOnStartup()
+    // Update fabrics with found images
+    const updatedFabrics = cachedFabrics.map(fabric => ({
+      ...fabric,
+      image: imageMap.get(fabric.code) || undefined
+    }))
 
-      // Map images from cache
-      const updatedFabrics = cachedFabrics.map(fabric => ({
-        ...fabric,
-        image: getCachedImageUrl(fabric.code) || undefined
-      }))
+    const withImages = updatedFabrics.filter(f => f.image).length
+    console.log(`✅ Found images for ${withImages}/${updatedFabrics.length} fabrics`)
 
-      cachedFabrics = updatedFabrics
-      return updatedFabrics
-
-    } else {
-      // Development: Use local images
-      console.log('🖼️ Auto-mapping local images for development...')
-      const fabricCodes = cachedFabrics.map(f => f.code)
-      const imageMap = await batchFindFabricImages(fabricCodes)
-
-      // Update fabrics with found images
-      const updatedFabrics = cachedFabrics.map(fabric => ({
-        ...fabric,
-        image: imageMap.get(fabric.code) || undefined
-      }))
-
-      const withImages = updatedFabrics.filter(f => f.image).length
-      console.log(`✅ Found images for ${withImages}/${updatedFabrics.length} fabrics`)
-
-      cachedFabrics = updatedFabrics
-      return updatedFabrics
-    }
+    cachedFabrics = updatedFabrics
+    return updatedFabrics
 
   } catch (error) {
     console.error('Failed to load fabric data:', error)
