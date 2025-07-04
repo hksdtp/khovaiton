@@ -1,4 +1,7 @@
 import { Fabric, FabricType, FabricStatus } from '@/features/inventory/types'
+import { batchFindFabricImages } from '@/features/inventory/services/imageService'
+import { getCachedImageUrl, autoSyncOnStartup } from '@/features/inventory/services/onlineImageSyncService'
+import { environment, isProduction } from '@/shared/config/environment'
 
 /**
  * Real fabric data from Excel file "File tổng hợp tồn kho tầng 4 (27.06.2025).xlsx"
@@ -154,8 +157,45 @@ export async function getMockFabrics(): Promise<Fabric[]> {
   }
 
   try {
+    // Load fabric data first
     cachedFabrics = await loadRealFabricData()
-    return cachedFabrics
+
+    // Choose image mapping strategy based on environment
+    if (isProduction && environment.googleDrive.enabled) {
+      // Production: Use online sync
+      console.log('🌐 Using online image sync for production...')
+
+      // Start auto-sync in background
+      autoSyncOnStartup()
+
+      // Map images from cache
+      const updatedFabrics = cachedFabrics.map(fabric => ({
+        ...fabric,
+        image: getCachedImageUrl(fabric.code) || undefined
+      }))
+
+      cachedFabrics = updatedFabrics
+      return updatedFabrics
+
+    } else {
+      // Development: Use local images
+      console.log('🖼️ Auto-mapping local images for development...')
+      const fabricCodes = cachedFabrics.map(f => f.code)
+      const imageMap = await batchFindFabricImages(fabricCodes)
+
+      // Update fabrics with found images
+      const updatedFabrics = cachedFabrics.map(fabric => ({
+        ...fabric,
+        image: imageMap.get(fabric.code) || undefined
+      }))
+
+      const withImages = updatedFabrics.filter(f => f.image).length
+      console.log(`✅ Found images for ${withImages}/${updatedFabrics.length} fabrics`)
+
+      cachedFabrics = updatedFabrics
+      return updatedFabrics
+    }
+
   } catch (error) {
     console.error('Failed to load fabric data:', error)
     cachedFabrics = generateFallbackData()

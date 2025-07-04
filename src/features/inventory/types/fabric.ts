@@ -12,7 +12,7 @@ export interface Fabric extends BaseEntity {
   location: string
   type?: FabricType | undefined // Loại vải (có thể null trong data thật)
   note?: string | undefined
-  image?: string
+  image?: string | undefined
 
   // Fields mới từ Excel data
   condition?: string | undefined // Tình trạng (từ cột "Tình trạng")

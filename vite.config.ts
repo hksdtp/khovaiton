@@ -21,6 +21,7 @@ export default defineConfig({
     target: 'esnext',
     minify: 'esbuild',
     sourcemap: false,
+    outDir: 'dist',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -29,10 +30,12 @@ export default defineConfig({
           query: ['@tanstack/react-query'],
           forms: ['react-hook-form', 'zod', '@hookform/resolvers'],
           ui: ['lucide-react', 'clsx'],
+          utils: ['date-fns', 'zustand']
         },
       },
     },
-    chunkSizeWarningLimit: 200,
+    chunkSizeWarningLimit: 500,
+    assetsInlineLimit: 4096,
   },
   server: {
     port: 3000,

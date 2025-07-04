@@ -1,4 +1,4 @@
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
+import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, Upload, Cloud } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useUploadFabricImage, useFabricStats } from '../hooks/useFabrics'
@@ -9,6 +9,8 @@ import { FilterPanel } from './FilterPanel'
 import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
+import { ImageBatchImportModal } from './ImageBatchImportModal'
+import { GoogleDriveSyncModal } from './GoogleDriveSyncModal'
 
 export function InventoryPage() {
   const {
@@ -18,11 +20,15 @@ export function InventoryPage() {
     isFilterOpen,
     isUploadModalOpen,
     uploadingForId,
+    isBatchImportModalOpen,
+    isDriveSyncModalOpen,
     itemsPerPage,
     setSearchTerm,
     setSelectedFabric,
     setFilterOpen,
     setUploadModal,
+    setBatchImportModal,
+    setDriveSyncModal,
     setFilters,
     setCurrentPage,
     setItemsPerPage,
@@ -116,6 +122,22 @@ export function InventoryPage() {
 
               <div className="flex items-center gap-3">
                 <Button
+                  variant="outline"
+                  onClick={() => setDriveSyncModal(true)}
+                  size="sm"
+                >
+                  <Cloud className="w-4 h-4" />
+                  Sync Drive
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setBatchImportModal(true)}
+                  size="sm"
+                >
+                  <Upload className="w-4 h-4" />
+                  Import ảnh
+                </Button>
+                <Button
                   variant={isFilterOpen ? "primary" : "secondary"}
                   onClick={() => setFilterOpen(!isFilterOpen)}
                   size="sm"
@@ -188,6 +210,30 @@ export function InventoryPage() {
           onClose={() => setUploadModal(false)}
           onUpload={handleUploadImage}
           isUploading={uploadImageMutation.isPending}
+        />
+      )}
+
+      {isBatchImportModalOpen && (
+        <ImageBatchImportModal
+          isOpen={isBatchImportModalOpen}
+          onClose={() => setBatchImportModal(false)}
+          fabricCodes={fabricsData?.data.map(f => f.code) || []}
+          onImportComplete={() => {
+            // Refresh data after import
+            window.location.reload()
+          }}
+        />
+      )}
+
+      {isDriveSyncModalOpen && (
+        <GoogleDriveSyncModal
+          isOpen={isDriveSyncModalOpen}
+          onClose={() => setDriveSyncModal(false)}
+          onSyncComplete={(result) => {
+            console.log('Drive sync completed:', result)
+            // Refresh data after sync
+            window.location.reload()
+          }}
         />
       )}
     </MainLayout>

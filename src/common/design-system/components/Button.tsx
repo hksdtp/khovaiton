@@ -3,7 +3,7 @@ import { clsx } from 'clsx'
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'
   size?: 'sm' | 'md' | 'lg'
   isLoading?: boolean
   leftIcon?: React.ReactNode
@@ -55,6 +55,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'bg-red-600 text-white border-red-600',
         'hover:bg-red-700 hover:border-red-700',
         'focus:ring-red-500',
+        'shadow-sm hover:shadow-md',
+      ],
+      outline: [
+        'bg-transparent text-gray-700 border-gray-300',
+        'hover:bg-gray-50 hover:border-gray-400',
+        'focus:ring-gray-500',
         'shadow-sm hover:shadow-md',
       ],
     }

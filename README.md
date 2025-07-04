@@ -7,6 +7,8 @@ Hệ thống quản lý kho vải tồn hiện đại được xây dựng với
 - 🔍 **Tìm kiếm thông minh**: Tìm kiếm theo mã vải, tên sản phẩm, vị trí kho
 - 🏷️ **Phân loại chi tiết**: Lọc theo loại vải, vị trí, trạng thái
 - 📸 **Quản lý hình ảnh**: Upload và quản lý ảnh sản phẩm
+- ☁️ **Google Drive Sync**: Tự động sync ảnh từ Google Drive
+- 🔄 **Auto Image Mapping**: Map ảnh dựa trên mã vải tự động
 - 📊 **Thống kê realtime**: Theo dõi tồn kho, trạng thái vải
 - 🎨 **UI/UX hiện đại**: Glassmorphism design, animations mượt mà
 - 📱 **Responsive**: Tối ưu cho mọi thiết bị
@@ -89,6 +91,9 @@ npm install
 
 # Chạy development server
 npm run dev
+
+# Sync ảnh từ Google Drive (Ninh ơi!)
+./scripts/quick_sync.sh
 ```
 
 ### Scripts có sẵn
@@ -176,6 +181,56 @@ npm run preview
 - [ ] Multi-language support
 - [ ] Advanced analytics dashboard
 - [ ] Mobile app (React Native)
+
+## 🚀 **PRODUCTION DEPLOYMENT**
+
+### **🎯 Ready to Deploy!**
+```bash
+# Build for production
+npm run build:production
+
+# Deploy to Vercel
+vercel --prod
+```
+
+### **📋 Quick Deployment Guide**
+1. **Setup Google Drive API** (5 min) → [Guide](./docs/GOOGLE_DRIVE_API_SETUP.md)
+2. **Deploy to Vercel** (10 min) → [Guide](./docs/DEPLOYMENT_GUIDE.md)
+3. **Configure Domain** (15 min) → [Guide](./docs/DOMAIN_SETUP.md)
+4. **Go Live!** → [Final Steps](./docs/FINAL_DEPLOYMENT_STEPS.md)
+
+**Total time: ~45 minutes to go live! 🎉**
+
+## ☁️ Google Drive Integration
+
+### **Production (Online Sync)**
+- ✅ **Auto-sync on startup**
+- ✅ **Periodic sync** (30 minutes)
+- ✅ **Real-time image loading**
+- ✅ **Error handling & monitoring**
+
+### **Development (Local Sync)**
+```bash
+# Sync tất cả ảnh từ Google Drive
+./scripts/quick_sync.sh
+
+# Test Drive access
+python3 scripts/test_drive_access.py
+```
+
+### **Google Drive Configuration**
+- **Folder**: https://drive.google.com/drive/folders/1YiRnl2CfccL6rH98S8UlWexgckV_dnbU
+- **File naming**: Exact fabric code match
+- **Formats**: .jpg, .png, .webp
+- **API**: Google Drive API v3
+
+### **Documentation**
+- 🚀 [Final Deployment Steps](./docs/FINAL_DEPLOYMENT_STEPS.md)
+- 🔑 [Google Drive API Setup](./docs/GOOGLE_DRIVE_API_SETUP.md)
+- 🌐 [Deployment Guide](./docs/DEPLOYMENT_GUIDE.md)
+- 🌍 [Domain Setup](./docs/DOMAIN_SETUP.md)
+- 📘 [Local Image Import](./HUONG_DAN_IMPORT_ANH.md)
+- ☁️ [Google Drive Guide](./HUONG_DAN_GOOGLE_DRIVE.md)
 
 ## 🤝 Contributing
 
