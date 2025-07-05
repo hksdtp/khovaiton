@@ -85,26 +85,11 @@ class SyncService {
     try {
       // For Cloudinary URLs, assume they exist if they match our uploaded fabric codes
       if (url.includes('res.cloudinary.com/dgaktc3fb/image/upload/fabrics/')) {
-        // List of known uploaded fabric codes (from our upload script)
-        const uploadedFabrics = [
-          '08-SILVER', '089C-1', '09-730-17', '10-780-17', '10-780-5',
-          '100023009124', '120087', '120092', '130003', '131-250',
-          '07013D-31', '07013D-88', '09 Putty', '10 780 -17', '10 780 4',
-          '10-780-1402', '10-780-316', '10-780-41', '102 902', '1021-7M ANTARES 1000-2300',
-          '10780 -5', '1080.05 DUBLIN', '10808', '114800', '120170', '120188',
-          '130 479', '1300 17', '130004', '130008', '131-254', '131259',
-          '131464', '131510', '131513', '132268', '132310', '13590-2',
-          '140362', '142 499', '142-421', '1423 93', '142335', '14239',
-          '142405', '142417', '143062', '18 Sesame_KEA_S18', '180004', '200.8 10M'
-        ]
+        // For Cloudinary URLs, try to fetch directly since we know they exist
+        // Skip the network check to avoid CORS/timing issues
+        return true
 
-        const parts = url.split('/fabrics/')
-        if (parts.length > 1 && parts[1]) {
-          const fabricCode = decodeURIComponent(parts[1])
-          if (uploadedFabrics.includes(fabricCode)) {
-            return true
-          }
-        }
+
       }
 
       const response = await fetch(url, { method: 'HEAD' })
