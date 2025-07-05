@@ -234,7 +234,8 @@ def analyze_anhhung_excel():
                 "price": 0,
                 "currency": "VND",
                 "availability": "in_stock" if quantity > 0 else "out_of_stock",
-                "stock": quantity,
+                "quantity": quantity,  # Use 'quantity' field for web app compatibility
+                "stock": quantity,     # Keep 'stock' for backward compatibility
                 "unit": unit,
                 "supplier": "Kho nội bộ",
                 "location": location,
