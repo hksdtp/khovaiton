@@ -1,14 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { cloudinaryService } from '../services/cloudinaryService'
 
 // Mock environment variables for test
 vi.mock('../services/cloudinaryService', () => {
-  const actual = vi.importActual('../services/cloudinaryService')
   return {
-    ...actual,
     cloudinaryService: {
-      ...actual.cloudinaryService,
       cloudName: 'dgaktc3fb',
       isConfigured: () => true,
       getFabricImageUrl: (fabricCode: string, options?: any) => {
@@ -36,7 +33,7 @@ vi.mock('../services/cloudinaryService', () => {
         const transformString = transformations.length > 0 ? transformations.join(',') + '/' : ''
         return `${baseUrl}/${transformString}${publicId}`
       },
-      checkFabricImageExists: async (fabricCode: string) => {
+      checkImageExists: async (_url: string) => {
         // Mock implementation
         return true
       }
@@ -139,7 +136,8 @@ describe('Cloudinary Image Integration', () => {
       status: 200
     })
     
-    const exists = await cloudinaryService.checkFabricImageExists(fabricCode)
+    const url = cloudinaryService.getFabricImageUrl(fabricCode)
+    const exists = await cloudinaryService.checkImageExists(url)
     
     expect(exists).toBe(true)
     expect(fetch).toHaveBeenCalledWith(
@@ -157,7 +155,8 @@ describe('Cloudinary Image Integration', () => {
       status: 404
     })
     
-    const exists = await cloudinaryService.checkFabricImageExists(fabricCode)
+    const url = cloudinaryService.getFabricImageUrl(fabricCode)
+    const exists = await cloudinaryService.checkImageExists(url)
     
     expect(exists).toBe(false)
   })

@@ -44,7 +44,7 @@ class SyncService {
       }
 
       // Check if image exists in Cloudinary
-      const cloudinaryUrl = cloudinaryService.getOptimizedImageUrl(fabricCode)
+      const cloudinaryUrl = cloudinaryService.getFabricImageUrl(fabricCode)
       
       // Test if Cloudinary image exists
       const exists = await this.checkImageExists(cloudinaryUrl)
@@ -103,7 +103,7 @@ class SyncService {
 
     for (const fabricCode of fabricCodes) {
       try {
-        const cloudinaryUrl = cloudinaryService.getOptimizedImageUrl(fabricCode)
+        const cloudinaryUrl = cloudinaryService.getFabricImageUrl(fabricCode)
         const exists = await this.checkImageExists(cloudinaryUrl)
 
         if (exists) {

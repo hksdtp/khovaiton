@@ -62,15 +62,15 @@ export function BulkImageUploader() {
 
       console.log(`🚀 Uploading ${file.name} as ${fabricCode}`)
 
-      const result = await cloudinaryService.uploadImage(file, {
+      const uploadResult = await cloudinaryService.uploadImage(file, {
         fabricCode,
         tags: ['bulk_upload', 'local_images']
       })
 
       // Update status to success
-      setUploadResults(prev => prev.map(result => 
-        result.fabricCode === fabricCode 
-          ? { ...result, status: 'success', url: result.secure_url }
+      setUploadResults(prev => prev.map(result =>
+        result.fabricCode === fabricCode
+          ? { ...result, status: 'success', url: uploadResult.secure_url }
           : result
       ))
 

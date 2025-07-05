@@ -3,7 +3,7 @@
  * Ninh ơi, tool này quản lý đồng bộ giữa Cloudinary và database
  */
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { RefreshCw, Cloud, HardDrive, AlertTriangle, CheckCircle, BarChart3 } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { syncService, SyncStats } from '@/services/syncService'
@@ -19,12 +19,15 @@ export function SyncManager() {
     missing: number
   } | null>(null)
 
-  const { data: fabricsData } = useFabrics({
-    page: 1,
-    limit: 1000, // Get all fabrics for sync
-    search: '',
-    filters: {}
-  })
+  const { data: fabricsData } = useFabrics(
+    {
+      search: ''
+    },
+    {
+      page: 1,
+      limit: 1000 // Get all fabrics for sync
+    }
+  )
 
   const fabricCodes = fabricsData?.data.map(f => f.code) || []
 

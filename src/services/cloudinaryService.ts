@@ -3,22 +3,19 @@
  * Ninh ơi, service này handle upload và fetch ảnh từ Cloudinary
  */
 
-import { Cloudinary } from '@cloudinary/url-gen'
-import { auto } from '@cloudinary/url-gen/actions/resize'
-import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity'
-import { format, quality } from '@cloudinary/url-gen/actions/delivery'
+// import { Cloudinary } from '@cloudinary/url-gen'
 
 // Environment variables
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || ''
 const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY || ''
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'fabric_images'
 
-// Initialize Cloudinary instance
-const cld = new Cloudinary({
-  cloud: {
-    cloudName: CLOUD_NAME
-  }
-})
+// Initialize Cloudinary instance (for future use)
+// const cld = new Cloudinary({
+//   cloud: {
+//     cloudName: CLOUD_NAME
+//   }
+// })
 
 interface CloudinaryUploadResult {
   public_id: string
@@ -131,7 +128,7 @@ export class CloudinaryService {
   getFabricImageUrl(fabricCode: string, options?: {
     width?: number
     height?: number
-    quality?: number
+    quality?: number | 'auto'
     format?: 'auto' | 'webp' | 'jpg' | 'png'
   }): string {
     if (!this.isConfigured()) {
