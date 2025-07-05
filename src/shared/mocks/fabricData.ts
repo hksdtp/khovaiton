@@ -203,6 +203,20 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     console.log(`   • Static: ${staticCount} images`)
     console.log(`   • Total: ${withImages}/${updatedFabrics.length} fabrics with images`)
 
+    // Debug: Show some Cloudinary URLs that were found
+    if (cloudinaryImageMap.size > 0) {
+      console.log(`🔍 Sample Cloudinary URLs found:`)
+      let count = 0
+      for (const [code, url] of cloudinaryImageMap) {
+        if (count < 3) {
+          console.log(`   • ${code}: ${url}`)
+          count++
+        }
+      }
+    } else {
+      console.log(`❌ No Cloudinary URLs were added to cloudinaryImageMap`)
+    }
+
     cachedFabrics = updatedFabrics
     return updatedFabrics
 
