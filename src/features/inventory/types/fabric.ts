@@ -67,6 +67,7 @@ export interface FabricFilters {
   status?: FabricStatus | 'all'
   minQuantity?: number
   maxQuantity?: number
+  imageStatus?: 'all' | 'with_images' | 'without_images'
 }
 
 export interface FabricSortOptions {

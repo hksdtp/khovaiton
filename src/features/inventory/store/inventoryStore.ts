@@ -10,6 +10,7 @@ const updateURLParams = (filters: FabricFilters, page: number, itemsPerPage: num
   if (filters.type && filters.type !== 'all') params.set('type', filters.type)
   if (filters.location && filters.location !== 'all') params.set('location', filters.location)
   if (filters.status && filters.status !== 'all') params.set('status', filters.status)
+  if (filters.imageStatus && filters.imageStatus !== 'all') params.set('imageStatus', filters.imageStatus)
   if (filters.minQuantity) params.set('minQuantity', filters.minQuantity.toString())
   if (filters.maxQuantity) params.set('maxQuantity', filters.maxQuantity.toString())
   if (page > 1) params.set('page', page.toString())
@@ -27,6 +28,7 @@ const getFiltersFromURL = (): { filters: FabricFilters; page: number; itemsPerPa
     type: (params.get('type') as any) || 'all' as const,
     location: params.get('location') || 'all' as const,
     status: (params.get('status') as any) || 'all' as const,
+    imageStatus: (params.get('imageStatus') as any) || 'all' as const,
   }
 
   const minQuantity = params.get('minQuantity')

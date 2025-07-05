@@ -9,6 +9,7 @@ import { useInventoryStore, useInventorySelectors } from '../store/inventoryStor
 import { FabricGrid } from './FabricGrid'
 import { SearchBar } from './SearchBar'
 import { FilterPanel } from './FilterPanel'
+import { ImageStatusFilter } from './ImageStatusFilter'
 import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
@@ -193,6 +194,9 @@ export function InventoryPage() {
 
       {/* Main Content */}
       <div className="relative z-30 max-w-7xl mx-auto px-6 py-8">
+        {/* Image Status Filter */}
+        <ImageStatusFilter className="mb-6" />
+
         <FabricGrid
           fabrics={fabricsData?.data || []}
           onSelectFabric={setSelectedFabric}

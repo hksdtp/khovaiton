@@ -97,6 +97,15 @@ export const fabricApi = {
       filteredFabrics = filteredFabrics.filter(fabric => fabric.quantity <= filters.maxQuantity!)
     }
 
+    // Apply image status filter
+    if (filters.imageStatus && filters.imageStatus !== 'all') {
+      if (filters.imageStatus === 'with_images') {
+        filteredFabrics = filteredFabrics.filter(fabric => fabric.image && fabric.image.trim() !== '')
+      } else if (filters.imageStatus === 'without_images') {
+        filteredFabrics = filteredFabrics.filter(fabric => !fabric.image || fabric.image.trim() === '')
+      }
+    }
+
     // Apply pagination
     const startIndex = (pagination.page - 1) * pagination.limit
     const endIndex = startIndex + pagination.limit
