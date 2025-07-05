@@ -165,6 +165,7 @@ export async function getMockFabrics(): Promise<Fabric[]> {
 
     // Try Cloudinary first if configured
     let cloudinaryImageMap = new Map<string, string>()
+    console.log(`🔍 Cloudinary configured: ${cloudinaryService.isConfigured()}`)
     if (cloudinaryService.isConfigured()) {
       console.log('☁️ Checking Cloudinary for images...')
 
@@ -185,6 +186,8 @@ export async function getMockFabrics(): Promise<Fabric[]> {
       })
 
       console.log(`☁️ Found ${cloudinaryImageMap.size} images in Cloudinary (assumed approach)`)
+    } else {
+      console.log(`❌ Cloudinary not configured - skipping Cloudinary images`)
     }
 
     // Fallback to static images for codes not in Cloudinary
