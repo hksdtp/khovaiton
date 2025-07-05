@@ -136,9 +136,14 @@ export class CloudinaryService {
     }
 
     try {
-      // Simple URL generation without complex transformations
+      // Generate URL with proper format and auto-fetch version
       const baseUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`
-      const publicId = `fabrics/${fabricCode}`
+
+      // Add file extension if not present
+      let publicId = `fabrics/${fabricCode}`
+      if (!fabricCode.includes('.')) {
+        publicId += '.jpg' // Default to .jpg for uploaded images
+      }
 
       // Basic optimizations only
       const transformations = []
@@ -160,6 +165,8 @@ export class CloudinaryService {
       }
 
       const transformString = transformations.length > 0 ? transformations.join(',') + '/' : ''
+
+      // Return URL with proper format - Cloudinary handles version automatically
       return `${baseUrl}/${transformString}${publicId}`
 
     } catch (error) {
@@ -183,6 +190,7 @@ export class CloudinaryService {
       // For production: assume Cloudinary images exist to avoid CORS/network issues
       // This matches the fix in syncService.checkImageExists()
       if (url.includes('res.cloudinary.com/dgaktc3fb/image/upload/fabrics/')) {
+        console.log(`☁️ Cloudinary URL generated: ${url}`)
         console.log(`☁️ Assuming Cloudinary image exists for ${fabricCode}`)
         return true
       }
