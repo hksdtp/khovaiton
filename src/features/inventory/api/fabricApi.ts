@@ -11,6 +11,47 @@ import { mockFabrics, getMockFabrics } from '@/shared/mocks/fabricData'
 // Cache for real fabric data
 let realFabrics: Fabric[] = mockFabrics
 
+// Real image mapping data - loaded once and cached
+let realImageMapping: Record<string, boolean> | null = null
+
+/**
+ * Load real image mapping from JSON file
+ */
+async function loadRealImageMapping(): Promise<Record<string, boolean>> {
+  if (realImageMapping) {
+    return realImageMapping
+  }
+
+  try {
+    const response = await fetch('/real-image-mapping.json')
+    if (response.ok) {
+      const data = await response.json()
+      realImageMapping = data.mapping
+      console.log(`✅ Loaded real image mapping: ${data.metadata.withImagesCount}/${data.metadata.totalFabrics} fabrics have images (${data.metadata.coverage.toFixed(1)}%)`)
+      return realImageMapping!
+    }
+  } catch (error) {
+    console.warn('Could not load real image mapping:', error)
+  }
+
+  // Fallback to empty mapping
+  realImageMapping = {}
+  return realImageMapping!
+}
+
+/**
+ * Check if a fabric code has a real image (not just a generated URL)
+ * Ninh ơi, function này check ảnh thực sự tồn tại dựa trên mapping file
+ */
+function hasRealImage(fabricCode: string): boolean {
+  if (!realImageMapping) {
+    // If mapping not loaded yet, return false (will be loaded async)
+    return false
+  }
+
+  return realImageMapping[fabricCode] === true
+}
+
 /**
  * Mock API delay for realistic behavior
  */
@@ -51,6 +92,9 @@ export const fabricApi = {
     if (shouldSimulateError()) {
       throw new Error('Failed to fetch fabrics')
     }
+
+    // Load real image mapping first
+    await loadRealImageMapping()
 
     // Ensure we have the latest real data
     if (realFabrics.length <= 10) {
@@ -97,12 +141,18 @@ export const fabricApi = {
       filteredFabrics = filteredFabrics.filter(fabric => fabric.quantity <= filters.maxQuantity!)
     }
 
-    // Apply image status filter
+    // Apply image status filter with real image checking
     if (filters.imageStatus && filters.imageStatus !== 'all') {
       if (filters.imageStatus === 'with_images') {
-        filteredFabrics = filteredFabrics.filter(fabric => fabric.image && fabric.image.trim() !== '')
+        filteredFabrics = filteredFabrics.filter(fabric => {
+          // Check if fabric actually has an image (not just a generated URL)
+          return hasRealImage(fabric.code)
+        })
       } else if (filters.imageStatus === 'without_images') {
-        filteredFabrics = filteredFabrics.filter(fabric => !fabric.image || fabric.image.trim() === '')
+        filteredFabrics = filteredFabrics.filter(fabric => {
+          // Check if fabric doesn't have a real image
+          return !hasRealImage(fabric.code)
+        })
       }
     }
 
