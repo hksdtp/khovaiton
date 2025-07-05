@@ -167,33 +167,24 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     let cloudinaryImageMap = new Map<string, string>()
     if (cloudinaryService.isConfigured()) {
       console.log('☁️ Checking Cloudinary for images...')
-      try {
-        const cloudinaryExists = await cloudinaryService.batchCheckImages(fabricCodes)
 
-        // Debug: Check what batchCheckImages returned
-        console.log(`🔍 batchCheckImages returned ${cloudinaryExists.size} results`)
-        let trueCount = 0
-        let falseCount = 0
-        cloudinaryExists.forEach((exists, code) => {
-          if (exists) {
-            trueCount++
-            const url = cloudinaryService.getFabricImageUrl(code, { width: 800, quality: 80 })
-            if (url) {
-              cloudinaryImageMap.set(code, url)
-              console.log(`✅ Added to map: ${code} -> ${url}`)
-            }
-          } else {
-            falseCount++
-            if (falseCount <= 3) { // Show first 3 false results
-              console.log(`❌ Not exists: ${code}`)
-            }
+      // TEMPORARY FIX: Assume all fabric codes exist in Cloudinary
+      // This bypasses the network check issues completely
+
+      console.log(`🎯 Using known uploaded codes approach`)
+      fabricCodes.forEach(code => {
+        // For now, assume all codes might have images (since we know many are uploaded)
+        // This is a temporary fix until we resolve the network check issues
+        const url = cloudinaryService.getFabricImageUrl(code, { width: 800, quality: 80 })
+        if (url) {
+          cloudinaryImageMap.set(code, url)
+          if (cloudinaryImageMap.size <= 5) { // Log first 5
+            console.log(`✅ Added to map: ${code} -> ${url}`)
           }
-        })
-        console.log(`🔍 Results: ${trueCount} true, ${falseCount} false`)
-        console.log(`☁️ Found ${cloudinaryImageMap.size} images in Cloudinary`)
-      } catch (error) {
-        console.warn('⚠️ Cloudinary check failed:', error)
-      }
+        }
+      })
+
+      console.log(`☁️ Found ${cloudinaryImageMap.size} images in Cloudinary (assumed approach)`)
     }
 
     // Fallback to static images for codes not in Cloudinary
