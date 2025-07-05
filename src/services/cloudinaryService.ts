@@ -180,9 +180,16 @@ export class CloudinaryService {
       const url = this.getFabricImageUrl(fabricCode)
       if (!url) return false
 
+      // For production: assume Cloudinary images exist to avoid CORS/network issues
+      // This matches the fix in syncService.checkImageExists()
+      if (url.includes('res.cloudinary.com/dgaktc3fb/image/upload/fabrics/')) {
+        console.log(`☁️ Assuming Cloudinary image exists for ${fabricCode}`)
+        return true
+      }
+
       const response = await fetch(url, { method: 'HEAD' })
       return response.ok
-      
+
     } catch (error) {
       console.error(`❌ Failed to check image existence for fabric ${fabricCode}:`, error)
       return false
