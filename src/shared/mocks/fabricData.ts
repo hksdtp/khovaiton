@@ -166,6 +166,7 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     // Try Cloudinary first if configured
     let cloudinaryImageMap = new Map<string, string>()
     console.log(`🔍 Cloudinary configured: ${cloudinaryService.isConfigured()}`)
+    console.log(`🔍 Cloudinary config:`, cloudinaryService.getConfig())
     if (cloudinaryService.isConfigured()) {
       console.log('☁️ Checking Cloudinary for images...')
 
