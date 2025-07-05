@@ -1,7 +1,10 @@
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
+import { useState } from 'react'
+import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, Upload, RefreshCw } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
-import { useFabrics, useUploadFabricImage, useFabricStats } from '../hooks/useFabrics'
+import { useFabrics, useFabricStats } from '../hooks/useFabrics'
+import { cloudinaryService } from '@/services/cloudinaryService'
+import { syncService } from '@/services/syncService'
 import { useInventoryStore, useInventorySelectors } from '../store/inventoryStore'
 import { FabricGrid } from './FabricGrid'
 import { SearchBar } from './SearchBar'
@@ -11,6 +14,8 @@ import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
 
 export function InventoryPage() {
+  const [isUploading, setIsUploading] = useState(false)
+
   const {
     filters,
     searchTerm,
@@ -37,18 +42,40 @@ export function InventoryPage() {
   )
 
   const { data: statsData } = useFabricStats()
-  const uploadImageMutation = useUploadFabricImage()
 
-  const handleUploadImage = (file: File) => {
-    if (uploadingForId) {
-      uploadImageMutation.mutate(
-        { fabricId: uploadingForId, file },
-        {
-          onSuccess: () => {
-            setUploadModal(false)
-          },
-        }
-      )
+  const handleUploadImage = async (file: File) => {
+    if (!uploadingForId) return
+
+    setIsUploading(true)
+
+    try {
+      console.log(`🚀 Starting upload for fabric ID: ${uploadingForId}`)
+
+      // Get fabric code from the fabric data
+      const fabric = fabricsData?.data.find(f => f.id === uploadingForId)
+      if (!fabric) {
+        throw new Error('Fabric not found')
+      }
+
+      const result = await cloudinaryService.uploadImage(file, {
+        fabricCode: fabric.code,
+        tags: ['manual_upload', 'inventory']
+      })
+
+      console.log(`✅ Upload successful for ${fabric.code}:`, result)
+
+      // Update sync service cache immediately
+      await syncService.updateFabricImage(fabric.code, result.secure_url)
+
+      setUploadModal(false)
+
+      // TODO: Update fabric image in database if needed
+
+    } catch (error) {
+      console.error(`❌ Upload failed:`, error)
+      // TODO: Show error toast/notification
+    } finally {
+      setIsUploading(false)
     }
   }
 
@@ -123,6 +150,22 @@ export function InventoryPage() {
                   <Filter className="w-4 h-4" />
                   Lọc
                 </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => window.open('/tools/bulk-upload', '_blank')}
+                >
+                  <Upload className="w-4 h-4" />
+                  Bulk Upload
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => window.open('/tools/sync-manager', '_blank')}
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Sync Manager
+                </Button>
                 <Button variant="ghost" size="sm">
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
@@ -187,7 +230,7 @@ export function InventoryPage() {
           isOpen={isUploadModalOpen}
           onClose={() => setUploadModal(false)}
           onUpload={handleUploadImage}
-          isUploading={uploadImageMutation.isPending}
+          isUploading={isUploading}
         />
       )}
 

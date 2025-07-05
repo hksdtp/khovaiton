@@ -83,7 +83,7 @@ export class CloudinaryService {
     formData.append('cloud_name', CLOUD_NAME)
     
     // Fabric-specific parameters
-    const publicId = `fabrics/${options.fabricCode}`
+    const publicId = options.fabricCode
     formData.append('public_id', publicId)
     formData.append('folder', options.folder || 'fabrics')
     
@@ -139,34 +139,32 @@ export class CloudinaryService {
     }
 
     try {
+      // Simple URL generation without complex transformations
+      const baseUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`
       const publicId = `fabrics/${fabricCode}`
-      
-      let image = cld.image(publicId)
-        .delivery(format(options?.format || 'auto'))
-        .delivery(quality(options?.quality || 'auto'))
 
-      // Apply responsive sizing if specified
-      if (options?.width || options?.height) {
-        let resizeTransform = auto()
-          .width(options.width || 800)
-          .gravity(autoGravity())
+      // Basic optimizations only
+      const transformations = []
 
-        if (options.height) {
-          resizeTransform = resizeTransform.height(options.height)
-        }
-
-        image = image.resize(resizeTransform)
-      } else {
-        // Default responsive sizing
-        image = image.resize(
-          auto()
-            .width(800)
-            .gravity(autoGravity())
-        )
+      if (options?.format && options.format !== 'auto') {
+        transformations.push(`f_${options.format}`)
       }
 
-      return image.toURL()
-      
+      if (options?.quality && options.quality !== 'auto') {
+        transformations.push(`q_${options.quality}`)
+      }
+
+      if (options?.width) {
+        transformations.push(`w_${options.width}`)
+      }
+
+      if (options?.height) {
+        transformations.push(`h_${options.height}`)
+      }
+
+      const transformString = transformations.length > 0 ? transformations.join(',') + '/' : ''
+      return `${baseUrl}/${transformString}${publicId}`
+
     } catch (error) {
       console.error(`❌ Failed to generate URL for fabric ${fabricCode}:`, error)
       return ''

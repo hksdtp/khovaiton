@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "code": "07 013D -26",
+    "name": "Test Fabric 07 013D -26",
+    "image": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/07%20013D%20-26",
+    "status": "available",
+    "quantity": 23,
+    "unit": "mét",
+    "location": "Kho A",
+    "supplier": "Test Supplier",
+    "notes": "Auto-generated test data for 07 013D -26"
+  },
+  {
+    "id": 2,
+    "code": "07013D -31",
+    "name": "Test Fabric 07013D -31",
+    "image": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/07013D%20-31",
+    "status": "available",
+    "quantity": 34,
+    "unit": "mét",
+    "location": "Kho A",
+    "supplier": "Test Supplier",
+    "notes": "Auto-generated test data for 07013D -31"
+  },
+  {
+    "id": 3,
+    "code": "71022-10",
+    "name": "Test Fabric 71022-10",
+    "image": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/71022-10",
+    "status": "available",
+    "quantity": 71,
+    "unit": "mét",
+    "location": "Kho A",
+    "supplier": "Test Supplier",
+    "notes": "Auto-generated test data for 71022-10"
+  },
+  {
+    "id": 4,
+    "code": "VANILLA 01",
+    "name": "Test Fabric VANILLA 01",
+    "image": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VANILLA%2001",
+    "status": "available",
+    "quantity": 50,
+    "unit": "mét",
+    "location": "Kho A",
+    "supplier": "Test Supplier",
+    "notes": "Auto-generated test data for VANILLA 01"
+  },
+  {
+    "id": 5,
+    "code": "VANILLA 02",
+    "name": "Test Fabric VANILLA 02",
+    "image": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VANILLA%2002",
+    "status": "available",
+    "quantity": 77,
+    "unit": "mét",
+    "location": "Kho A",
+    "supplier": "Test Supplier",
+    "notes": "Auto-generated test data for VANILLA 02"
+  }
+]

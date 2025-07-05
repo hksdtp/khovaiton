@@ -3,6 +3,8 @@ import { createBrowserRouter } from 'react-router-dom'
 
 // Lazy load components for code splitting
 const InventoryPage = lazy(() => import('@/features/inventory'))
+const BulkImageUploader = lazy(() => import('@/tools/BulkImageUploader').then(module => ({ default: module.BulkImageUploader })))
+const SyncManager = lazy(() => import('@/tools/SyncManager').then(module => ({ default: module.SyncManager })))
 
 /**
  * Application routes configuration
@@ -16,6 +18,14 @@ export const router = createBrowserRouter([
   {
     path: '/inventory',
     element: <InventoryPage />,
+  },
+  {
+    path: '/tools/bulk-upload',
+    element: <BulkImageUploader />,
+  },
+  {
+    path: '/tools/sync-manager',
+    element: <SyncManager />,
   },
   // Add more routes here as features are added
   {

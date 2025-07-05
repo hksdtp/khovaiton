@@ -1,7 +1,10 @@
 /**
  * Image Service - Tự động map ảnh vải dựa trên mã hàng
  * Ninh ơi, service này sẽ tự động tìm và load ảnh cho từng loại vải
+ * Updated: Ưu tiên Cloudinary, fallback static images
  */
+
+import { syncService } from '@/services/syncService'
 
 export interface ImageMapping {
   fabricCode: string
@@ -62,12 +65,20 @@ async function checkImageExists(imagePath: string): Promise<boolean> {
 /**
  * Find image for fabric code
  * Tự động tìm ảnh dựa trên mã vải
+ * Priority: Cloudinary > Static > null
  */
 export async function findFabricImage(fabricCode: string): Promise<string | null> {
   if (!fabricCode) return null
-  
+
+  // Use sync service for Cloudinary-first approach
+  const imageUrl = await syncService.getImageUrl(fabricCode)
+  if (imageUrl) {
+    return imageUrl
+  }
+
+  // Fallback to original logic for static images
   const possiblePaths = generateImagePaths(fabricCode)
-  
+
   // Check each possible path
   for (const path of possiblePaths) {
     const exists = await checkImageExists(path)
@@ -75,37 +86,39 @@ export async function findFabricImage(fabricCode: string): Promise<string | null
       return path
     }
   }
-  
+
   return null
 }
 
 /**
  * Batch find images for multiple fabric codes
  * Tối ưu cho việc load nhiều ảnh cùng lúc
+ * Uses sync service for Cloudinary-first approach
  */
 export async function batchFindFabricImages(
   fabricCodes: string[]
 ): Promise<Map<string, string | null>> {
   const results = new Map<string, string | null>()
-  
+
   // Process in batches to avoid overwhelming the server
   const BATCH_SIZE = 10
-  
+
   for (let i = 0; i < fabricCodes.length; i += BATCH_SIZE) {
     const batch = fabricCodes.slice(i, i + BATCH_SIZE)
-    
+
     const batchPromises = batch.map(async (code) => {
-      const imagePath = await findFabricImage(code)
+      // Use sync service for Cloudinary-first approach
+      const imagePath = await syncService.getImageUrl(code)
       return { code, imagePath }
     })
-    
+
     const batchResults = await Promise.all(batchPromises)
-    
+
     batchResults.forEach(({ code, imagePath }) => {
       results.set(code, imagePath)
     })
   }
-  
+
   return results
 }
 
