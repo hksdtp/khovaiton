@@ -8,17 +8,59 @@ import { cloudinaryService } from '../../services/cloudinaryService'
  */
 
 /**
- * Parse real CSV data from Excel file into Fabric objects
+ * Load fabric inventory data from anhhung.xlsx (331 codes - VẢI TỒN KHO)
+ * Ninh ơi, đã switch sang dữ liệu vải tồn kho thực tế
  */
 async function loadRealFabricData(): Promise<Fabric[]> {
   try {
-    // Read the CSV file we created from Excel
+    // Load from fabric inventory data (331 codes - ONLY fabrics in stock)
+    const response = await fetch('/anhhung-fabrics.json')
+    if (!response.ok) {
+      throw new Error(`Failed to load fabric inventory data: ${response.status}`)
+    }
+
+    const data = await response.json()
+    console.log(`✅ Loaded ${data.metadata.totalItems} fabric codes from inventory (VẢI TỒN KHO)`)
+    console.log(`📦 Total stock: ${data.metadata.totalStock} units`)
+    console.log(`📊 Average stock: ${data.metadata.averageStock} units per fabric`)
+    console.log(`📋 Units: ${data.metadata.units.join(', ')}`)
+
+    return data.fabrics
+  } catch (error) {
+    console.warn('Could not load fabric inventory data, trying fallback:', error)
+    return loadIntegratedFallback()
+  }
+}
+
+/**
+ * Fallback to integrated Excel data if inventory data fails
+ */
+async function loadIntegratedFallback(): Promise<Fabric[]> {
+  try {
+    const response = await fetch('/fabrics_data.json')
+    if (response.ok) {
+      const data = await response.json()
+      console.warn('⚠️ Using integrated Excel fallback data (608 codes)')
+      return data.fabrics
+    }
+    throw new Error('Integrated data not available')
+  } catch (error) {
+    console.warn('Integrated fallback failed, trying CSV:', error)
+    return loadCSVFallback()
+  }
+}
+
+/**
+ * Fallback to CSV data if all else fails
+ */
+async function loadCSVFallback(): Promise<Fabric[]> {
+  try {
     const response = await fetch('/fabric_inventory_updated.csv')
     const csvText = await response.text()
-
+    console.warn('⚠️ Using CSV fallback data (old system)')
     return parseCSVData(csvText)
   } catch (error) {
-    console.warn('Could not load real fabric data, using fallback data:', error)
+    console.error('All data sources failed, using minimal fallback:', error)
     return generateFallbackData()
   }
 }
@@ -159,34 +201,29 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     // Load fabric data first
     cachedFabrics = await loadRealFabricData()
 
-    // MULTI-SOURCE IMAGE LOADING: Cloudinary → Static → Placeholder
-    console.log('🖼️ Loading images from multiple sources...')
+    // INVENTORY-FOCUSED IMAGE LOADING: Prioritize fabrics with high stock
+    console.log('🖼️ Loading images for fabric inventory (VẢI TỒN KHO)...')
     const fabricCodes = cachedFabrics.map(f => f.code)
 
-    // Try Cloudinary first if configured
+    // Load image mapping data
     let cloudinaryImageMap = new Map<string, string>()
-    console.log(`🔍 Cloudinary configured: ${cloudinaryService.isConfigured()}`)
-    console.log(`🔍 Cloudinary config:`, cloudinaryService.getConfig())
+
+    // Use Cloudinary with priority for high-quantity fabrics
     if (cloudinaryService.isConfigured()) {
-      console.log('☁️ Checking Cloudinary for images...')
+      console.log('☁️ Using Cloudinary for fabric inventory...')
 
-      // TEMPORARY FIX: Assume all fabric codes exist in Cloudinary
-      // This bypasses the network check issues completely
+      // Sort fabrics by quantity (high quantity = higher priority for images)
+      const sortedFabrics = [...cachedFabrics].sort((a, b) => (b.quantity || 0) - (a.quantity || 0))
 
-      console.log(`🎯 Using known uploaded codes approach`)
-      fabricCodes.forEach(code => {
-        // For now, assume all codes might have images (since we know many are uploaded)
-        // This is a temporary fix until we resolve the network check issues
-        const url = cloudinaryService.getFabricImageUrl(code, { width: 800, quality: 80 })
+      sortedFabrics.forEach(fabric => {
+        // Generate Cloudinary URLs for all fabrics (will fallback if not exist)
+        const url = cloudinaryService.getFabricImageUrl(fabric.code, { width: 800, quality: 80 })
         if (url) {
-          cloudinaryImageMap.set(code, url)
-          if (cloudinaryImageMap.size <= 5) { // Log first 5
-            console.log(`✅ Added to map: ${code} -> ${url}`)
-          }
+          cloudinaryImageMap.set(fabric.code, url)
         }
       })
 
-      console.log(`☁️ Found ${cloudinaryImageMap.size} images in Cloudinary (assumed approach)`)
+      console.log(`☁️ Generated ${cloudinaryImageMap.size} Cloudinary URLs for inventory fabrics`)
     } else {
       console.log(`❌ Cloudinary not configured - skipping Cloudinary images`)
     }
@@ -196,20 +233,41 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     const staticImageMap = await batchFindFabricImages(remainingCodes)
     console.log(`🖼️ Found ${staticImageMap.size} static images`)
 
-    // Update fabrics with found images (Cloudinary priority)
-    const updatedFabrics = cachedFabrics.map(fabric => ({
-      ...fabric,
-      image: cloudinaryImageMap.get(fabric.code) || staticImageMap.get(fabric.code) || undefined
-    }))
+    // Update fabrics with found images (Cloudinary priority, then static, then integrated data)
+    const updatedFabrics = cachedFabrics.map(fabric => {
+      // Priority: Cloudinary → Static → Integrated data → None
+      const cloudinaryUrl = cloudinaryImageMap.get(fabric.code)
+      const staticUrl = staticImageMap.get(fabric.code)
+      const integratedUrl = fabric.image // From integrated data
+
+      return {
+        ...fabric,
+        image: cloudinaryUrl || staticUrl || integratedUrl || undefined
+      }
+    })
 
     const withImages = updatedFabrics.filter(f => f.image).length
     const cloudinaryCount = cloudinaryImageMap.size
     const staticCount = staticImageMap.size
+    const coverage = ((withImages / updatedFabrics.length) * 100).toFixed(1)
 
-    console.log(`✅ Image loading complete:`)
-    console.log(`   • Cloudinary: ${cloudinaryCount} images`)
-    console.log(`   • Static: ${staticCount} images`)
-    console.log(`   • Total: ${withImages}/${updatedFabrics.length} fabrics with images`)
+    console.log(`🎉 FABRIC INVENTORY ACTIVE: ${updatedFabrics.length} fabrics in stock`)
+    console.log(`📊 Image Coverage: ${withImages}/${updatedFabrics.length} (${coverage}%)`)
+    console.log(`📈 Sources: Cloudinary=${cloudinaryCount}, Static=${staticCount}`)
+    console.log(`📦 Total Stock: ${updatedFabrics.reduce((sum, f) => sum + (f.quantity || 0), 0)} units`)
+
+    // Show top 5 fabrics by quantity
+    const topByQuantity = updatedFabrics
+      .filter(f => f.quantity && f.quantity > 0)
+      .sort((a, b) => (b.quantity || 0) - (a.quantity || 0))
+      .slice(0, 5)
+
+    if (topByQuantity.length > 0) {
+      console.log(`🏆 Top fabrics by quantity:`)
+      topByQuantity.forEach((fabric, index) => {
+        console.log(`  ${index + 1}. ${fabric.code}: ${fabric.quantity} ${fabric.unit || 'units'}`)
+      })
+    }
 
     // Debug: Show some Cloudinary URLs that were found
     if (cloudinaryImageMap.size > 0) {
