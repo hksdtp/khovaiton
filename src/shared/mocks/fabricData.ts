@@ -169,14 +169,27 @@ export async function getMockFabrics(): Promise<Fabric[]> {
       console.log('☁️ Checking Cloudinary for images...')
       try {
         const cloudinaryExists = await cloudinaryService.batchCheckImages(fabricCodes)
+
+        // Debug: Check what batchCheckImages returned
+        console.log(`🔍 batchCheckImages returned ${cloudinaryExists.size} results`)
+        let trueCount = 0
+        let falseCount = 0
         cloudinaryExists.forEach((exists, code) => {
           if (exists) {
+            trueCount++
             const url = cloudinaryService.getFabricImageUrl(code, { width: 800, quality: 80 })
             if (url) {
               cloudinaryImageMap.set(code, url)
+              console.log(`✅ Added to map: ${code} -> ${url}`)
+            }
+          } else {
+            falseCount++
+            if (falseCount <= 3) { // Show first 3 false results
+              console.log(`❌ Not exists: ${code}`)
             }
           }
         })
+        console.log(`🔍 Results: ${trueCount} true, ${falseCount} false`)
         console.log(`☁️ Found ${cloudinaryImageMap.size} images in Cloudinary`)
       } catch (error) {
         console.warn('⚠️ Cloudinary check failed:', error)
