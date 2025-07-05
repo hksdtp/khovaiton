@@ -4,6 +4,12 @@ import { BaseEntity } from '@/shared/types'
  * Fabric inventory types
  */
 
+export interface FabricImage {
+  file: string
+  type: 'main' | 'detail' | 'color_card'
+  match_type: 'exact' | 'partial'
+}
+
 export interface Fabric extends BaseEntity {
   code: string
   name: string
@@ -28,6 +34,10 @@ export interface Fabric extends BaseEntity {
   minStock?: number | undefined // Tồn kho tối thiểu
   maxStock?: number | undefined // Tồn kho tối đa
   costPerUnit?: number | undefined // Giá thành/đơn vị
+
+  // Fields từ tích hợp dữ liệu
+  images?: FabricImage[] | undefined // Danh sách ảnh
+  hasImages?: boolean | undefined // Có ảnh hay không
 
   // Computed status từ condition
   status: FabricStatus

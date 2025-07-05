@@ -1,0 +1,82 @@
+
+☁️ CLOUDINARY ADMIN API AUDIT REPORT
+Generated: 7/5/2025, 12:52:00 PM
+
+═══════════════════════════════════════════════════════════════
+
+📈 OVERVIEW STATISTICS
+═══════════════════════════════════════════════════════════════
+Total Fabric Codes in CSV: 331
+Total Images on Cloudinary: 0
+Exact Matches: 0 (0.0%)
+Missing Codes: 331 (100.0%)
+Extra Images: 0
+
+═══════════════════════════════════════════════════════════════
+
+✅ EXACT MATCHES (0 codes)
+═══════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════
+
+❌ MISSING CODES (331 codes)
+═══════════════════════════════════════════════════════════════
+3 PASS BO - WHITE - COL 15 → Contains spaces
+33139-2-270 → No obvious issues - needs manual upload
+71022-10 → No obvious issues - needs manual upload
+71022-7 → No obvious issues - needs manual upload
+8015-1 → No obvious issues - needs manual upload
+8059 → No obvious issues - needs manual upload
+99-129-39 → No obvious issues - needs manual upload
+A9003-5 → No obvious issues - needs manual upload
+AS22541-5 → No obvious issues - needs manual upload
+AS22878-7 → No obvious issues - needs manual upload
+DCR-71022-8 → No obvious issues - needs manual upload
+DCR-MELIA-NHẠT → Contains Vietnamese characters, Contains special characters
+FB15141A21 → No obvious issues - needs manual upload
+FB15144A3 → No obvious issues - needs manual upload
+FB15148A21 → No obvious issues - needs manual upload
+FB15157A1 → No obvious issues - needs manual upload
+FB15169A4 → No obvious issues - needs manual upload
+FB15198A5 → No obvious issues - needs manual upload
+FB15198A6 → No obvious issues - needs manual upload
+FS-PURPLE → No obvious issues - needs manual upload
+FS-Ruby → No obvious issues - needs manual upload
+FS-TEAL → No obvious issues - needs manual upload
+HB/BST/DY → Contains forward slash (/), Contains special characters
+HY FAGEL-SILVER → Contains spaces
+JK090E-01 → No obvious issues - needs manual upload
+JNF/19 → Contains forward slash (/), Contains special characters
+Lót bông nhăn → Contains spaces, Contains Vietnamese characters, Contains special characters
+N208BOFR → No obvious issues - needs manual upload
+SG21-19-4007 → No obvious issues - needs manual upload
+W5601-20 → No obvious issues - needs manual upload
+... and 301 more
+
+═══════════════════════════════════════════════════════════════
+
+🔍 MISSING REASONS BREAKDOWN
+═══════════════════════════════════════════════════════════════
+No obvious issues - needs manual upload: 252 codes
+Contains spaces: 74 codes
+Contains special characters: 29 codes
+Contains forward slash (/): 17 codes
+Contains Vietnamese characters: 9 codes
+
+═══════════════════════════════════════════════════════════════
+
+📸 EXTRA IMAGES (0 images not in CSV)
+═══════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════
+
+💡 CONCLUSIONS
+═══════════════════════════════════════════════════════════════
+1. Cloudinary has 0 total images
+2. Only 0 match exactly with fabric codes
+3. 331 fabric codes need images uploaded
+4. 0 images exist but don't match any fabric codes
+
+═══════════════════════════════════════════════════════════════

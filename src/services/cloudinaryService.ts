@@ -90,7 +90,11 @@ export class CloudinaryService {
     
     // Context for metadata
     formData.append('context', `fabric_code=${options.fabricCode}`)
-    
+
+    // Enable overwrite to replace existing images
+    formData.append('overwrite', 'true')
+    formData.append('invalidate', 'true') // Clear CDN cache for immediate update
+
     try {
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,

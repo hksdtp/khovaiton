@@ -1,0 +1,129 @@
+
+📊 FABRIC IMAGE MAPPING REPORT
+Generated: 7/5/2025, 12:31:51 PM
+
+═══════════════════════════════════════════════════════════════
+
+📈 OVERVIEW STATISTICS
+═══════════════════════════════════════════════════════════════
+Total Fabric Codes in Web App: 331
+Sample Tested: 50
+Successfully Mapped: 13 (26.0%)
+Missing Images: 37 (74.0%)
+Network Errors: 0
+
+═══════════════════════════════════════════════════════════════
+
+✅ SUCCESSFULLY MAPPED IMAGES
+═══════════════════════════════════════════════════════════════
+✓ 71022-10
+✓ FB15144A3
+✓ YB0320-7
+✓ 07013D-88
+✓ 089C-1
+✓ 09-730-17
+✓ 10-780-1402
+✓ 10-780-17
+✓ 10-780-316
+✓ 10-780-41
+✓ 10-780-5
+✓ 131-254
+✓ 22D-990-8
+
+═══════════════════════════════════════════════════════════════
+
+❌ MISSING IMAGES (404 Errors)
+═══════════════════════════════════════════════════════════════
+✗ 3 PASS BO - WHITE - COL 15 (Status: 404)
+✗ 33139-2-270 (Status: 404)
+✗ 71022-7 (Status: 404)
+✗ 8015-1 (Status: 404)
+✗ 8059 (Status: 404)
+✗ 99-129-39 (Status: 404)
+✗ A9003-5 (Status: 404)
+✗ AS22541-5 (Status: 404)
+✗ AS22878-7 (Status: 404)
+✗ DCR-71022-8 (Status: 404)
+✗ DCR-MELIA-NHẠT (Status: 404)
+✗ FB15141A21 (Status: 404)
+✗ FB15148A21 (Status: 404)
+✗ FB15157A1 (Status: 404)
+✗ FB15169A4 (Status: 404)
+✗ FB15198A5 (Status: 404)
+✗ FB15198A6 (Status: 404)
+✗ FS-PURPLE (Status: 404)
+✗ FS-Ruby (Status: 404)
+✗ FS-TEAL (Status: 404)
+✗ HB/BST/DY (Status: 404)
+✗ HY FAGEL-SILVER (Status: 404)
+✗ JK090E-01 (Status: 404)
+✗ JNF/19 (Status: 404)
+✗ Lót bông nhăn (Status: 404)
+✗ N208BOFR (Status: 404)
+✗ SG21-19-4007 (Status: 404)
+✗ W5601-20 (Status: 404)
+✗ YB093 (Status: 404)
+✗ YB096 (Status: 404)
+✗ 0248243680103 (Status: 404)
+✗ 0248243802071-TUISS (Status: 404)
+✗ 100054-0081 (Status: 404)
+✗ 10-780-14 (Status: 404)
+✗ 142421-DCR (Status: 404)
+✗ 1803 BLACKOUT (Status: 404)
+✗ 22A-990-5 (Status: 404)
+
+═══════════════════════════════════════════════════════════════
+
+🔍 FABRIC CODE PATTERN ANALYSIS
+═══════════════════════════════════════════════════════════════
+Codes with Spaces: 74 (22.4%)
+Codes with Dashes: 258 (77.9%)
+Codes with Numbers: 295 (89.1%)
+Codes with Special Chars: 29 (8.8%)
+Long Codes (>20 chars): 23 (6.9%)
+Short Codes (<5 chars): 8 (2.4%)
+
+═══════════════════════════════════════════════════════════════
+
+🚨 COMMON ISSUES & CAUSES
+═══════════════════════════════════════════════════════════════
+1. URL Encoding Issues:
+   - Spaces in fabric codes need proper encoding
+   - Special characters may cause 404 errors
+   
+2. Naming Inconsistencies:
+   - Fabric codes in CSV vs uploaded image names
+   - Case sensitivity differences
+   
+3. Missing Uploads:
+   - Not all fabric codes have corresponding images
+   - Images may exist but with different naming
+
+═══════════════════════════════════════════════════════════════
+
+💡 RECOMMENDATIONS
+═══════════════════════════════════════════════════════════════
+1. IMMEDIATE FIXES:
+   ✓ URL encoding is already implemented
+   ✓ Cloudinary overwrite is enabled
+   
+2. IMPROVE MAPPING:
+   • Upload missing images for high-priority fabric codes
+   • Standardize fabric code naming convention
+   • Create mapping table for code variations
+   
+3. MONITORING:
+   • Regular checks for new fabric codes
+   • Automated image upload workflow
+   • Error logging for failed image loads
+
+═══════════════════════════════════════════════════════════════
+
+🎯 NEXT STEPS
+═══════════════════════════════════════════════════════════════
+1. Review missing images list
+2. Upload priority fabric images
+3. Implement bulk upload tool
+4. Set up monitoring dashboard
+
+═══════════════════════════════════════════════════════════════

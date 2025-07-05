@@ -1,0 +1,3818 @@
+{
+  "timestamp": "2025-07-05T05:49:47.639Z",
+  "totalCodes": 331,
+  "foundCount": 91,
+  "missingCount": 240,
+  "mappingRate": "27.5%",
+  "foundCodes": [
+    "71022-10",
+    "FB15144A3",
+    "YB0320-7",
+    "07013D-88",
+    "089C-1",
+    "09-730-17",
+    "10-780-1402",
+    "10-780-17",
+    "10-780-316",
+    "10-780-41",
+    "10-780-5",
+    "131-254",
+    "22D-990-8",
+    "22E-990-10",
+    "22E-990-4",
+    "316-2",
+    "71022-10",
+    "71022-2",
+    "83082-11",
+    "83082-32",
+    "83086-06",
+    "83086-11",
+    "83102-19",
+    "83813-7",
+    "8525-42",
+    "8525-43",
+    "8525-46",
+    "8542-11",
+    "8557-06",
+    "8568-05",
+    "8598-02",
+    "8600-07",
+    "8611-44",
+    "8611-46",
+    "8612-25",
+    "8613-04",
+    "8613-13",
+    "8614-09",
+    "8631-05",
+    "88-539-10",
+    "88-539-12",
+    "88-539-21",
+    "88-539-23",
+    "88-539-9",
+    "99-129-11",
+    "99-129-44",
+    "AL200-21",
+    "AR-071-02B",
+    "ASPERO 19",
+    "BD095-85",
+    "BERTONE-30",
+    "D-3195",
+    "D3385",
+    "DBY80434-3",
+    "DCR-1000-2300-9000",
+    "DCR-ES-48",
+    "DCR-RP1120",
+    "DCR-ST6026",
+    "EB48410186",
+    "EF214-04",
+    "EF216-05",
+    "EF-BOD7543-TUISS",
+    "F00614-20",
+    "F13-NB03300105",
+    "FB15144A3",
+    "H01",
+    "HA 1754-11",
+    "HLR-17",
+    "HLR-25",
+    "HLR-5",
+    "LIBERTY-05",
+    "m907-12",
+    "M907-9",
+    "M908-26",
+    "MJ428-06",
+    "MJ428-14",
+    "NB01300103",
+    "NB150629D-2",
+    "PRT-40273 FR",
+    "R700-1",
+    "R700-15",
+    "SDWY0035-21-7542-HF-NG",
+    "TM17-37",
+    "TP01623-219",
+    "TP01623-228",
+    "Vải nhung màu xanh",
+    "w5601-6",
+    "W5601-9",
+    "YY2156-12",
+    "W5601-24",
+    "FB15090A-21"
+  ],
+  "missingCodes": [
+    {
+      "code": "3 PASS BO - WHITE - COL 15",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "33139-2-270",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "71022-7",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8015-1",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8059",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "99-129-39",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "A9003-5",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AS22541-5",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AS22878-7",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-71022-8",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-MELIA-NHẠT",
+      "reasons": [
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15141A21",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15148A21",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15157A1",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15169A4",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15198A5",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15198A6",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FS-PURPLE",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FS-Ruby",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FS-TEAL",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HB/BST/DY",
+      "reasons": [
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HY FAGEL-SILVER",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "JK090E-01",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "JNF/19",
+      "reasons": [
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Lót bông nhăn",
+      "reasons": [
+        "Contains spaces",
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "N208BOFR",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "SG21-19-4007",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "W5601-20",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YB093",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YB096",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "0248243680103",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "0248243802071-TUISS",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "100054-0081",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "10-780-14",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "142421-DCR",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "1803 BLACKOUT",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "22A-990-5",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "22E-990-2",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "3c-40-11",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "50-008 dcr-T203 SB-12",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "71022-9",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8000",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8136-2",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "83086-08",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "83086-13",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "83086-20",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "83100-13",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8525-26",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8600-06",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8615-14",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "8628-17",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "91200201S0103",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "A6120A195",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "A65-2",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AL200-30",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Ar070-02B",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AR074-02B",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AR-076-02B",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AR-079-02B",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BD095-298",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BERTONE-31",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BJ01A",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Bloom R/B Amellie",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BO300102",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Bonaza mufin-28",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BWB8136-4",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BWB-8539",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "carnival  r/b purple",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "CARNIVAL R/B HESSIAN 210",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "carnival r/b hot pink 210",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Carnival r/b mauve 210",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "CARNIVAL R/B MULBERRY 210",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "carnival r/b slate 210",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "CARNIVAL R/B TEAL 210",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "CRUSHED VELVET-15",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Datender 24sil",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DBY80434-51",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCLR -EC-4022",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR - chats word white",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "dcr- chats word cream",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR HL-814F",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Dcr -Lauva r/b walnut",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "dcr- nouveaux r/b teal",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-1000-2300-9124",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-1000-2300-9162",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-1000-2300-9163",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR20018",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-71022-8",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-BRERA-33",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Dcr-carnival R/B mocha",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-EC-4037F",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-HA 1754-16",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-HA 1754-7 BLACKCURRAN",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-HA 1754-9",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-MELIA-COFFEE",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-MELIA-NHẠT",
+      "reasons": [
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-N2087-Bo w280cm",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-OZONE-16",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP1113",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP1145",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP1148",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP1151",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP1153",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP1163",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP1193",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP2000",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP2007",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP2010",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP2328",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP2365",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-RP770",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "dcr-snong bird beyl",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DH25-A4-120",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DH25-B2-120",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Dusk Slate - 3M",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EB 36360688T",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EB5448 ALA PASTER",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EF218-02",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EF218-5",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EF51150133-dcr",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EF-BON7531-TUISS",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ELITEX EB5115 WHITE/MUSHR",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ET66470183",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "F02-Front-28022023",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "F14-DUSK MARTINI",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15092A8",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15151A2",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15168A4",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB17118A7-4",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB17118A-BWB-28",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB17118A-BWB-30",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB17141A-1",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB17195A-3",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FS-GUNMETAL",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FWP12157-16",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "G8002-01",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HA 1754-10",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HA 1754-4",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HA1754-0701D-28",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HBM BLACKOUT HUESO",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HENILY R/B RUN BN",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HOLIWOD-04",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HTK 20189-11",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HTK-20125",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "IBI-2",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ICON WAR WICK - COLOR",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ICT-01",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ICT-02",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "JBL54452-39",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "JBL54452-53",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "LỤA ÉP HỌA TIẾT",
+      "reasons": [
+        "Contains spaces",
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "M-149",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "M61",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "madrid canaval 210",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "MARINO-43",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "MJ304-03",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "moir",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "MUNNAR SILK-23283",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "PRJ-EB4834",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "PRJ-HATCH CHENILLE - D",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "PRJ-honey Bo",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "PRJ-OXC B008-DCR",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "R700-05",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "R700-19",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Satin Apex SA 9196 Chintz",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "SG21-YH56-1",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ST 5049 CjNcc",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ST-5031F",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "ST5082",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "T201",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TF13590-002",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TF13590-4",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TF13950-006",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP01623-00229",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP01623-0035",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP01623-222",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP01623-224",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP01623-6010",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP13590-003",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP229",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "UN 1371",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "V01",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "vải nhung màu be",
+      "reasons": [
+        "Contains spaces",
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VELVET NAMPA 282-4101",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VELVET NAMPA 284-54247",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VN 10808",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VOAN HỒNG",
+      "reasons": [
+        "Contains spaces",
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Voile R/B Cream",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Voile R/B White",
+      "reasons": [
+        "Contains spaces",
+        "Contains forward slash (/)",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VR1000-06",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YB0822-1",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YB180904-9",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YBJS0617",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YY2156-10",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FS FLAX-NG",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCT-BO-TB01-NG",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VL-BF45(H)-NG",
+      "reasons": [
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HARMONY-OXC B003-NG",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "D2070-008-NG",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "D2082-001-NG",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "NN-12-DK",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HQ-1",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YB14005-3",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCR-L4001-12122",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VLIET-PURE WHITE A",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BWB-8036-1",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "A5583-2",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "31405014",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "YB0822-2",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "TP01623-140",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "Dymondmie - Straw",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "JNF-173-17104120",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "BWB-8043",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCT-BO-LT-06",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DL202143311",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "SG21-19-4007",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EB16306D5",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "SG màu đen",
+      "reasons": [
+        "Contains spaces",
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "SG21-14-C434",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AS22878-6",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "FB15151A3",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "JNF-15-new",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "AS228388-3",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HA1449-W",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "JNF161",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "THCO-14",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCT-BO-TB07",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DLWG202136055",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DUSK XTRA VIVID",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "EB48500186 WINSPRAY GREY",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HARMONY-OXC B003-NG (TRẮNG)",
+      "reasons": [
+        "Contains spaces",
+        "Contains Vietnamese characters",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HARMONY-OXC B014",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HARMONY-OXC B12-NG",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VL-BFAT 45",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VL-BFAT12 (H)",
+      "reasons": [
+        "Contains spaces",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VL-BFAT96",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "VL-FQAT42 (H)",
+      "reasons": [
+        "Contains spaces",
+        "Contains other special characters"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "DCT-BO-ZH",
+      "reasons": [
+        "Unknown reason - may need manual upload"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "HARMONY-OXC B010",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    },
+    {
+      "code": "SC-UDPL 15 FR",
+      "reasons": [
+        "Contains spaces"
+      ],
+      "statusCode": 404
+    }
+  ],
+  "allResults": [
+    {
+      "fabricCode": "3 PASS BO - WHITE - COL 15",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/3%20PASS%20BO%20-%20WHITE%20-%20COL%2015"
+    },
+    {
+      "fabricCode": "33139-2-270",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/33139-2-270"
+    },
+    {
+      "fabricCode": "71022-10",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/71022-10"
+    },
+    {
+      "fabricCode": "71022-7",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/71022-7"
+    },
+    {
+      "fabricCode": "8015-1",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8015-1"
+    },
+    {
+      "fabricCode": "8059",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8059"
+    },
+    {
+      "fabricCode": "99-129-39",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/99-129-39"
+    },
+    {
+      "fabricCode": "A9003-5",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/A9003-5"
+    },
+    {
+      "fabricCode": "AS22541-5",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AS22541-5"
+    },
+    {
+      "fabricCode": "AS22878-7",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AS22878-7"
+    },
+    {
+      "fabricCode": "DCR-71022-8",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-71022-8"
+    },
+    {
+      "fabricCode": "DCR-MELIA-NHẠT",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-MELIA-NH%E1%BA%A0T"
+    },
+    {
+      "fabricCode": "FB15141A21",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15141A21"
+    },
+    {
+      "fabricCode": "FB15144A3",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15144A3"
+    },
+    {
+      "fabricCode": "FB15148A21",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15148A21"
+    },
+    {
+      "fabricCode": "FB15157A1",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15157A1"
+    },
+    {
+      "fabricCode": "FB15169A4",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15169A4"
+    },
+    {
+      "fabricCode": "FB15198A5",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15198A5"
+    },
+    {
+      "fabricCode": "FB15198A6",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15198A6"
+    },
+    {
+      "fabricCode": "FS-PURPLE",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FS-PURPLE"
+    },
+    {
+      "fabricCode": "FS-Ruby",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FS-Ruby"
+    },
+    {
+      "fabricCode": "FS-TEAL",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FS-TEAL"
+    },
+    {
+      "fabricCode": "HB/BST/DY",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HB%2FBST%2FDY"
+    },
+    {
+      "fabricCode": "HY FAGEL-SILVER",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HY%20FAGEL-SILVER"
+    },
+    {
+      "fabricCode": "JK090E-01",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/JK090E-01"
+    },
+    {
+      "fabricCode": "JNF/19",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/JNF%2F19"
+    },
+    {
+      "fabricCode": "Lót bông nhăn",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/L%C3%B3t%20b%C3%B4ng%20nh%C4%83n"
+    },
+    {
+      "fabricCode": "N208BOFR",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/N208BOFR"
+    },
+    {
+      "fabricCode": "SG21-19-4007",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/SG21-19-4007"
+    },
+    {
+      "fabricCode": "W5601-20",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/W5601-20"
+    },
+    {
+      "fabricCode": "YB0320-7",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YB0320-7"
+    },
+    {
+      "fabricCode": "YB093",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YB093"
+    },
+    {
+      "fabricCode": "YB096",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YB096"
+    },
+    {
+      "fabricCode": "0248243680103",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/0248243680103"
+    },
+    {
+      "fabricCode": "0248243802071-TUISS",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/0248243802071-TUISS"
+    },
+    {
+      "fabricCode": "07013D-88",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/07013D-88"
+    },
+    {
+      "fabricCode": "089C-1",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/089C-1"
+    },
+    {
+      "fabricCode": "09-730-17",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/09-730-17"
+    },
+    {
+      "fabricCode": "100054-0081",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/100054-0081"
+    },
+    {
+      "fabricCode": "10-780-14",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/10-780-14"
+    },
+    {
+      "fabricCode": "10-780-1402",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/10-780-1402"
+    },
+    {
+      "fabricCode": "10-780-17",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/10-780-17"
+    },
+    {
+      "fabricCode": "10-780-316",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/10-780-316"
+    },
+    {
+      "fabricCode": "10-780-41",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/10-780-41"
+    },
+    {
+      "fabricCode": "10-780-5",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/10-780-5"
+    },
+    {
+      "fabricCode": "131-254",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/131-254"
+    },
+    {
+      "fabricCode": "142421-DCR",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/142421-DCR"
+    },
+    {
+      "fabricCode": "1803 BLACKOUT",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/1803%20BLACKOUT"
+    },
+    {
+      "fabricCode": "22A-990-5",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/22A-990-5"
+    },
+    {
+      "fabricCode": "22D-990-8",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/22D-990-8"
+    },
+    {
+      "fabricCode": "22E-990-10",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/22E-990-10"
+    },
+    {
+      "fabricCode": "22E-990-2",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/22E-990-2"
+    },
+    {
+      "fabricCode": "22E-990-4",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/22E-990-4"
+    },
+    {
+      "fabricCode": "316-2",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/316-2"
+    },
+    {
+      "fabricCode": "3c-40-11",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/3c-40-11"
+    },
+    {
+      "fabricCode": "50-008 dcr-T203 SB-12",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/50-008%20dcr-T203%20SB-12"
+    },
+    {
+      "fabricCode": "71022-10",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/71022-10"
+    },
+    {
+      "fabricCode": "71022-2",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/71022-2"
+    },
+    {
+      "fabricCode": "71022-9",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/71022-9"
+    },
+    {
+      "fabricCode": "8000",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8000"
+    },
+    {
+      "fabricCode": "8136-2",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8136-2"
+    },
+    {
+      "fabricCode": "83082-11",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83082-11"
+    },
+    {
+      "fabricCode": "83082-32",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83082-32"
+    },
+    {
+      "fabricCode": "83086-06",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83086-06"
+    },
+    {
+      "fabricCode": "83086-08",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83086-08"
+    },
+    {
+      "fabricCode": "83086-11",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83086-11"
+    },
+    {
+      "fabricCode": "83086-13",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83086-13"
+    },
+    {
+      "fabricCode": "83086-20",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83086-20"
+    },
+    {
+      "fabricCode": "83100-13",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83100-13"
+    },
+    {
+      "fabricCode": "83102-19",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83102-19"
+    },
+    {
+      "fabricCode": "83813-7",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/83813-7"
+    },
+    {
+      "fabricCode": "8525-26",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8525-26"
+    },
+    {
+      "fabricCode": "8525-42",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8525-42"
+    },
+    {
+      "fabricCode": "8525-43",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8525-43"
+    },
+    {
+      "fabricCode": "8525-46",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8525-46"
+    },
+    {
+      "fabricCode": "8542-11",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8542-11"
+    },
+    {
+      "fabricCode": "8557-06",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8557-06"
+    },
+    {
+      "fabricCode": "8568-05",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8568-05"
+    },
+    {
+      "fabricCode": "8598-02",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8598-02"
+    },
+    {
+      "fabricCode": "8600-06",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8600-06"
+    },
+    {
+      "fabricCode": "8600-07",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8600-07"
+    },
+    {
+      "fabricCode": "8611-44",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8611-44"
+    },
+    {
+      "fabricCode": "8611-46",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8611-46"
+    },
+    {
+      "fabricCode": "8612-25",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8612-25"
+    },
+    {
+      "fabricCode": "8613-04",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8613-04"
+    },
+    {
+      "fabricCode": "8613-13",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8613-13"
+    },
+    {
+      "fabricCode": "8614-09",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8614-09"
+    },
+    {
+      "fabricCode": "8615-14",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8615-14"
+    },
+    {
+      "fabricCode": "8628-17",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8628-17"
+    },
+    {
+      "fabricCode": "8631-05",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/8631-05"
+    },
+    {
+      "fabricCode": "88-539-10",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/88-539-10"
+    },
+    {
+      "fabricCode": "88-539-12",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/88-539-12"
+    },
+    {
+      "fabricCode": "88-539-21",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/88-539-21"
+    },
+    {
+      "fabricCode": "88-539-23",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/88-539-23"
+    },
+    {
+      "fabricCode": "88-539-9",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/88-539-9"
+    },
+    {
+      "fabricCode": "91200201S0103",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/91200201S0103"
+    },
+    {
+      "fabricCode": "99-129-11",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/99-129-11"
+    },
+    {
+      "fabricCode": "99-129-44",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/99-129-44"
+    },
+    {
+      "fabricCode": "A6120A195",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/A6120A195"
+    },
+    {
+      "fabricCode": "A65-2",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/A65-2"
+    },
+    {
+      "fabricCode": "AL200-21",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AL200-21"
+    },
+    {
+      "fabricCode": "AL200-30",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AL200-30"
+    },
+    {
+      "fabricCode": "Ar070-02B",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Ar070-02B"
+    },
+    {
+      "fabricCode": "AR-071-02B",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AR-071-02B"
+    },
+    {
+      "fabricCode": "AR074-02B",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AR074-02B"
+    },
+    {
+      "fabricCode": "AR-076-02B",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AR-076-02B"
+    },
+    {
+      "fabricCode": "AR-079-02B",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AR-079-02B"
+    },
+    {
+      "fabricCode": "ASPERO 19",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ASPERO%2019"
+    },
+    {
+      "fabricCode": "BD095-298",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BD095-298"
+    },
+    {
+      "fabricCode": "BD095-85",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BD095-85"
+    },
+    {
+      "fabricCode": "BERTONE-30",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BERTONE-30"
+    },
+    {
+      "fabricCode": "BERTONE-31",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BERTONE-31"
+    },
+    {
+      "fabricCode": "BJ01A",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BJ01A"
+    },
+    {
+      "fabricCode": "Bloom R/B Amellie",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Bloom%20R%2FB%20Amellie"
+    },
+    {
+      "fabricCode": "BO300102",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BO300102"
+    },
+    {
+      "fabricCode": "Bonaza mufin-28",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Bonaza%20mufin-28"
+    },
+    {
+      "fabricCode": "BWB8136-4",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BWB8136-4"
+    },
+    {
+      "fabricCode": "BWB-8539",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BWB-8539"
+    },
+    {
+      "fabricCode": "carnival  r/b purple",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/carnival%20%20r%2Fb%20purple"
+    },
+    {
+      "fabricCode": "CARNIVAL R/B HESSIAN 210",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/CARNIVAL%20R%2FB%20HESSIAN%20210"
+    },
+    {
+      "fabricCode": "carnival r/b hot pink 210",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/carnival%20r%2Fb%20hot%20pink%20210"
+    },
+    {
+      "fabricCode": "Carnival r/b mauve 210",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Carnival%20r%2Fb%20mauve%20210"
+    },
+    {
+      "fabricCode": "CARNIVAL R/B MULBERRY 210",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/CARNIVAL%20R%2FB%20MULBERRY%20210"
+    },
+    {
+      "fabricCode": "carnival r/b slate 210",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/carnival%20r%2Fb%20slate%20210"
+    },
+    {
+      "fabricCode": "CARNIVAL R/B TEAL 210",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/CARNIVAL%20R%2FB%20TEAL%20210"
+    },
+    {
+      "fabricCode": "CRUSHED VELVET-15",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/CRUSHED%20VELVET-15"
+    },
+    {
+      "fabricCode": "D-3195",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/D-3195"
+    },
+    {
+      "fabricCode": "D3385",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/D3385"
+    },
+    {
+      "fabricCode": "Datender 24sil",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Datender%2024sil"
+    },
+    {
+      "fabricCode": "DBY80434-3",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DBY80434-3"
+    },
+    {
+      "fabricCode": "DBY80434-51",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DBY80434-51"
+    },
+    {
+      "fabricCode": "DCLR -EC-4022",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCLR%20-EC-4022"
+    },
+    {
+      "fabricCode": "DCR - chats word white",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR%20-%20chats%20word%20white"
+    },
+    {
+      "fabricCode": "dcr- chats word cream",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/dcr-%20chats%20word%20cream"
+    },
+    {
+      "fabricCode": "DCR HL-814F",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR%20HL-814F"
+    },
+    {
+      "fabricCode": "Dcr -Lauva r/b walnut",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Dcr%20-Lauva%20r%2Fb%20walnut"
+    },
+    {
+      "fabricCode": "dcr- nouveaux r/b teal",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/dcr-%20nouveaux%20r%2Fb%20teal"
+    },
+    {
+      "fabricCode": "DCR-1000-2300-9000",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-1000-2300-9000"
+    },
+    {
+      "fabricCode": "DCR-1000-2300-9124",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-1000-2300-9124"
+    },
+    {
+      "fabricCode": "DCR-1000-2300-9162",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-1000-2300-9162"
+    },
+    {
+      "fabricCode": "DCR-1000-2300-9163",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-1000-2300-9163"
+    },
+    {
+      "fabricCode": "DCR20018",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR20018"
+    },
+    {
+      "fabricCode": "DCR-71022-8",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-71022-8"
+    },
+    {
+      "fabricCode": "DCR-BRERA-33",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-BRERA-33"
+    },
+    {
+      "fabricCode": "Dcr-carnival R/B mocha",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Dcr-carnival%20R%2FB%20mocha"
+    },
+    {
+      "fabricCode": "DCR-EC-4037F",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-EC-4037F"
+    },
+    {
+      "fabricCode": "DCR-ES-48",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-ES-48"
+    },
+    {
+      "fabricCode": "DCR-HA 1754-16",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-HA%201754-16"
+    },
+    {
+      "fabricCode": "DCR-HA 1754-7 BLACKCURRAN",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-HA%201754-7%20BLACKCURRAN"
+    },
+    {
+      "fabricCode": "DCR-HA 1754-9",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-HA%201754-9"
+    },
+    {
+      "fabricCode": "DCR-MELIA-COFFEE",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-MELIA-COFFEE"
+    },
+    {
+      "fabricCode": "DCR-MELIA-NHẠT",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-MELIA-NH%E1%BA%A0T"
+    },
+    {
+      "fabricCode": "DCR-N2087-Bo w280cm",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-N2087-Bo%20w280cm"
+    },
+    {
+      "fabricCode": "DCR-OZONE-16",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-OZONE-16"
+    },
+    {
+      "fabricCode": "DCR-RP1113",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1113"
+    },
+    {
+      "fabricCode": "DCR-RP1120",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1120"
+    },
+    {
+      "fabricCode": "DCR-RP1145",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1145"
+    },
+    {
+      "fabricCode": "DCR-RP1148",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1148"
+    },
+    {
+      "fabricCode": "DCR-RP1151",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1151"
+    },
+    {
+      "fabricCode": "DCR-RP1153",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1153"
+    },
+    {
+      "fabricCode": "DCR-RP1163",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1163"
+    },
+    {
+      "fabricCode": "DCR-RP1193",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP1193"
+    },
+    {
+      "fabricCode": "DCR-RP2000",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP2000"
+    },
+    {
+      "fabricCode": "DCR-RP2007",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP2007"
+    },
+    {
+      "fabricCode": "DCR-RP2010",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP2010"
+    },
+    {
+      "fabricCode": "DCR-RP2328",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP2328"
+    },
+    {
+      "fabricCode": "DCR-RP2365",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP2365"
+    },
+    {
+      "fabricCode": "DCR-RP770",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-RP770"
+    },
+    {
+      "fabricCode": "dcr-snong bird beyl",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/dcr-snong%20bird%20beyl"
+    },
+    {
+      "fabricCode": "DCR-ST6026",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-ST6026"
+    },
+    {
+      "fabricCode": "DH25-A4-120",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DH25-A4-120"
+    },
+    {
+      "fabricCode": "DH25-B2-120",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DH25-B2-120"
+    },
+    {
+      "fabricCode": "Dusk Slate - 3M",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Dusk%20Slate%20-%203M"
+    },
+    {
+      "fabricCode": "EB 36360688T",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EB%2036360688T"
+    },
+    {
+      "fabricCode": "EB48410186",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EB48410186"
+    },
+    {
+      "fabricCode": "EB5448 ALA PASTER",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EB5448%20ALA%20PASTER"
+    },
+    {
+      "fabricCode": "EF214-04",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EF214-04"
+    },
+    {
+      "fabricCode": "EF216-05",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EF216-05"
+    },
+    {
+      "fabricCode": "EF218-02",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EF218-02"
+    },
+    {
+      "fabricCode": "EF218-5",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EF218-5"
+    },
+    {
+      "fabricCode": "EF51150133-dcr",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EF51150133-dcr"
+    },
+    {
+      "fabricCode": "EF-BOD7543-TUISS",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EF-BOD7543-TUISS"
+    },
+    {
+      "fabricCode": "EF-BON7531-TUISS",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EF-BON7531-TUISS"
+    },
+    {
+      "fabricCode": "ELITEX EB5115 WHITE/MUSHR",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ELITEX%20EB5115%20WHITE%2FMUSHR"
+    },
+    {
+      "fabricCode": "ET66470183",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ET66470183"
+    },
+    {
+      "fabricCode": "F00614-20",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/F00614-20"
+    },
+    {
+      "fabricCode": "F02-Front-28022023",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/F02-Front-28022023"
+    },
+    {
+      "fabricCode": "F13-NB03300105",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/F13-NB03300105"
+    },
+    {
+      "fabricCode": "F14-DUSK MARTINI",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/F14-DUSK%20MARTINI"
+    },
+    {
+      "fabricCode": "FB15092A8",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15092A8"
+    },
+    {
+      "fabricCode": "FB15144A3",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15144A3"
+    },
+    {
+      "fabricCode": "FB15151A2",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15151A2"
+    },
+    {
+      "fabricCode": "FB15168A4",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15168A4"
+    },
+    {
+      "fabricCode": "FB17118A7-4",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB17118A7-4"
+    },
+    {
+      "fabricCode": "FB17118A-BWB-28",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB17118A-BWB-28"
+    },
+    {
+      "fabricCode": "FB17118A-BWB-30",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB17118A-BWB-30"
+    },
+    {
+      "fabricCode": "FB17141A-1",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB17141A-1"
+    },
+    {
+      "fabricCode": "FB17195A-3",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB17195A-3"
+    },
+    {
+      "fabricCode": "FS-GUNMETAL",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FS-GUNMETAL"
+    },
+    {
+      "fabricCode": "FWP12157-16",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FWP12157-16"
+    },
+    {
+      "fabricCode": "G8002-01",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/G8002-01"
+    },
+    {
+      "fabricCode": "H01",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/H01"
+    },
+    {
+      "fabricCode": "HA 1754-10",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HA%201754-10"
+    },
+    {
+      "fabricCode": "HA 1754-11",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HA%201754-11"
+    },
+    {
+      "fabricCode": "HA 1754-4",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HA%201754-4"
+    },
+    {
+      "fabricCode": "HA1754-0701D-28",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HA1754-0701D-28"
+    },
+    {
+      "fabricCode": "HBM BLACKOUT HUESO",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HBM%20BLACKOUT%20HUESO"
+    },
+    {
+      "fabricCode": "HENILY R/B RUN BN",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HENILY%20R%2FB%20RUN%20BN"
+    },
+    {
+      "fabricCode": "HLR-17",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HLR-17"
+    },
+    {
+      "fabricCode": "HLR-25",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HLR-25"
+    },
+    {
+      "fabricCode": "HLR-5",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HLR-5"
+    },
+    {
+      "fabricCode": "HOLIWOD-04",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HOLIWOD-04"
+    },
+    {
+      "fabricCode": "HTK 20189-11",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HTK%2020189-11"
+    },
+    {
+      "fabricCode": "HTK-20125",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HTK-20125"
+    },
+    {
+      "fabricCode": "IBI-2",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/IBI-2"
+    },
+    {
+      "fabricCode": "ICON WAR WICK - COLOR",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ICON%20WAR%20WICK%20-%20COLOR"
+    },
+    {
+      "fabricCode": "ICT-01",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ICT-01"
+    },
+    {
+      "fabricCode": "ICT-02",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ICT-02"
+    },
+    {
+      "fabricCode": "JBL54452-39",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/JBL54452-39"
+    },
+    {
+      "fabricCode": "JBL54452-53",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/JBL54452-53"
+    },
+    {
+      "fabricCode": "LIBERTY-05",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/LIBERTY-05"
+    },
+    {
+      "fabricCode": "LỤA ÉP HỌA TIẾT",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/L%E1%BB%A4A%20%C3%89P%20H%E1%BB%8CA%20TI%E1%BA%BET"
+    },
+    {
+      "fabricCode": "M-149",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/M-149"
+    },
+    {
+      "fabricCode": "M61",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/M61"
+    },
+    {
+      "fabricCode": "m907-12",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/m907-12"
+    },
+    {
+      "fabricCode": "M907-9",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/M907-9"
+    },
+    {
+      "fabricCode": "M908-26",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/M908-26"
+    },
+    {
+      "fabricCode": "madrid canaval 210",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/madrid%20canaval%20210"
+    },
+    {
+      "fabricCode": "MARINO-43",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/MARINO-43"
+    },
+    {
+      "fabricCode": "MJ304-03",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/MJ304-03"
+    },
+    {
+      "fabricCode": "MJ428-06",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/MJ428-06"
+    },
+    {
+      "fabricCode": "MJ428-14",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/MJ428-14"
+    },
+    {
+      "fabricCode": "moir",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/moir"
+    },
+    {
+      "fabricCode": "MUNNAR SILK-23283",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/MUNNAR%20SILK-23283"
+    },
+    {
+      "fabricCode": "NB01300103",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/NB01300103"
+    },
+    {
+      "fabricCode": "NB150629D-2",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/NB150629D-2"
+    },
+    {
+      "fabricCode": "PRJ-EB4834",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/PRJ-EB4834"
+    },
+    {
+      "fabricCode": "PRJ-HATCH CHENILLE - D",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/PRJ-HATCH%20CHENILLE%20-%20D"
+    },
+    {
+      "fabricCode": "PRJ-honey Bo",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/PRJ-honey%20Bo"
+    },
+    {
+      "fabricCode": "PRJ-OXC B008-DCR",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/PRJ-OXC%20B008-DCR"
+    },
+    {
+      "fabricCode": "PRT-40273 FR",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/PRT-40273%20FR"
+    },
+    {
+      "fabricCode": "R700-05",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/R700-05"
+    },
+    {
+      "fabricCode": "R700-1",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/R700-1"
+    },
+    {
+      "fabricCode": "R700-15",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/R700-15"
+    },
+    {
+      "fabricCode": "R700-19",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/R700-19"
+    },
+    {
+      "fabricCode": "Satin Apex SA 9196 Chintz",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Satin%20Apex%20SA%209196%20Chintz"
+    },
+    {
+      "fabricCode": "SDWY0035-21-7542-HF-NG",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/SDWY0035-21-7542-HF-NG"
+    },
+    {
+      "fabricCode": "SG21-YH56-1",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/SG21-YH56-1"
+    },
+    {
+      "fabricCode": "ST 5049 CjNcc",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ST%205049%20CjNcc"
+    },
+    {
+      "fabricCode": "ST-5031F",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ST-5031F"
+    },
+    {
+      "fabricCode": "ST5082",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/ST5082"
+    },
+    {
+      "fabricCode": "T201",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/T201"
+    },
+    {
+      "fabricCode": "TF13590-002",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TF13590-002"
+    },
+    {
+      "fabricCode": "TF13590-4",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TF13590-4"
+    },
+    {
+      "fabricCode": "TF13950-006",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TF13950-006"
+    },
+    {
+      "fabricCode": "TM17-37",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TM17-37"
+    },
+    {
+      "fabricCode": "TP01623-00229",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-00229"
+    },
+    {
+      "fabricCode": "TP01623-0035",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-0035"
+    },
+    {
+      "fabricCode": "TP01623-219",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-219"
+    },
+    {
+      "fabricCode": "TP01623-222",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-222"
+    },
+    {
+      "fabricCode": "TP01623-224",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-224"
+    },
+    {
+      "fabricCode": "TP01623-228",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-228"
+    },
+    {
+      "fabricCode": "TP01623-6010",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-6010"
+    },
+    {
+      "fabricCode": "TP13590-003",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP13590-003"
+    },
+    {
+      "fabricCode": "TP229",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP229"
+    },
+    {
+      "fabricCode": "UN 1371",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/UN%201371"
+    },
+    {
+      "fabricCode": "V01",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/V01"
+    },
+    {
+      "fabricCode": "vải nhung màu be",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/v%E1%BA%A3i%20nhung%20m%C3%A0u%20be"
+    },
+    {
+      "fabricCode": "Vải nhung màu xanh",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/V%E1%BA%A3i%20nhung%20m%C3%A0u%20xanh"
+    },
+    {
+      "fabricCode": "VELVET NAMPA 282-4101",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VELVET%20NAMPA%20282-4101"
+    },
+    {
+      "fabricCode": "VELVET NAMPA 284-54247",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VELVET%20NAMPA%20284-54247"
+    },
+    {
+      "fabricCode": "VN 10808",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VN%2010808"
+    },
+    {
+      "fabricCode": "VOAN HỒNG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VOAN%20H%E1%BB%92NG"
+    },
+    {
+      "fabricCode": "Voile R/B Cream",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Voile%20R%2FB%20Cream"
+    },
+    {
+      "fabricCode": "Voile R/B White",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Voile%20R%2FB%20White"
+    },
+    {
+      "fabricCode": "VR1000-06",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VR1000-06"
+    },
+    {
+      "fabricCode": "w5601-6",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/w5601-6"
+    },
+    {
+      "fabricCode": "W5601-9",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/W5601-9"
+    },
+    {
+      "fabricCode": "YB0822-1",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YB0822-1"
+    },
+    {
+      "fabricCode": "YB180904-9",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YB180904-9"
+    },
+    {
+      "fabricCode": "YBJS0617",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YBJS0617"
+    },
+    {
+      "fabricCode": "YY2156-10",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YY2156-10"
+    },
+    {
+      "fabricCode": "YY2156-12",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YY2156-12"
+    },
+    {
+      "fabricCode": "FS FLAX-NG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FS%20FLAX-NG"
+    },
+    {
+      "fabricCode": "DCT-BO-TB01-NG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCT-BO-TB01-NG"
+    },
+    {
+      "fabricCode": "VL-BF45(H)-NG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VL-BF45(H)-NG"
+    },
+    {
+      "fabricCode": "HARMONY-OXC B003-NG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HARMONY-OXC%20B003-NG"
+    },
+    {
+      "fabricCode": "D2070-008-NG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/D2070-008-NG"
+    },
+    {
+      "fabricCode": "D2082-001-NG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/D2082-001-NG"
+    },
+    {
+      "fabricCode": "NN-12-DK",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/NN-12-DK"
+    },
+    {
+      "fabricCode": "HQ-1",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HQ-1"
+    },
+    {
+      "fabricCode": "YB14005-3",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YB14005-3"
+    },
+    {
+      "fabricCode": "DCR-L4001-12122",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCR-L4001-12122"
+    },
+    {
+      "fabricCode": "VLIET-PURE WHITE A",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VLIET-PURE%20WHITE%20A"
+    },
+    {
+      "fabricCode": "BWB-8036-1",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BWB-8036-1"
+    },
+    {
+      "fabricCode": "A5583-2",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/A5583-2"
+    },
+    {
+      "fabricCode": "31405014",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/31405014"
+    },
+    {
+      "fabricCode": "YB0822-2",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/YB0822-2"
+    },
+    {
+      "fabricCode": "TP01623-140",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/TP01623-140"
+    },
+    {
+      "fabricCode": "Dymondmie - Straw",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/Dymondmie%20-%20Straw"
+    },
+    {
+      "fabricCode": "JNF-173-17104120",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/JNF-173-17104120"
+    },
+    {
+      "fabricCode": "BWB-8043",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/BWB-8043"
+    },
+    {
+      "fabricCode": "DCT-BO-LT-06",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCT-BO-LT-06"
+    },
+    {
+      "fabricCode": "DL202143311",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DL202143311"
+    },
+    {
+      "fabricCode": "SG21-19-4007",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/SG21-19-4007"
+    },
+    {
+      "fabricCode": "EB16306D5",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EB16306D5"
+    },
+    {
+      "fabricCode": "SG màu đen",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/SG%20m%C3%A0u%20%C4%91en"
+    },
+    {
+      "fabricCode": "SG21-14-C434",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/SG21-14-C434"
+    },
+    {
+      "fabricCode": "AS22878-6",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AS22878-6"
+    },
+    {
+      "fabricCode": "FB15151A3",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15151A3"
+    },
+    {
+      "fabricCode": "W5601-24",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/W5601-24"
+    },
+    {
+      "fabricCode": "FB15090A-21",
+      "exists": true,
+      "statusCode": 200,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15090A-21"
+    },
+    {
+      "fabricCode": "JNF-15-new",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/JNF-15-new"
+    },
+    {
+      "fabricCode": "AS228388-3",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/AS228388-3"
+    },
+    {
+      "fabricCode": "HA1449-W",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HA1449-W"
+    },
+    {
+      "fabricCode": "JNF161",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/JNF161"
+    },
+    {
+      "fabricCode": "THCO-14",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/THCO-14"
+    },
+    {
+      "fabricCode": "DCT-BO-TB07",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCT-BO-TB07"
+    },
+    {
+      "fabricCode": "DLWG202136055",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DLWG202136055"
+    },
+    {
+      "fabricCode": "DUSK XTRA VIVID",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DUSK%20XTRA%20VIVID"
+    },
+    {
+      "fabricCode": "EB48500186 WINSPRAY GREY",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/EB48500186%20WINSPRAY%20GREY"
+    },
+    {
+      "fabricCode": "HARMONY-OXC B003-NG (TRẮNG)",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HARMONY-OXC%20B003-NG%20(TR%E1%BA%AENG)"
+    },
+    {
+      "fabricCode": "HARMONY-OXC B014",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HARMONY-OXC%20B014"
+    },
+    {
+      "fabricCode": "HARMONY-OXC B12-NG",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HARMONY-OXC%20B12-NG"
+    },
+    {
+      "fabricCode": "VL-BFAT 45",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VL-BFAT%2045"
+    },
+    {
+      "fabricCode": "VL-BFAT12 (H)",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VL-BFAT12%20(H)"
+    },
+    {
+      "fabricCode": "VL-BFAT96",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VL-BFAT96"
+    },
+    {
+      "fabricCode": "VL-FQAT42 (H)",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/VL-FQAT42%20(H)"
+    },
+    {
+      "fabricCode": "DCT-BO-ZH",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/DCT-BO-ZH"
+    },
+    {
+      "fabricCode": "HARMONY-OXC B010",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/HARMONY-OXC%20B010"
+    },
+    {
+      "fabricCode": "SC-UDPL 15 FR",
+      "exists": false,
+      "statusCode": 404,
+      "url": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/SC-UDPL%2015%20FR"
+    }
+  ]
+}

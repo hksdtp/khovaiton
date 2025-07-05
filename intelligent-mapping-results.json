@@ -1,0 +1,189 @@
+{
+  "timestamp": "2025-07-05T05:38:34.814Z",
+  "totalTested": 30,
+  "found": 2,
+  "notFound": 28,
+  "successRate": "6.7%",
+  "mappingResults": [
+    {
+      "fabricCode": "3 PASS BO - WHITE - COL 15",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "33139-2-270",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "71022-10",
+      "matchedName": "71022-10",
+      "cloudinaryUrl": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/71022-10",
+      "found": true
+    },
+    {
+      "fabricCode": "71022-7",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "8015-1",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "8059",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "99-129-39",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "A9003-5",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "AS22541-5",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "AS22878-7",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "DCR-71022-8",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "DCR-MELIA-NHẠT",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FB15141A21",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FB15144A3",
+      "matchedName": "FB15144A3",
+      "cloudinaryUrl": "https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/FB15144A3",
+      "found": true
+    },
+    {
+      "fabricCode": "FB15148A21",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FB15157A1",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FB15169A4",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FB15198A5",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FB15198A6",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FS-PURPLE",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FS-Ruby",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "FS-TEAL",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "HB/BST/DY",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "HY FAGEL-SILVER",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "JK090E-01",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "JNF/19",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "Lót bông nhăn",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "N208BOFR",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "SG21-19-4007",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    },
+    {
+      "fabricCode": "W5601-20",
+      "matchedName": null,
+      "cloudinaryUrl": null,
+      "found": false
+    }
+  ]
+}
