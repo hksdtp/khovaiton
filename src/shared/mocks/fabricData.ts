@@ -20,10 +20,10 @@ async function loadRealFabricData(): Promise<Fabric[]> {
     }
 
     const data = await response.json()
-    console.log(`✅ Loaded ${data.metadata.totalItems} fabric codes from inventory (VẢI TỒN KHO)`)
-    console.log(`📦 Total stock: ${data.metadata.totalStock} units`)
-    console.log(`📊 Average stock: ${data.metadata.averageStock} units per fabric`)
-    console.log(`📋 Units: ${data.metadata.units.join(', ')}`)
+    console.log(`✅ Loaded ${data.metadata?.totalItems || data.fabrics?.length || 'unknown'} fabric codes from inventory (VẢI TỒN KHO)`)
+    console.log(`📦 Total stock: ${data.metadata?.totalStock || 'unknown'} units`)
+    console.log(`📊 Average stock: ${data.metadata?.averageStock || 'unknown'} units per fabric`)
+    console.log(`📋 Units: ${data.metadata?.units?.join(', ') || 'unknown'}`)
 
     return data.fabrics
   } catch (error) {
@@ -81,17 +81,42 @@ function parseCSVData(csvText: string): Fabric[] {
     const type = cleanValue(values[6]) as FabricType | undefined
     const condition = cleanValue(values[7])
     const remarks = cleanValue(values[8])
+    const statusComputed = cleanValue(values[9]) as FabricStatus | undefined
 
-    // Determine fabric status based on quantity and condition
+    // Determine fabric status - ưu tiên sử dụng Status_Computed nếu có
     let status: FabricStatus = 'available'
-    if (quantity < 10) {
-      status = 'low_stock'
-    }
-    if (quantity === 0) {
-      status = 'out_of_stock'
-    }
-    if (condition?.includes('Lỗi') || condition?.includes('bẩn') || condition?.includes('mốc')) {
-      status = 'damaged'
+
+    if (statusComputed && ['available', 'low_stock', 'out_of_stock', 'damaged', 'expired'].includes(statusComputed)) {
+      // Sử dụng status đã được tính toán từ Python script
+      status = statusComputed
+    } else {
+      // Fallback: tính toán status dựa trên quantity và condition
+
+      // Kiểm tra trạng thái dựa trên số lượng
+      if (quantity === 0) {
+        status = 'out_of_stock'
+      } else if (quantity < 10) {
+        status = 'low_stock'
+      }
+
+      // Kiểm tra trạng thái dựa trên tình trạng vải (ưu tiên cao hơn)
+      if (condition) {
+        const conditionLower = condition.toLowerCase()
+
+        // Vải có lỗi, hỏng, bẩn, mốc -> damaged
+        if (conditionLower.includes('lỗi') ||
+            conditionLower.includes('bẩn') ||
+            conditionLower.includes('mốc') ||
+            conditionLower.includes('hỏng') ||
+            conditionLower.includes('loang')) {
+          status = 'damaged'
+        }
+        // Vải tồn cũ -> vẫn available nhưng có ghi chú
+        else if (conditionLower.includes('tồn cũ')) {
+          // Giữ nguyên status dựa trên quantity, chỉ ghi nhận là vải cũ
+          status = status // Không thay đổi status
+        }
+      }
     }
 
     // Extract width from name
@@ -208,22 +233,37 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     // Load image mapping data
     let cloudinaryImageMap = new Map<string, string>()
 
-    // Use Cloudinary with priority for high-quantity fabrics
+    // Load real image mapping to know which fabrics actually have images
+    let realImageMapping: Record<string, boolean> = {}
+    try {
+      const mappingResponse = await fetch('/real-image-mapping.json')
+      if (mappingResponse.ok) {
+        const mappingData = await mappingResponse.json()
+        realImageMapping = mappingData.mapping
+        console.log(`✅ Loaded real image mapping: ${mappingData.metadata.withImagesCount}/${mappingData.metadata.totalFabrics} fabrics have images`)
+      }
+    } catch (error) {
+      console.warn('Could not load real image mapping:', error)
+    }
+
+    // Use Cloudinary ONLY for fabrics that actually have images
     if (cloudinaryService.isConfigured()) {
-      console.log('☁️ Using Cloudinary for fabric inventory...')
+      console.log('☁️ Using Cloudinary for fabrics with real images...')
 
       // Sort fabrics by quantity (high quantity = higher priority for images)
       const sortedFabrics = [...cachedFabrics].sort((a, b) => (b.quantity || 0) - (a.quantity || 0))
 
       sortedFabrics.forEach(fabric => {
-        // Generate Cloudinary URLs for all fabrics (will fallback if not exist)
-        const url = cloudinaryService.getFabricImageUrl(fabric.code, { width: 800, quality: 80 })
-        if (url) {
-          cloudinaryImageMap.set(fabric.code, url)
+        // Only generate Cloudinary URLs for fabrics that actually have images
+        if (realImageMapping[fabric.code] === true) {
+          const url = cloudinaryService.getFabricImageUrl(fabric.code, { width: 800, quality: 80 })
+          if (url) {
+            cloudinaryImageMap.set(fabric.code, url)
+          }
         }
       })
 
-      console.log(`☁️ Generated ${cloudinaryImageMap.size} Cloudinary URLs for inventory fabrics`)
+      console.log(`☁️ Generated ${cloudinaryImageMap.size} Cloudinary URLs for fabrics with real images`)
     } else {
       console.log(`❌ Cloudinary not configured - skipping Cloudinary images`)
     }

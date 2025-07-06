@@ -1,5 +1,5 @@
 // Auto-generated fabric codes with real images
-// Generated at: 2025-07-05T17:24:25.616Z
+// Generated at: 2025-07-06T15:32:26.523Z
 export const FABRICS_WITH_IMAGES = new Set([
   '3 PASS BO - WHITE - COL 15',
   '33139-2-270',

@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "generatedAt": "2025-07-05T17:24:25.614Z",
-    "totalFabrics": 331,
+    "generatedAt": "2025-07-06T15:32:26.521Z",
+    "totalFabrics": 335,
     "totalImageFiles": 219,
     "uniqueImageCodes": 219,
     "withImagesCount": 205,
-    "withoutImagesCount": 126,
-    "coverage": 61.933534743202415,
+    "withoutImagesCount": 130,
+    "coverage": 61.19402985074627,
     "source": "static images in public/images/fabrics"
   },
   "mapping": {
@@ -335,7 +335,11 @@
     "VL-FQAT42 (H)": false,
     "DCT-BO-ZH": false,
     "HARMONY-OXC B010": false,
-    "SC-UDPL 15 FR": false
+    "SC-UDPL 15 FR": false,
+    "FABRIC-332": false,
+    "Lưu ý : ": false,
+    "1. Số lượng vải được kiểm kê theo tem mác dán trên cuộn vải. Số lượng chính xác cần kiểm kê theo thực tế bằng phương pháp tời vải để kiểm tra.": false,
+    "2. Vải được kiểm tra ngoại quan phía ngoài, chưa kiểm tra chi tiết chất lượng vải bên trong. ": false
   },
   "fabricsWithImages": [
     "3 PASS BO - WHITE - COL 15",
@@ -670,6 +674,10 @@
     "VL-FQAT42 (H)",
     "DCT-BO-ZH",
     "HARMONY-OXC B010",
-    "SC-UDPL 15 FR"
+    "SC-UDPL 15 FR",
+    "FABRIC-332",
+    "Lưu ý : ",
+    "1. Số lượng vải được kiểm kê theo tem mác dán trên cuộn vải. Số lượng chính xác cần kiểm kê theo thực tế bằng phương pháp tời vải để kiểm tra.",
+    "2. Vải được kiểm tra ngoại quan phía ngoài, chưa kiểm tra chi tiết chất lượng vải bên trong. "
   ]
 }
