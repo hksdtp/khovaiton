@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { InventoryPage } from '@/features/inventory/components/InventoryPage'
 import { SecurityAlertModal } from './SecurityAlertModal'
 import { BottomBanner } from './BottomBanner'
