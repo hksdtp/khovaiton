@@ -33,7 +33,8 @@ class SyncService {
   }
 
   /**
-   * Get image URL with Cloudinary priority
+   * Get image URL - CHỈ CLOUDINARY
+   * Ninh ơi, chỉ sử dụng Cloudinary, không fallback static
    */
   async getImageUrl(fabricCode: string): Promise<string | null> {
     try {
@@ -43,38 +44,34 @@ class SyncService {
         return cached.url
       }
 
-      // Check if image exists in Cloudinary
+      // CHỈ kiểm tra Cloudinary - không fallback
       const cloudinaryUrl = cloudinaryService.getFabricImageUrl(fabricCode)
-      
+
+      if (!cloudinaryUrl) {
+        console.log(`❌ No Cloudinary URL for ${fabricCode}`)
+        return null
+      }
+
       // Test if Cloudinary image exists
       const exists = await this.checkImageExists(cloudinaryUrl)
-      
+
       if (exists) {
         // Cache the result
         this.syncCache.set(fabricCode, {
           url: cloudinaryUrl,
           timestamp: Date.now()
         })
-        
+
         console.log(`☁️ Using Cloudinary image for ${fabricCode}`)
         return cloudinaryUrl
       }
 
-      // Fallback to static image
-      const staticUrl = `/images/fabrics/${fabricCode}.jpg`
-      const staticExists = await this.checkImageExists(staticUrl)
-      
-      if (staticExists) {
-        console.log(`📁 Using static image for ${fabricCode}`)
-        return staticUrl
-      }
-
-      console.log(`❌ No image found for ${fabricCode}`)
+      console.log(`❌ Cloudinary image not found for ${fabricCode}`)
       return null
 
     } catch (error) {
-      console.error(`Error getting image for ${fabricCode}:`, error)
-      return `/images/fabrics/${fabricCode}.jpg` // Fallback
+      console.error(`Error getting Cloudinary image for ${fabricCode}:`, error)
+      return null // Không fallback
     }
   }
 

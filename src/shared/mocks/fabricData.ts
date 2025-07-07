@@ -260,32 +260,27 @@ export async function getMockFabrics(): Promise<Fabric[]> {
       console.log(`❌ Cloudinary not configured - skipping Cloudinary images`)
     }
 
-    // Fallback to static images for codes not in Cloudinary
-    const remainingCodes = fabricCodes.filter(code => !cloudinaryImageMap.has(code))
-    const staticImageMap = await batchFindFabricImages(remainingCodes)
-    console.log(`🖼️ Found ${staticImageMap.size} static images`)
+    // CHỈ SỬ DỤNG CLOUDINARY - Không fallback static images
+    console.log(`☁️ Using ONLY Cloudinary images - no static fallback`)
 
-    // Update fabrics with found images (Cloudinary priority, then static, then integrated data)
+    // Update fabrics with ONLY Cloudinary images
     const updatedFabrics = cachedFabrics.map(fabric => {
-      // Priority: Cloudinary → Static → Integrated data → None
+      // CHỈ sử dụng Cloudinary URL - không fallback
       const cloudinaryUrl = cloudinaryImageMap.get(fabric.code)
-      const staticUrl = staticImageMap.get(fabric.code)
-      const integratedUrl = fabric.image // From integrated data
 
       return {
         ...fabric,
-        image: cloudinaryUrl || staticUrl || integratedUrl || undefined
+        image: cloudinaryUrl || undefined // Chỉ Cloudinary hoặc undefined
       }
     })
 
     const withImages = updatedFabrics.filter(f => f.image).length
     const cloudinaryCount = cloudinaryImageMap.size
-    const staticCount = staticImageMap.size
     const coverage = ((withImages / updatedFabrics.length) * 100).toFixed(1)
 
     console.log(`🎉 FABRIC INVENTORY ACTIVE: ${updatedFabrics.length} fabrics in stock`)
     console.log(`📊 Image Coverage: ${withImages}/${updatedFabrics.length} (${coverage}%)`)
-    console.log(`📈 Sources: Cloudinary=${cloudinaryCount}, Static=${staticCount}`)
+    console.log(`📈 Sources: Cloudinary=${cloudinaryCount} (ONLY Cloudinary)`)
     console.log(`📦 Total Stock: ${updatedFabrics.reduce((sum, f) => sum + (f.quantity || 0), 0)} units`)
 
     // Show top 5 fabrics by quantity
