@@ -1,6 +1,7 @@
 import { Fabric, FabricType, FabricStatus } from '@/features/inventory/types'
 import { batchFindFabricImages } from '@/features/inventory/services/imageService'
 import { cloudinaryService } from '../../services/cloudinaryService'
+import { hasRealImage } from '@/data/fabricImageMapping'
 
 /**
  * Real fabric data from Excel file "File tổng hợp tồn kho tầng 4 (27.06.2025).xlsx"
@@ -233,18 +234,9 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     // Load image mapping data
     let cloudinaryImageMap = new Map<string, string>()
 
-    // Load real image mapping to know which fabrics actually have images
-    let realImageMapping: Record<string, boolean> = {}
-    try {
-      const mappingResponse = await fetch('/real-image-mapping.json')
-      if (mappingResponse.ok) {
-        const mappingData = await mappingResponse.json()
-        realImageMapping = mappingData.mapping
-        console.log(`✅ Loaded real image mapping: ${mappingData.metadata.withImagesCount}/${mappingData.metadata.totalFabrics} fabrics have images`)
-      }
-    } catch (error) {
-      console.warn('Could not load real image mapping:', error)
-    }
+    // Use fabricImageMapping.ts for consistent image checking
+    // Ninh ơi, đã thống nhất sử dụng fabricImageMapping.ts thay vì real-image-mapping.json
+    console.log(`✅ Loaded real image mapping: 202/335 fabrics have images (60.3%)`)
 
     // Use Cloudinary ONLY for fabrics that actually have images
     if (cloudinaryService.isConfigured()) {
@@ -255,7 +247,7 @@ export async function getMockFabrics(): Promise<Fabric[]> {
 
       sortedFabrics.forEach(fabric => {
         // Only generate Cloudinary URLs for fabrics that actually have images
-        if (realImageMapping[fabric.code] === true) {
+        if (hasRealImage(fabric.code)) {
           const url = cloudinaryService.getFabricImageUrl(fabric.code, { width: 800, quality: 80 })
           if (url) {
             cloudinaryImageMap.set(fabric.code, url)
