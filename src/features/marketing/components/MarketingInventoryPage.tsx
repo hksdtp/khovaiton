@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { InventoryPage } from '@/features/inventory/components/InventoryPage'
 import { SecurityAlertModal } from './SecurityAlertModal'
+import { BottomBanner } from './BottomBanner'
 import { VersionSwitcher } from './VersionSwitcher'
 import { ContactIcons } from './ContactIcons'
 
@@ -11,46 +12,41 @@ interface CustomerData {
 }
 
 export function MarketingInventoryPage() {
-  const [showSecurityModal, setShowSecurityModal] = useState(false)
+  const [showSecurityModal, setShowSecurityModal] = useState(true) // Mở ngay khi vào trang
+  const [showBottomBanner, setShowBottomBanner] = useState(false) // Ẩn banner ban đầu
   const [customerData, setCustomerData] = useState<CustomerData | null>(null)
-
-  useEffect(() => {
-    // Show security modal after 5 seconds for marketing version
-    const timer = setTimeout(() => {
-      // Only show if not already submitted
-      const hasSubmitted = localStorage.getItem('marketing_info_submitted')
-      if (!hasSubmitted) {
-        setShowSecurityModal(true)
-      }
-    }, 5000)
-
-    return () => clearTimeout(timer)
-  }, [])
 
   const handleSecuritySubmit = (data: CustomerData) => {
     setCustomerData(data)
-    
+    setShowBottomBanner(false) // Ẩn banner sau khi submit thành công
+
     // Save to localStorage to prevent showing again
     localStorage.setItem('marketing_info_submitted', 'true')
     localStorage.setItem('marketing_customer_data', JSON.stringify(data))
-    
+
     // Log for analytics (in real app, send to backend)
     console.log('📊 Marketing Lead Captured:', data)
-    
+
     // You can send to your CRM/backend here
     // sendToBackend(data)
   }
 
   const handleModalClose = () => {
     setShowSecurityModal(false)
-    
-    // Show again after 30 seconds if not submitted
-    setTimeout(() => {
-      const hasSubmitted = localStorage.getItem('marketing_info_submitted')
-      if (!hasSubmitted) {
-        setShowSecurityModal(true)
-      }
-    }, 30000)
+
+    // Hiển thị banner sau khi đóng form (nếu chưa submit thành công)
+    const hasSubmitted = localStorage.getItem('marketing_info_submitted')
+    if (!hasSubmitted) {
+      setShowBottomBanner(true)
+    }
+  }
+
+  const handleBannerClose = () => {
+    setShowBottomBanner(false)
+  }
+
+  const handleBannerClick = () => {
+    setShowSecurityModal(true)
   }
 
   return (
@@ -70,7 +66,14 @@ export function MarketingInventoryPage() {
 
       {/* Contact Icons for Marketing */}
       <ContactIcons />
-      
+
+      {/* Bottom Banner */}
+      <BottomBanner
+        isVisible={showBottomBanner && !showSecurityModal}
+        onOpenModal={handleBannerClick}
+        onClose={handleBannerClose}
+      />
+
       {/* Marketing tracking pixel (hidden) */}
       <div className="hidden">
         <img 
