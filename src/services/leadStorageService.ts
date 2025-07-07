@@ -257,11 +257,12 @@ class LeadStorageService {
       if (success) {
         console.log('✅ Lead sent to Google Sheets successfully:', lead.id)
       } else {
-        throw new Error('Failed to add lead to Google Sheets')
+        console.warn('⚠️ Google Sheets sync failed, but continuing with local storage')
       }
     } catch (error) {
       console.error('❌ Error sending lead to Google Sheets:', error)
-      throw error
+      console.log('📝 Continuing with local storage only')
+      // Không throw error để không block user experience
     }
   }
 
