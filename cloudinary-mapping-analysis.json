@@ -1,0 +1,352 @@
+{
+  "timestamp": "2025-07-07T11:40:50.558Z",
+  "summary": {
+    "totalFabricCodes": 335,
+    "totalCloudinaryImages": 509,
+    "currentlyMapped": 89,
+    "mappingRate": 26.57,
+    "potentialNewMatches": 37
+  },
+  "analysis": {
+    "namingPatterns": {
+      "fabricCodes": {
+        "withSpaces": 77,
+        "withHyphens": 259,
+        "withNumbers": 298,
+        "withSpecialChars": 32,
+        "avgLength": 12
+      },
+      "cloudinaryImages": {
+        "withSpaces": 274,
+        "withHyphens": 280,
+        "withNumbers": 467,
+        "withSpecialChars": 75,
+        "withParentheses": 8,
+        "avgLength": 12
+      }
+    },
+    "potentialMatches": [
+      {
+        "fabric": "8525-26",
+        "image": "8525 - 26",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "91200201S0103",
+        "image": "91200201 S0103",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "AL200-30",
+        "image": "AL 200-30",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "Datender 24sil",
+        "image": "DATENDER 24 SIL",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "EF218-02",
+        "image": "EF 218-02",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "EF218-5",
+        "image": "EF 218-5",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "HA 1754-10",
+        "image": "HA1754-10",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "HA 1754-4",
+        "image": "HA1754-4",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "HA1754-0701D-28",
+        "image": "HA 1754-0701D-28",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "JBL54452-39",
+        "image": "JBL 54452 - 39",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "MJ304-03",
+        "image": "MJ 304-03",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "PRJ-HATCH CHENILLE - D",
+        "image": "PRJ-Hatch chenille -D",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "R700-19",
+        "image": "R700 - 19",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "SG21-YH56-1",
+        "image": "SG21 - YH 56-1",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "TF13590-4",
+        "image": "TF 13590-4",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "TP01623-0035",
+        "image": "TP01623 - 0035",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "TP01623-222",
+        "image": "TP 01623-222",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "TP13590-003",
+        "image": "TP 13590-003",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "Voile R/B Cream",
+        "image": "VOILE RB CREAM",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "VR1000-06",
+        "image": "VR 1000-06",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "YB0822-1",
+        "image": "YB 0822-1",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "YBJS0617",
+        "image": "YBJS 0617",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "A5583-2",
+        "image": "A 5583-2",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "FB15151A3",
+        "image": "FB 15151A3",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "HA1449-W",
+        "image": "HA 1449-W",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "JNF161",
+        "image": "JNF 161",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "TP01623-00229",
+        "image": "TP 01623-0022",
+        "type": "contains",
+        "confidence": 0.9230769230769231
+      },
+      {
+        "fabric": "83086-20",
+        "image": "83086-20 (1)",
+        "type": "contains",
+        "confidence": 0.8888888888888888
+      },
+      {
+        "fabric": "CARNIVAL R/B TEAL 210",
+        "image": "DCR-CARNIVAL RB TEAL 210",
+        "type": "contains",
+        "confidence": 0.8095238095238095
+      },
+      {
+        "fabric": "HA1754-0701D-28",
+        "image": "HA 1754-0701D",
+        "type": "contains",
+        "confidence": 0.8
+      },
+      {
+        "fabric": "HA 1754-4",
+        "image": "HA 1754",
+        "type": "contains",
+        "confidence": 0.75
+      },
+      {
+        "fabric": "Voile R/B Cream",
+        "image": "DCR-VOILE RB CREAM",
+        "type": "contains",
+        "confidence": 0.75
+      },
+      {
+        "fabric": "dcr-snong bird beyl",
+        "image": "MO RONG_DCR-SNONG BIRD BEYL",
+        "type": "contains",
+        "confidence": 0.7391304347826086
+      },
+      {
+        "fabric": "3 PASS BO - WHITE - COL 15",
+        "image": "fabrics/3 PASS BO - WHITE - COL 15",
+        "type": "contains",
+        "confidence": 0.7307692307692307
+      },
+      {
+        "fabric": "DBY80434-51",
+        "image": "DBY80434",
+        "type": "contains",
+        "confidence": 0.7272727272727273
+      },
+      {
+        "fabric": "Satin Apex SA 9196 Chintz",
+        "image": "Satin apex SA9196",
+        "type": "contains",
+        "confidence": 0.7142857142857143
+      },
+      {
+        "fabric": "VN 10808",
+        "image": "10808",
+        "type": "contains",
+        "confidence": 0.7142857142857143
+      }
+    ],
+    "unmappedCategories": {
+      "duplicates": 8,
+      "oldFormats": 102,
+      "specialChars": 43,
+      "noMatch": 267
+    }
+  },
+  "recommendations": [
+    "Found 27 high-confidence potential matches",
+    "8 images appear to be duplicates with (1), (2) suffixes",
+    "102 images use old naming format with spaces",
+    "Consider normalizing image names to match fabric code format",
+    "17% of Cloudinary images are currently utilized"
+  ],
+  "examples": {
+    "duplicates": [
+      "07013D-88(1)",
+      "100084-0008 (1)",
+      "83086-20 (1)",
+      "EF216-05 (1)",
+      "INCANTO-02(1)",
+      "M907-12 (1)",
+      "M907-12 (2)",
+      "MORNS 02 (1)"
+    ],
+    "oldFormats": [
+      "07 013D -26",
+      "07013D -31",
+      "07013D-89 18104120",
+      "10 780 -17",
+      "1021-7M ANTARES 1000-2300",
+      "10780 -5",
+      "85-25 43",
+      "8525 - 26",
+      "A 5583-2",
+      "AGENT-09 FOSSIL"
+    ],
+    "potentialMatches": [
+      {
+        "fabric": "8525-26",
+        "image": "8525 - 26",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "91200201S0103",
+        "image": "91200201 S0103",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "AL200-30",
+        "image": "AL 200-30",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "Datender 24sil",
+        "image": "DATENDER 24 SIL",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "EF218-02",
+        "image": "EF 218-02",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "EF218-5",
+        "image": "EF 218-5",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "HA 1754-10",
+        "image": "HA1754-10",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "HA 1754-4",
+        "image": "HA1754-4",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "HA1754-0701D-28",
+        "image": "HA 1754-0701D-28",
+        "type": "exact_normalized",
+        "confidence": 1
+      },
+      {
+        "fabric": "JBL54452-39",
+        "image": "JBL 54452 - 39",
+        "type": "exact_normalized",
+        "confidence": 1
+      }
+    ]
+  }
+}
