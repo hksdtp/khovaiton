@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { InventoryPage } from '@/features/inventory/components/InventoryPage'
 import { SecurityAlertModal } from './SecurityAlertModal'
 import { VersionSwitcher } from './VersionSwitcher'
+import { ContactIcons } from './ContactIcons'
 
 interface CustomerData {
   name: string
@@ -66,6 +67,9 @@ export function MarketingInventoryPage() {
         onClose={handleModalClose}
         onSubmit={handleSecuritySubmit}
       />
+
+      {/* Contact Icons for Marketing */}
+      <ContactIcons />
       
       {/* Marketing tracking pixel (hidden) */}
       <div className="hidden">

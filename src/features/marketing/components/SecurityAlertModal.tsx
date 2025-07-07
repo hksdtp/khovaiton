@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { X, Shield, Lock, Eye, AlertTriangle } from 'lucide-react'
+import { X, Shield, MessageSquare, AlertTriangle } from 'lucide-react'
+import { leadStorageService } from '@/services/leadStorageService'
 import { Card } from '@/common/design-system/components'
 
 interface SecurityAlertModalProps {
@@ -32,18 +33,42 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
     return undefined
   }, [isOpen])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (formData.name && formData.phone && formData.address) {
-      onSubmit(formData)
-      setIsSubmitted(true)
-      
-      // Auto close after 3 seconds
-      setTimeout(() => {
-        setIsSubmitted(false)
-        onClose()
-        setFormData({ name: '', phone: '', address: '' })
-      }, 3000)
+      try {
+        // Lưu vào lead storage service
+        const lead = await leadStorageService.saveLead({
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+          source: 'marketing_modal'
+        })
+
+        console.log('✅ Lead saved with ID:', lead.id)
+
+        // Gọi callback để cập nhật UI
+        onSubmit(formData)
+        setIsSubmitted(true)
+
+        // Auto close after 3 seconds
+        setTimeout(() => {
+          setIsSubmitted(false)
+          onClose()
+          setFormData({ name: '', phone: '', address: '' })
+        }, 3000)
+
+      } catch (error) {
+        console.error('❌ Failed to save lead:', error)
+        // Vẫn tiếp tục với flow cũ nếu có lỗi
+        onSubmit(formData)
+        setIsSubmitted(true)
+        setTimeout(() => {
+          setIsSubmitted(false)
+          onClose()
+          setFormData({ name: '', phone: '', address: '' })
+        }, 3000)
+      }
     }
   }
 
@@ -67,42 +92,28 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
         {!isSubmitted ? (
           <div className="p-6">
             {/* Header */}
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center mb-4">
-                <div className="p-3 bg-blue-100 rounded-full">
-                  <Shield className="w-8 h-8 text-blue-600" />
+            <div className="text-left mb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-blue-600" />
                 </div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Xem mẫu trong link – nhưng đừng chốt vội!
+                </h2>
               </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">
-                Hệ Thống Bảo Mật Website
-              </h2>
-              <p className="text-sm text-gray-600">
-                Trang web của bạn đang được bảo vệ bởi hệ thống bảo mật tiên tiến
+              <div className="flex items-start gap-3 mb-4">
+                <MessageSquare className="w-5 h-5 text-gray-600 mt-1 flex-shrink-0" />
+                <p className="text-gray-700 leading-relaxed">
+                  <em>Để lại thông tin – bạn sẽ nhận được giá tốt hơn, được ưu tiên giữ mã vải đẹp và được gửi mẫu chưa niêm yết công khai.</em>
+                </p>
+              </div>
+              <p className="text-gray-800 font-medium mb-4">
+                Vui lòng để lại thông tin để nhận ưu đãi tốt nhất từ kho:
               </p>
-            </div>
-
-            {/* Security Features */}
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center space-x-3">
-                <Lock className="w-5 h-5 text-green-600" />
-                <div>
-                  <div className="font-medium text-sm">Mã Hóa SSL</div>
-                  <div className="text-xs text-gray-500">Bảo vệ dữ liệu với mã hóa 256-bit</div>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Eye className="w-5 h-5 text-blue-600" />
-                <div>
-                  <div className="font-medium text-sm">Giám Sát 24/7</div>
-                  <div className="text-xs text-gray-500">Theo dõi và phát hiện mối đe dọa</div>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Shield className="w-5 h-5 text-purple-600" />
-                <div>
-                  <div className="font-medium text-sm">Firewall Thông Minh</div>
-                  <div className="text-xs text-gray-500">Chặn các cuộc tấn công tự động</div>
-                </div>
+              <div className="space-y-2 text-gray-700 mb-4">
+                <p><strong>1. Tên:</strong></p>
+                <p><strong>2. Số điện thoại:</strong></p>
+                <p><strong>3. Địa chỉ:</strong> (có thể chỉ cần tỉnh/thành để gợi ý mẫu phù hợp)</p>
               </div>
             </div>
 
@@ -121,12 +132,28 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
               </div>
             )}
 
+            {/* Additional Info */}
+            <div className="space-y-3 mb-6">
+              <div className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-orange-100 rounded flex items-center justify-center mt-0.5">
+                  <span className="text-orange-600 text-xs">📞</span>
+                </div>
+                <p className="text-sm text-gray-700">
+                  Bên mình sẽ liên hệ ngay sau khi nhận thông tin để gửi mã phù hợp và báo giá ưu tiên.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-5 h-5 bg-yellow-100 rounded flex items-center justify-center mt-0.5">
+                  <span className="text-yellow-600 text-xs">👀</span>
+                </div>
+                <p className="text-sm text-gray-700">
+                  Bạn vẫn có thể tiếp tục xem mẫu nếu chưa sẵn sàng để lại thông tin.
+                </p>
+              </div>
+            </div>
+
             {/* Form */}
             <div className="mb-6">
-              <h3 className="font-medium text-gray-900 mb-4">Bảo Mật Thông Tin</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Để lại thông tin để nhận ưu đãi đặc biệt và bảo vệ tài khoản
-              </p>
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -171,16 +198,16 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
                 <div className="flex space-x-3">
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-lg hover:bg-gray-900 transition-colors font-medium text-sm"
                   >
-                    GỬI THÔNG TIN
+                    📋 GỬI THÔNG TIN
                   </button>
                   <button
                     type="button"
                     onClick={onClose}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors text-sm"
+                    className="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium text-sm"
                   >
-                    ❌ ĐÓNG LẠI - XEM SAU
+                    ❌ ĐÓNG LẠI – XEM SAU
                   </button>
                 </div>
               </form>
