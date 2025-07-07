@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { X, Shield, MessageSquare, AlertTriangle } from 'lucide-react'
+import React, { useState } from 'react'
+import { X, Shield, MessageSquare } from 'lucide-react'
 import { leadStorageService } from '@/services/leadStorageService'
 import { Card } from '@/common/design-system/components'
 
@@ -22,16 +22,6 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
     address: ''
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
-
-  useEffect(() => {
-    if (isOpen) {
-      // Show security alert after 2 seconds
-      const timer = setTimeout(() => setShowAlert(true), 2000)
-      return () => clearTimeout(timer)
-    }
-    return undefined
-  }, [isOpen])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -80,7 +70,7 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-white relative animate-fade-in">
+      <Card className="w-full max-w-lg bg-white relative animate-fade-in">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -90,47 +80,34 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
         </button>
 
         {!isSubmitted ? (
-          <div className="p-6">
+          <div className="p-8">
             {/* Header */}
             <div className="text-left mb-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                   <Shield className="w-5 h-5 text-blue-600" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className="text-lg font-bold text-gray-900">
                   Xem mẫu trong link – nhưng đừng chốt vội!
                 </h2>
               </div>
               <div className="flex items-start gap-3 mb-4">
                 <MessageSquare className="w-5 h-5 text-gray-600 mt-1 flex-shrink-0" />
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed text-sm">
                   <em>Để lại thông tin – bạn sẽ nhận được giá tốt hơn, được ưu tiên giữ mã vải đẹp và được gửi mẫu chưa niêm yết công khai.</em>
                 </p>
               </div>
-              <p className="text-gray-800 font-medium mb-4">
+              <p className="text-gray-800 font-medium mb-4 text-sm">
                 Vui lòng để lại thông tin để nhận ưu đãi tốt nhất từ kho:
               </p>
-              <div className="space-y-2 text-gray-700 mb-4">
+              <div className="space-y-1 text-gray-700 mb-4 text-sm">
                 <p><strong>1. Tên:</strong></p>
                 <p><strong>2. Số điện thoại:</strong></p>
                 <p><strong>3. Địa chỉ:</strong> (có thể chỉ cần tỉnh/thành để gợi ý mẫu phù hợp)</p>
               </div>
             </div>
 
-            {/* Security Alert */}
-            {showAlert && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 animate-pulse">
-                <div className="flex items-center space-x-2">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
-                  <div className="text-sm font-medium text-red-800">
-                    🚨 CẢNH BÁO BẢO MẬT: Phát hiện hoạt động đáng ngờ!
-                  </div>
-                </div>
-                <p className="text-sm text-red-700 mt-2">
-                  Để lại thông tin để có giá tốt hơn & giữ mã ưu đãi
-                </p>
-              </div>
-            )}
+
 
             {/* Additional Info */}
             <div className="space-y-3 mb-6">
@@ -162,7 +139,7 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
                     placeholder="Họ và tên *"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     required
                   />
                 </div>
@@ -172,7 +149,7 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
                     placeholder="Số điện thoại *"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     required
                   />
                 </div>
@@ -182,7 +159,7 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
                     placeholder="Địa chỉ *"
                     value={formData.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     required
                   />
                 </div>
@@ -195,17 +172,17 @@ export function SecurityAlertModal({ isOpen, onClose, onSubmit }: SecurityAlertM
                   <div>• Không chia sẻ với bên thứ ba</div>
                 </div>
 
-                <div className="flex space-x-3">
+                <div className="flex space-x-3 mt-6">
                   <button
                     type="submit"
                     className="flex-1 bg-gray-800 text-white py-3 px-6 rounded-lg hover:bg-gray-900 transition-colors font-medium text-sm"
                   >
-                    📋 GỬI THÔNG TIN
+                    GỬI THÔNG TIN
                   </button>
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium text-sm"
+                    className="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-red-600 transition-colors font-medium text-sm"
                   >
                     ❌ ĐÓNG LẠI – XEM SAU
                   </button>
