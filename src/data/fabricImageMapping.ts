@@ -200,7 +200,7 @@ export function getFabricImageCount(): number {
 }
 
 // Chỉ sử dụng Cloudinary - không có static images
-export function hasStaticImage(fabricCode: string): boolean {
+export function hasStaticImage(_fabricCode: string): boolean {
   return false
 }
 

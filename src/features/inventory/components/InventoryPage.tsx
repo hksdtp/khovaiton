@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, Upload, RefreshCw } from 'lucide-react'
+import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useFabricStats } from '../hooks/useFabrics'
