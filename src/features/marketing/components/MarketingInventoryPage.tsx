@@ -4,6 +4,7 @@ import { SecurityAlertModal } from './SecurityAlertModal'
 import { BottomBanner } from './BottomBanner'
 import { VersionSwitcher } from './VersionSwitcher'
 import { ContactIcons } from './ContactIcons'
+import { GoogleSheetsTest } from '@/components/GoogleSheetsTest'
 
 interface CustomerData {
   name: string
@@ -15,6 +16,7 @@ export function MarketingInventoryPage() {
   const [showSecurityModal, setShowSecurityModal] = useState(true) // Mở ngay khi vào trang
   const [showBottomBanner, setShowBottomBanner] = useState(false) // Ẩn banner ban đầu
   const [customerData, setCustomerData] = useState<CustomerData | null>(null)
+  const [showGoogleSheetsTest, setShowGoogleSheetsTest] = useState(false)
 
   const handleSecuritySubmit = (data: CustomerData) => {
     setCustomerData(data)
@@ -74,10 +76,35 @@ export function MarketingInventoryPage() {
         onClose={handleBannerClose}
       />
 
+      {/* Google Sheets Test (Development only) */}
+      {showGoogleSheetsTest && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+          <div className="relative">
+            <button
+              onClick={() => setShowGoogleSheetsTest(false)}
+              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+            >
+              ×
+            </button>
+            <GoogleSheetsTest />
+          </div>
+        </div>
+      )}
+
+      {/* Development: Google Sheets Test Button */}
+      {process.env.NODE_ENV === 'development' && (
+        <button
+          onClick={() => setShowGoogleSheetsTest(true)}
+          className="fixed bottom-20 right-4 bg-blue-500 text-white px-3 py-2 rounded-lg text-xs z-30"
+        >
+          🧪 Test Sheets
+        </button>
+      )}
+
       {/* Marketing tracking pixel (hidden) */}
       <div className="hidden">
-        <img 
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+        <img
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           alt=""
           onLoad={() => {
             // Track page view for marketing

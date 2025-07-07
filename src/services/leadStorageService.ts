@@ -1,8 +1,10 @@
 /**
  * Lead Storage Service
  * Ninh ơi, service này quản lý việc lưu trữ và truy xuất thông tin leads khách hàng
- * Hỗ trợ nhiều phương thức lưu trữ: localStorage, sessionStorage, và có thể mở rộng cho backend
+ * Hỗ trợ nhiều phương thức lưu trữ: localStorage, sessionStorage, Google Sheets
  */
+
+import { googleSheetsService } from './googleSheetsService'
 
 export interface CustomerLead {
   id: string
@@ -16,9 +18,10 @@ export interface CustomerLead {
 }
 
 export interface LeadStorageOptions {
-  storage: 'localStorage' | 'sessionStorage' | 'memory'
+  storage: 'localStorage' | 'sessionStorage' | 'memory' | 'googleSheets'
   autoBackup?: boolean
   maxLeads?: number
+  useGoogleSheets?: boolean
 }
 
 class LeadStorageService {
@@ -28,7 +31,7 @@ class LeadStorageService {
   private readonly STORAGE_KEY = 'khovaiton_customer_leads'
   private readonly BACKUP_KEY = 'khovaiton_leads_backup'
 
-  constructor(options: LeadStorageOptions = { storage: 'localStorage', autoBackup: true, maxLeads: 1000 }) {
+  constructor(options: LeadStorageOptions = { storage: 'localStorage', autoBackup: true, maxLeads: 1000, useGoogleSheets: true }) {
     this.options = options
   }
 
@@ -65,6 +68,13 @@ class LeadStorageService {
         source: lead.source,
         timestamp: lead.timestamp
       })
+
+      // Gửi đến Google Sheets (nếu được bật)
+      if (this.options.useGoogleSheets) {
+        this.sendToGoogleSheets(lead).catch(error => {
+          console.warn('⚠️ Failed to send lead to Google Sheets:', error)
+        })
+      }
 
       // Gửi đến backend (nếu có)
       this.sendToBackend(lead).catch(error => {
@@ -241,10 +251,24 @@ class LeadStorageService {
     }
   }
 
+  private async sendToGoogleSheets(lead: CustomerLead): Promise<void> {
+    try {
+      const success = await googleSheetsService.addLead(lead)
+      if (success) {
+        console.log('✅ Lead sent to Google Sheets successfully:', lead.id)
+      } else {
+        throw new Error('Failed to add lead to Google Sheets')
+      }
+    } catch (error) {
+      console.error('❌ Error sending lead to Google Sheets:', error)
+      throw error
+    }
+  }
+
   private async sendToBackend(lead: CustomerLead): Promise<void> {
     // Ninh ơi, đây là nơi bạn có thể tích hợp với backend API
     // Ví dụ: gửi đến CRM, email service, webhook, etc.
-    
+
     // Ví dụ implementation:
     /*
     const response = await fetch('/api/leads', {
@@ -254,12 +278,12 @@ class LeadStorageService {
       },
       body: JSON.stringify(lead)
     })
-    
+
     if (!response.ok) {
       throw new Error('Backend API error')
     }
     */
-    
+
     // Hiện tại chỉ log để demo
     console.log('🚀 Would send to backend:', lead)
   }
