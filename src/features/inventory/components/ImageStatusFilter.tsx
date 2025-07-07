@@ -12,11 +12,15 @@ interface ImageStatusFilterProps {
 
 export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
   const { filters, setFilters } = useInventoryStore()
-  
-  // Get fabric counts for each image status
-  const allFabricsQuery = useFabrics({}, { page: 1, limit: 1000 }) // Get all to count
-  const withImagesQuery = useFabrics({ imageStatus: 'with_images' }, { page: 1, limit: 1000 })
-  const withoutImagesQuery = useFabrics({ imageStatus: 'without_images' }, { page: 1, limit: 1000 })
+
+  // Get fabric counts for each image status - THEO CONTEXT HIỆN TẠI
+  // Lấy filters hiện tại nhưng loại bỏ imageStatus để tính toán chính xác
+  const baseFilters = { ...filters }
+  delete baseFilters.imageStatus
+
+  const allFabricsQuery = useFabrics(baseFilters, { page: 1, limit: 1000 })
+  const withImagesQuery = useFabrics({ ...baseFilters, imageStatus: 'with_images' }, { page: 1, limit: 1000 })
+  const withoutImagesQuery = useFabrics({ ...baseFilters, imageStatus: 'without_images' }, { page: 1, limit: 1000 })
 
   const allCount = allFabricsQuery.data?.total || 0
   const withImagesCount = withImagesQuery.data?.total || 0
@@ -56,7 +60,11 @@ export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
           🖼️ Trạng thái ảnh
         </h3>
         <div className="text-xs text-gray-500">
-          Tổng: {allCount} vải
+          {/* Hiển thị context hiện tại thay vì tổng toàn bộ */}
+          {Object.keys(baseFilters).some(key => baseFilters[key as keyof typeof baseFilters] && baseFilters[key as keyof typeof baseFilters] !== 'all')
+            ? `Trong bộ lọc: ${allCount} vải`
+            : `Tổng: ${allCount} vải`
+          }
         </div>
       </div>
 

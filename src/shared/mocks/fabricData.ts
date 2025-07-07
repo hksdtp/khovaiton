@@ -343,7 +343,7 @@ export const mockFabrics: Fabric[] = generateFallbackData()
  * Generate additional mock fabrics for testing
  */
 export function generateMockFabrics(count: number): Fabric[] {
-  const types: FabricType[] = ['chính', 'lót', 'voan', 'Roller', 'Suntrip']
+  const types: FabricType[] = ['Roller', 'Vải bọc', 'Suntrip', 'voan', 'Silhouette', 'lót', 'chính']
   const locations = ['T4 A1', 'T4 B2', 'T4 C3', 'T4 D4', 'T4 E5']
   const materials = ['Cotton', 'Polyester', 'Silk', 'Linen', 'Wool']
   const colors = ['Trắng', 'Đen', 'Xanh', 'Đỏ', 'Vàng', 'Tím', 'Hồng']

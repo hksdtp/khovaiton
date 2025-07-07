@@ -357,7 +357,7 @@ const FabricInventoryApp = () => {
         unit: unit?.replace(/"/g, ''),
         quantity: parseFloat(quantity),
         location: location?.replace(/"/g, ''),
-        type: type?.replace(/"/g, '') || 'chính',
+        type: type?.replace(/"/g, '') || 'Roller',
         note: note?.replace(/"/g, ''),
         image: null
       };

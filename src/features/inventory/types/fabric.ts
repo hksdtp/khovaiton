@@ -44,13 +44,13 @@ export interface Fabric extends BaseEntity {
 }
 
 export type FabricType =
-  | 'chính'
-  | 'lót'
-  | 'voan'
-  | 'Roller'
-  | 'Suntrip'
-  | 'Silhouette'
-  | 'Vải bọc'
+  | 'Roller'      // 85 fabrics (25.4%) - Nhiều nhất
+  | 'Vải bọc'     // 23 fabrics (6.9%)
+  | 'Suntrip'     // 7 fabrics (2.1%)
+  | 'voan'        // 4 fabrics (1.2%)
+  | 'Silhouette'  // 2 fabrics (0.6%)
+  | 'lót'         // 1 fabric (0.3%)
+  | 'chính'       // Fabrics có từ "chính" trong tên (78 fabrics)
   | string // Allow any string for flexibility with real data
 
 export type FabricStatus = 

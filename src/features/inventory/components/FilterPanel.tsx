@@ -24,13 +24,13 @@ export function FilterPanel({
 
   const fabricTypes: (FabricType | 'all')[] = [
     'all',
-    'Roller',
-    'Vải bọc',
-    'Suntrip',
-    'voan',
-    'Silhouette',
-    'lót',
-    'chính',
+    'Roller',      // 85 fabrics (25.4%) - Nhiều nhất
+    'Vải bọc',     // 23 fabrics (6.9%)
+    'Suntrip',     // 7 fabrics (2.1%)
+    'voan',        // 4 fabrics (1.2%)
+    'Silhouette',  // 2 fabrics (0.6%)
+    'lót',         // 1 fabric (0.3%)
+    'chính',       // Thêm lại - có 78 fabrics có từ "chính" trong tên
   ]
 
   const fabricStatuses: (FabricStatus | 'all')[] = [

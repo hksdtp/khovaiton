@@ -257,8 +257,18 @@ export class DataService {
 
     return fabrics.filter(fabric => {
       // Lọc theo loại
-      if (filters.type && filters.type !== 'all' && fabric.type !== filters.type) {
-        return false
+      if (filters.type && filters.type !== 'all') {
+        // Xử lý đặc biệt cho "chính" - filter theo tên chứa "chính"
+        if (filters.type === 'chính') {
+          if (!fabric.name.toLowerCase().includes('chính')) {
+            return false
+          }
+        } else {
+          // Các loại khác filter theo type thông thường
+          if (fabric.type !== filters.type) {
+            return false
+          }
+        }
       }
 
       // Lọc theo vị trí

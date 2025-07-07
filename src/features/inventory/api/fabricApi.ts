@@ -120,7 +120,14 @@ export const fabricApi = {
     }
 
     if (filters.type && filters.type !== 'all') {
-      filteredFabrics = filteredFabrics.filter(fabric => fabric.type === filters.type)
+      filteredFabrics = filteredFabrics.filter(fabric => {
+        // Xử lý đặc biệt cho "chính" - filter theo tên chứa "chính"
+        if (filters.type === 'chính') {
+          return fabric.name.toLowerCase().includes('chính')
+        }
+        // Các loại khác filter theo type thông thường
+        return fabric.type === filters.type
+      })
     }
 
     if (filters.location && filters.location !== 'all') {
