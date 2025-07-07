@@ -68,7 +68,7 @@ class GoogleSheetsService {
       console.log('🚀 Sending to webhook URL:', this.config.webhookUrl)
 
       // Thử POST với no-cors mode
-      const response = await fetch(this.config.webhookUrl, {
+      await fetch(this.config.webhookUrl, {
         method: 'POST',
         mode: 'no-cors', // Tránh CORS preflight
         headers: {
