@@ -1,5 +1,4 @@
 import { Fabric, FabricType, FabricStatus } from '@/features/inventory/types'
-import { batchFindFabricImages } from '@/features/inventory/services/imageService'
 import { cloudinaryService } from '../../services/cloudinaryService'
 import { hasRealImage } from '@/data/fabricImageMapping'
 
@@ -229,7 +228,6 @@ export async function getMockFabrics(): Promise<Fabric[]> {
 
     // INVENTORY-FOCUSED IMAGE LOADING: Prioritize fabrics with high stock
     console.log('🖼️ Loading images for fabric inventory (VẢI TỒN KHO)...')
-    const fabricCodes = cachedFabrics.map(f => f.code)
 
     // Load image mapping data
     let cloudinaryImageMap = new Map<string, string>()
