@@ -7,50 +7,12 @@ import {
 } from '../types'
 import { PaginationParams, PaginationResponse } from '@/shared/types'
 import { mockFabrics, getMockFabrics } from '@/shared/mocks/fabricData'
+import { hasRealImage } from '@/data/fabricImageMapping'
 
 // Cache for real fabric data
 let realFabrics: Fabric[] = mockFabrics
 
-// Real image mapping data - loaded once and cached
-let realImageMapping: Record<string, boolean> | null = null
-
-/**
- * Load real image mapping from JSON file
- */
-async function loadRealImageMapping(): Promise<Record<string, boolean>> {
-  if (realImageMapping) {
-    return realImageMapping
-  }
-
-  try {
-    const response = await fetch('/real-image-mapping.json')
-    if (response.ok) {
-      const data = await response.json()
-      realImageMapping = data.mapping
-      console.log(`✅ Loaded real image mapping: ${data.metadata.withImagesCount}/${data.metadata.totalFabrics} fabrics have images (${data.metadata.coverage.toFixed(1)}%)`)
-      return realImageMapping!
-    }
-  } catch (error) {
-    console.warn('Could not load real image mapping:', error)
-  }
-
-  // Fallback to empty mapping
-  realImageMapping = {}
-  return realImageMapping!
-}
-
-/**
- * Check if a fabric code has a real image (not just a generated URL)
- * Ninh ơi, function này check ảnh thực sự tồn tại dựa trên mapping file
- */
-function hasRealImage(fabricCode: string): boolean {
-  if (!realImageMapping) {
-    // If mapping not loaded yet, return false (will be loaded async)
-    return false
-  }
-
-  return realImageMapping[fabricCode] === true
-}
+// Ninh ơi, đã chuyển sang sử dụng hasRealImage từ fabricImageMapping.ts để đồng bộ
 
 /**
  * Mock API delay for realistic behavior
@@ -92,9 +54,6 @@ export const fabricApi = {
     if (shouldSimulateError()) {
       throw new Error('Failed to fetch fabrics')
     }
-
-    // Load real image mapping first
-    await loadRealImageMapping()
 
     // Ensure we have the latest real data
     if (realFabrics.length <= 10) {

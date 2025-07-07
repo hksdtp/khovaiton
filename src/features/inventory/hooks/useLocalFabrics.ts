@@ -2,6 +2,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { dataService } from '../services/dataService'
 import { Fabric, FabricFilters, FabricSortOptions } from '../types/fabric'
+import { hasRealImage } from '@/data/fabricImageMapping'
 import { useMemo } from 'react'
 
 /**
@@ -97,6 +98,21 @@ export function useFabrics(
 
       if (filters.maxQuantity !== undefined) {
         filteredFabrics = filteredFabrics.filter(fabric => fabric.quantity <= filters.maxQuantity!)
+      }
+
+      // Apply image status filter with real image checking
+      if (filters.imageStatus && filters.imageStatus !== 'all') {
+        if (filters.imageStatus === 'with_images') {
+          filteredFabrics = filteredFabrics.filter(fabric => {
+            // Check if fabric actually has an image (not just a generated URL)
+            return hasRealImage(fabric.code)
+          })
+        } else if (filters.imageStatus === 'without_images') {
+          filteredFabrics = filteredFabrics.filter(fabric => {
+            // Check if fabric doesn't have a real image
+            return !hasRealImage(fabric.code)
+          })
+        }
       }
 
       // Apply sorting

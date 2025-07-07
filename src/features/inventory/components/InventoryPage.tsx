@@ -151,7 +151,8 @@ export function InventoryPage() {
                   <Filter className="w-4 h-4" />
                   Lọc
                 </Button>
-                <Button
+                {/* Tạm ẩn 2 nút này theo yêu cầu */}
+                {/* <Button
                   variant="secondary"
                   size="sm"
                   onClick={() => window.open('/tools/bulk-upload', '_blank')}
@@ -166,7 +167,7 @@ export function InventoryPage() {
                 >
                   <RefreshCw className="w-4 h-4" />
                   Sync Manager
-                </Button>
+                </Button> */}
                 <Button variant="ghost" size="sm">
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
