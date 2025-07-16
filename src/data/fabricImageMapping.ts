@@ -8,6 +8,7 @@
  */
 
 const FABRICS_WITH_CLOUDINARY_IMAGES = new Set([
+  '3 PASS BO - WHITE - COL 15', // Added after successful upload
   '07013D-88',
   '089C-1',
   '09-730-17',

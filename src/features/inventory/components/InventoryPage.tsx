@@ -13,9 +13,11 @@ import { ImageStatusFilter } from './ImageStatusFilter'
 import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function InventoryPage() {
   const [isUploading, setIsUploading] = useState(false)
+  const queryClient = useQueryClient()
 
   const {
     filters,
@@ -36,7 +38,7 @@ export function InventoryPage() {
   } = useInventoryStore()
 
   const { getPaginationParams } = useInventorySelectors()
-  
+
   const { data: fabricsData, isLoading, error } = useFabrics(
     filters,
     getPaginationParams()
@@ -65,10 +67,16 @@ export function InventoryPage() {
 
       console.log(`✅ Upload successful for ${fabric.code}:`, result)
 
-      // Update sync service cache immediately
-      await syncService.updateFabricImage(fabric.code, result.secure_url)
+      // Update sync service cache immediately with actual URL and public_id
+      await syncService.updateFabricImage(fabric.code, result.secure_url, result.public_id)
+
+      // Force refresh fabric data to show new image
+      queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+      queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
 
       setUploadModal(false)
+
+      console.log(`🎉 Upload completed and cache refreshed for ${fabric.code}`)
 
       // TODO: Update fabric image in database if needed
 

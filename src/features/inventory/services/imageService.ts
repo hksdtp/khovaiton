@@ -6,6 +6,7 @@
 
 import { cloudinaryService } from '@/services/cloudinaryService'
 import { hasRealImage } from '@/data/fabricImageMapping'
+import { syncService } from '@/services/syncService'
 
 export interface ImageMapping {
   fabricCode: string
@@ -18,17 +19,9 @@ export interface ImageMapping {
  * Get fabric image URL - CHỈ TỪ CLOUDINARY
  * Ninh ơi, chỉ trả về ảnh thật từ Cloudinary, không có fallback
  */
-export function getFabricImageUrl(fabricCode: string): string | null {
-  // Chỉ trả về URL nếu fabric code có ảnh thật trên Cloudinary
-  if (!hasRealImage(fabricCode)) {
-    return null
-  }
-
-  // Sử dụng Cloudinary service để tạo URL
-  return cloudinaryService.getFabricImageUrl(fabricCode, {
-    width: 800,
-    quality: 80
-  })
+export async function getFabricImageUrl(fabricCode: string): Promise<string | null> {
+  // Use syncService to get the actual URL (handles both uploaded and existing images)
+  return await syncService.getImageUrl(fabricCode)
 }
 
 /**
@@ -36,7 +29,7 @@ export function getFabricImageUrl(fabricCode: string): string | null {
  * Ninh ơi, chỉ trả về ảnh thật từ Cloudinary
  */
 export async function findFabricImage(fabricCode: string): Promise<string | null> {
-  return getFabricImageUrl(fabricCode)
+  return await getFabricImageUrl(fabricCode)
 }
 
 /**
@@ -48,8 +41,15 @@ export async function batchFindFabricImages(
 ): Promise<Map<string, string | null>> {
   const results = new Map<string, string | null>()
 
-  fabricCodes.forEach(code => {
-    const imageUrl = getFabricImageUrl(code)
+  // Process in parallel for better performance
+  const promises = fabricCodes.map(async (code) => {
+    const imageUrl = await getFabricImageUrl(code)
+    return { code, imageUrl }
+  })
+
+  const resolvedResults = await Promise.all(promises)
+
+  resolvedResults.forEach(({ code, imageUrl }) => {
     results.set(code, imageUrl)
   })
 

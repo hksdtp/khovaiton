@@ -65,7 +65,8 @@ export class CloudinaryService {
   }
 
   /**
-   * Upload image to Cloudinary
+   * Upload image to Cloudinary (Unsigned Upload)
+   * Ninh ơi, chỉ gửi các tham số được phép với unsigned upload preset
    */
   async uploadImage(file: File, options: UploadOptions): Promise<CloudinaryUploadResult> {
     if (!this.isConfigured()) {
@@ -73,36 +74,32 @@ export class CloudinaryService {
     }
 
     const formData = new FormData()
-    
-    // Basic upload parameters
+
+    // Basic upload parameters (ONLY these are allowed for unsigned upload)
     formData.append('file', file)
     formData.append('upload_preset', UPLOAD_PRESET)
-    formData.append('cloud_name', CLOUD_NAME)
-    
-    // Fabric-specific parameters
-    const publicId = options.fabricCode
-    formData.append('public_id', publicId)
-    formData.append('folder', options.folder || 'fabrics')
-    
-    // Tags for organization
-    const tags = ['fabric', 'inventory', ...(options.tags || [])]
-    formData.append('tags', tags.join(','))
-    
-    // Context for metadata
-    formData.append('context', `fabric_code=${options.fabricCode}`)
 
-    // Enable overwrite to replace existing images
-    formData.append('overwrite', 'true')
-    formData.append('invalidate', 'true') // Clear CDN cache for immediate update
+    // DO NOT add any other parameters for unsigned upload:
+    // - context, tags, public_id, folder, overwrite are FORBIDDEN
+    // The upload preset handles folder and other settings automatically
+
+    console.log(`🚀 Uploading image for fabric ${options.fabricCode} using unsigned preset...`)
 
     try {
+      const startTime = Date.now()
+
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
         {
           method: 'POST',
-          body: formData
+          body: formData,
+          // Add timeout to prevent hanging
+          signal: AbortSignal.timeout(30000) // 30 second timeout
         }
       )
+
+      const uploadTime = Date.now() - startTime
+      console.log(`⏱️ Upload took ${uploadTime}ms`)
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -110,14 +107,17 @@ export class CloudinaryService {
       }
 
       const result: CloudinaryUploadResult = await response.json()
-      
+
       console.log(`✅ Uploaded image for fabric ${options.fabricCode}:`, {
         publicId: result.public_id,
         url: result.secure_url,
         size: `${result.width}x${result.height}`,
-        bytes: result.bytes
+        bytes: result.bytes,
+        fabricCode: options.fabricCode
       })
 
+      // Note: With unsigned upload, Cloudinary generates random public_id
+      // The fabric code mapping will be handled by the upload preset configuration
       return result
       
     } catch (error) {
@@ -253,16 +253,15 @@ export class CloudinaryService {
   }
 
   /**
-   * Get upload widget configuration
+   * Get upload widget configuration (Unsigned Upload)
+   * Ninh ơi, config này cho Cloudinary Upload Widget với unsigned preset
    */
   getUploadWidgetConfig(fabricCode: string) {
     return {
       cloudName: CLOUD_NAME,
-      uploadPreset: UPLOAD_PRESET,
-      publicId: `fabrics/${fabricCode}`,
-      folder: 'fabrics',
-      tags: ['fabric', 'inventory'],
-      context: `fabric_code=${fabricCode}`,
+      uploadPreset: UPLOAD_PRESET, // unsigned preset handles folder/tags automatically
+      // Note: publicId, folder, tags, context are handled by the upload preset
+      // Don't set them here for unsigned uploads
       maxFileSize: 5000000, // 5MB
       maxImageWidth: 2000,
       maxImageHeight: 2000,
@@ -274,7 +273,11 @@ export class CloudinaryService {
       showAdvancedOptions: false,
       showInsecurePreview: false,
       showUploadMoreButton: false,
-      theme: 'minimal'
+      theme: 'minimal',
+      // Add fabric code as metadata for tracking (if supported by preset)
+      metadata: {
+        fabric_code: fabricCode
+      }
     }
   }
 }

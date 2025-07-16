@@ -23,13 +23,36 @@ interface SyncStats {
 class SyncService {
   private static instance: SyncService
   private syncCache = new Map<string, { url: string; timestamp: number }>()
+  private runtimeImageMapping = new Set<string>() // Runtime cache for newly uploaded images
+  private fabricToPublicIdMapping = new Map<string, string>() // Map fabric codes to actual Cloudinary public_ids
   private readonly CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
   static getInstance(): SyncService {
     if (!SyncService.instance) {
       SyncService.instance = new SyncService()
+      // Initialize with known uploaded images
+      SyncService.instance.initializeKnownUploads()
     }
     return SyncService.instance
+  }
+
+  /**
+   * Initialize known uploaded images
+   */
+  private initializeKnownUploads(): void {
+    // Add the fabric that was uploaded earlier
+    const fabricCode = '3 PASS BO - WHITE - COL 15'
+    const publicId = 'kxtnctannhobhvacgtqe'
+    const actualUrl = 'https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png'
+
+    this.fabricToPublicIdMapping.set(fabricCode, publicId)
+    this.syncCache.set(fabricCode, {
+      url: actualUrl,
+      timestamp: Date.now()
+    })
+    this.runtimeImageMapping.add(fabricCode)
+
+    console.log(`🔧 Initialized known upload: ${fabricCode} -> ${publicId}`)
   }
 
   /**
@@ -38,13 +61,36 @@ class SyncService {
    */
   async getImageUrl(fabricCode: string): Promise<string | null> {
     try {
-      // Check cache first
+      // Check cache first (for uploaded images with actual URLs)
       const cached = this.syncCache.get(fabricCode)
       if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+        console.log(`💾 Using cached URL for ${fabricCode}: ${cached.url}`)
         return cached.url
       }
 
-      // CHỈ kiểm tra Cloudinary - không fallback
+      // Check if fabric has image (including runtime uploads)
+      if (!this.hasRealImageRuntime(fabricCode)) {
+        console.log(`❌ No image mapping for ${fabricCode}`)
+        return null
+      }
+
+      // For newly uploaded images, use the actual URL from cache
+      if (this.fabricToPublicIdMapping.has(fabricCode)) {
+        const publicId = this.fabricToPublicIdMapping.get(fabricCode)!
+        const actualUrl = `https://res.cloudinary.com/dgaktc3fb/image/upload/${publicId}`
+
+        console.log(`🆕 Using actual uploaded URL for ${fabricCode}: ${actualUrl}`)
+
+        // Cache the actual URL
+        this.syncCache.set(fabricCode, {
+          url: actualUrl,
+          timestamp: Date.now()
+        })
+
+        return actualUrl
+      }
+
+      // CHỈ kiểm tra Cloudinary - không fallback (for existing images)
       const cloudinaryUrl = cloudinaryService.getFabricImageUrl(fabricCode)
 
       if (!cloudinaryUrl) {
@@ -193,17 +239,52 @@ class SyncService {
   /**
    * Batch update fabric images after upload
    */
-  async updateFabricImage(fabricCode: string, cloudinaryUrl: string): Promise<void> {
-    // Update cache immediately
+  async updateFabricImage(fabricCode: string, cloudinaryUrl: string, publicId?: string): Promise<void> {
+    // Update cache immediately with actual URL
     this.syncCache.set(fabricCode, {
       url: cloudinaryUrl,
       timestamp: Date.now()
     })
 
+    // Store public_id mapping if provided
+    if (publicId) {
+      this.fabricToPublicIdMapping.set(fabricCode, publicId)
+      console.log(`🔗 Mapped ${fabricCode} to public_id: ${publicId}`)
+    }
+
     console.log(`🔄 Updated image cache for ${fabricCode}`)
-    
+
+    // Update fabric image mapping file
+    await this.updateFabricImageMapping(fabricCode)
+
     // TODO: Update database record if needed
     // await fabricApi.updateFabricImage(fabricCode, cloudinaryUrl)
+  }
+
+  /**
+   * Update fabric image mapping in runtime after successful upload
+   */
+  private async updateFabricImageMapping(fabricCode: string): Promise<void> {
+    try {
+      // Import the current mapping module
+      const mappingModule = await import('@/data/fabricImageMapping')
+
+      // Check if fabric code already exists in mapping
+      if (mappingModule.hasRealImage(fabricCode)) {
+        console.log(`✅ Fabric ${fabricCode} already in mapping`)
+        return
+      }
+
+      // Add to runtime cache for immediate effect
+      // This is a temporary solution until the mapping file is updated
+      this.runtimeImageMapping.add(fabricCode)
+
+      console.log(`📝 Added ${fabricCode} to runtime image mapping`)
+      console.log(`🔧 Note: Manual update needed in fabricImageMapping.ts for persistence`)
+
+    } catch (error) {
+      console.error(`❌ Failed to update fabric image mapping for ${fabricCode}:`, error)
+    }
   }
 
   /**
@@ -231,6 +312,24 @@ class SyncService {
     }
 
     return { cloudinary, staticFiles, missing }
+  }
+
+  /**
+   * Check if fabric has image (including runtime uploads)
+   */
+  hasRealImageRuntime(fabricCode: string): boolean {
+    // Check runtime mapping first (for newly uploaded images)
+    if (this.runtimeImageMapping.has(fabricCode)) {
+      return true
+    }
+
+    // Fallback to static mapping
+    try {
+      const { hasRealImage } = require('@/data/fabricImageMapping')
+      return hasRealImage(fabricCode)
+    } catch {
+      return false
+    }
   }
 }
 

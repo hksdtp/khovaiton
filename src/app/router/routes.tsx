@@ -53,4 +53,9 @@ export const router = createBrowserRouter([
       </div>
     ),
   },
-])
+], {
+  future: {
+    // Enable React Router v7 future flags to remove warnings
+    v7_startTransition: true,
+  }
+})

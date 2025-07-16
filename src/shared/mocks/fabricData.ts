@@ -1,5 +1,6 @@
 import { Fabric, FabricType, FabricStatus } from '@/features/inventory/types'
 import { cloudinaryService } from '../../services/cloudinaryService'
+import { syncService } from '../../services/syncService'
 import { hasRealImage } from '@/data/fabricImageMapping'
 
 /**
@@ -309,6 +310,10 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     }
 
     cachedFabrics = updatedFabrics
+
+    // Update images with actual URLs from syncService (async)
+    updateFabricImagesAsync(updatedFabrics)
+
     return updatedFabrics
 
   } catch (error) {
@@ -316,6 +321,30 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     cachedFabrics = generateFallbackData()
     return cachedFabrics
   }
+}
+
+/**
+ * Update fabric images with actual URLs from syncService
+ * Ninh ơi, function này update ảnh thật từ syncService sau khi load
+ */
+async function updateFabricImagesAsync(fabrics: Fabric[]): Promise<void> {
+  console.log('🔄 Updating fabric images with actual URLs...')
+
+  for (const fabric of fabrics) {
+    try {
+      // Get actual URL from syncService (handles uploaded images)
+      const actualUrl = await syncService.getImageUrl(fabric.code)
+
+      if (actualUrl && actualUrl !== fabric.image) {
+        fabric.image = actualUrl
+        console.log(`🔄 Updated ${fabric.code} with actual URL: ${actualUrl}`)
+      }
+    } catch (error) {
+      console.warn(`⚠️ Failed to get actual URL for ${fabric.code}:`, error)
+    }
+  }
+
+  console.log('✅ Fabric image update completed')
 }
 
 /**
