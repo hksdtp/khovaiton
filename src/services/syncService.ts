@@ -26,33 +26,104 @@ class SyncService {
   private runtimeImageMapping = new Set<string>() // Runtime cache for newly uploaded images
   private fabricToPublicIdMapping = new Map<string, string>() // Map fabric codes to actual Cloudinary public_ids
   private readonly CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+  private readonly STORAGE_KEY = 'khovaiton_fabric_uploads' // localStorage key
 
   static getInstance(): SyncService {
     if (!SyncService.instance) {
       SyncService.instance = new SyncService()
-      // Initialize with known uploaded images
+      // Initialize with known uploaded images and load from localStorage
+      SyncService.instance.loadFromStorage()
       SyncService.instance.initializeKnownUploads()
     }
     return SyncService.instance
   }
 
   /**
+   * Load uploaded images from localStorage
+   */
+  private loadFromStorage(): void {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY)
+      if (stored) {
+        const data = JSON.parse(stored)
+
+        // Restore fabric to public_id mapping
+        if (data.fabricToPublicIdMapping) {
+          Object.entries(data.fabricToPublicIdMapping).forEach(([fabricCode, publicId]) => {
+            this.fabricToPublicIdMapping.set(fabricCode, publicId as string)
+            this.runtimeImageMapping.add(fabricCode)
+
+            // Generate URL from public_id
+            const url = `https://res.cloudinary.com/dgaktc3fb/image/upload/${publicId}`
+            this.syncCache.set(fabricCode, {
+              url,
+              timestamp: Date.now()
+            })
+          })
+
+          console.log(`💾 Loaded ${this.fabricToPublicIdMapping.size} uploaded images from storage`)
+        }
+      }
+    } catch (error) {
+      console.warn('⚠️ Failed to load from storage:', error)
+    }
+  }
+
+  /**
+   * Save uploaded images to localStorage
+   */
+  private saveToStorage(): void {
+    try {
+      const data = {
+        fabricToPublicIdMapping: Object.fromEntries(this.fabricToPublicIdMapping),
+        timestamp: Date.now()
+      }
+
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data))
+      console.log(`💾 Saved ${this.fabricToPublicIdMapping.size} uploaded images to storage`)
+    } catch (error) {
+      console.warn('⚠️ Failed to save to storage:', error)
+    }
+  }
+
+  /**
    * Initialize known uploaded images
    */
   private initializeKnownUploads(): void {
-    // Add the fabric that was uploaded earlier
-    const fabricCode = '3 PASS BO - WHITE - COL 15'
-    const publicId = 'kxtnctannhobhvacgtqe'
-    const actualUrl = 'https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png'
+    // Add known uploaded fabrics (if not already loaded from storage)
+    const knownUploads = [
+      {
+        fabricCode: '3 PASS BO - WHITE - COL 15',
+        publicId: 'kxtnctannhobhvacgtqe',
+        url: 'https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png'
+      },
+      {
+        fabricCode: '33139-2-270',
+        publicId: 'mfpxvks1qcxcrjac1roc',
+        url: 'https://res.cloudinary.com/dgaktc3fb/image/upload/v1752722045/mfpxvks1qcxcrjac1roc.png'
+      }
+    ]
 
-    this.fabricToPublicIdMapping.set(fabricCode, publicId)
-    this.syncCache.set(fabricCode, {
-      url: actualUrl,
-      timestamp: Date.now()
+    let needsSave = false
+
+    knownUploads.forEach(({ fabricCode, publicId, url }) => {
+      if (!this.fabricToPublicIdMapping.has(fabricCode)) {
+        this.fabricToPublicIdMapping.set(fabricCode, publicId)
+        this.syncCache.set(fabricCode, {
+          url,
+          timestamp: Date.now()
+        })
+        this.runtimeImageMapping.add(fabricCode)
+
+        console.log(`🔧 Initialized known upload: ${fabricCode} -> ${publicId}`)
+        needsSave = true
+      }
     })
-    this.runtimeImageMapping.add(fabricCode)
 
-    console.log(`🔧 Initialized known upload: ${fabricCode} -> ${publicId}`)
+    // Save to storage if any new uploads were added
+    if (needsSave) {
+      this.saveToStorage()
+    }
   }
 
   /**
@@ -223,6 +294,49 @@ class SyncService {
   }
 
   /**
+   * Clear all storage (including localStorage)
+   */
+  clearAllStorage(): void {
+    this.syncCache.clear()
+    this.runtimeImageMapping.clear()
+    this.fabricToPublicIdMapping.clear()
+
+    try {
+      localStorage.removeItem(this.STORAGE_KEY)
+      console.log('🗑️ All storage cleared (cache + localStorage)')
+    } catch (error) {
+      console.warn('⚠️ Failed to clear localStorage:', error)
+    }
+  }
+
+  /**
+   * Get storage info
+   */
+  getStorageInfo() {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY)
+      const data = stored ? JSON.parse(stored) : null
+
+      return {
+        hasStorage: !!stored,
+        uploadedCount: this.fabricToPublicIdMapping.size,
+        runtimeCount: this.runtimeImageMapping.size,
+        cacheCount: this.syncCache.size,
+        storageData: data,
+        fabricCodes: Array.from(this.fabricToPublicIdMapping.keys())
+      }
+    } catch (error) {
+      return {
+        hasStorage: false,
+        uploadedCount: 0,
+        runtimeCount: 0,
+        cacheCount: 0,
+        error: (error as Error).message
+      }
+    }
+  }
+
+  /**
    * Get cache stats
    */
   getCacheStats() {
@@ -250,6 +364,9 @@ class SyncService {
     if (publicId) {
       this.fabricToPublicIdMapping.set(fabricCode, publicId)
       console.log(`🔗 Mapped ${fabricCode} to public_id: ${publicId}`)
+
+      // Save to localStorage for persistence
+      this.saveToStorage()
     }
 
     console.log(`🔄 Updated image cache for ${fabricCode}`)
