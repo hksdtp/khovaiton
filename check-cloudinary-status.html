@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kiểm tra Cloudinary Status</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; }
+        img { max-width: 300px; margin: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Kiểm tra Cloudinary Status</h1>
+    
+    <h2>📋 Ảnh đã upload từ web app:</h2>
+    <div id="uploaded-images"></div>
+    
+    <h2>🧪 Test URLs:</h2>
+    <div id="test-results"></div>
+    
+    <h2>📊 Cloudinary API Test:</h2>
+    <div id="api-results"></div>
+    
+    <script>
+        // Danh sách ảnh đã upload
+        const uploadedImages = [
+            {
+                fabricCode: '3 PASS BO - WHITE - COL 15',
+                publicId: 'kxtnctannhobhvacgtqe',
+                uploadUrl: 'https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png',
+                directUrl: 'https://res.cloudinary.com/dgaktc3fb/image/upload/kxtnctannhobhvacgtqe'
+            },
+            {
+                fabricCode: '33139-2-270',
+                publicId: 'mfpxvks1qcxcrjac1roc',
+                uploadUrl: 'https://res.cloudinary.com/dgaktc3fb/image/upload/v1752722045/mfpxvks1qcxcrjac1roc.png',
+                directUrl: 'https://res.cloudinary.com/dgaktc3fb/image/upload/mfpxvks1qcxcrjac1roc'
+            }
+        ]
+        
+        // Hiển thị ảnh đã upload
+        const uploadedDiv = document.getElementById('uploaded-images')
+        uploadedImages.forEach(img => {
+            const div = document.createElement('div')
+            div.className = 'info'
+            div.innerHTML = `
+                <h3>${img.fabricCode}</h3>
+                <p><strong>Public ID:</strong> ${img.publicId}</p>
+                <p><strong>Upload URL:</strong> <a href="${img.uploadUrl}" target="_blank">${img.uploadUrl}</a></p>
+                <p><strong>Direct URL:</strong> <a href="${img.directUrl}" target="_blank">${img.directUrl}</a></p>
+                <img src="${img.directUrl}" alt="${img.fabricCode}" onload="console.log('✅ Loaded: ${img.fabricCode}')" onerror="console.log('❌ Failed: ${img.fabricCode}')">
+            `
+            uploadedDiv.appendChild(div)
+        })
+        
+        // Test URLs
+        async function testUrls() {
+            const testDiv = document.getElementById('test-results')
+            
+            for (const img of uploadedImages) {
+                const urls = [img.uploadUrl, img.directUrl]
+                
+                for (const url of urls) {
+                    try {
+                        const response = await fetch(url, { method: 'HEAD' })
+                        const div = document.createElement('div')
+                        div.className = response.ok ? 'success' : 'error'
+                        div.innerHTML = `
+                            <strong>${img.fabricCode}</strong><br>
+                            URL: ${url}<br>
+                            Status: ${response.status} ${response.statusText}
+                        `
+                        testDiv.appendChild(div)
+                        console.log(`${response.ok ? '✅' : '❌'} ${img.fabricCode}: ${url} - ${response.status}`)
+                    } catch (error) {
+                        const div = document.createElement('div')
+                        div.className = 'error'
+                        div.innerHTML = `
+                            <strong>${img.fabricCode}</strong><br>
+                            URL: ${url}<br>
+                            Error: ${error.message}
+                        `
+                        testDiv.appendChild(div)
+                        console.error(`❌ ${img.fabricCode}: ${url} - ${error.message}`)
+                    }
+                }
+            }
+        }
+        
+        // Test Cloudinary API (Admin API cần API secret nên không test được từ browser)
+        function testCloudinaryAPI() {
+            const apiDiv = document.getElementById('api-results')
+            apiDiv.innerHTML = `
+                <div class="info">
+                    <h3>⚠️ Cloudinary Admin API</h3>
+                    <p>Admin API cần API secret nên không thể test từ browser.</p>
+                    <p>Để kiểm tra đầy đủ, cần:</p>
+                    <ul>
+                        <li>✅ Upload API (đã hoạt động - unsigned preset)</li>
+                        <li>❓ Admin API (cần server-side để list/search images)</li>
+                        <li>✅ Delivery API (đang test ở trên)</li>
+                    </ul>
+                    
+                    <h4>🔧 Để đồng bộ 2 chiều cần:</h4>
+                    <ol>
+                        <li><strong>Server-side script</strong> để gọi Admin API</li>
+                        <li><strong>Webhook</strong> từ Cloudinary khi có upload mới</li>
+                        <li><strong>Periodic sync</strong> để check ảnh mới</li>
+                        <li><strong>Database</strong> để lưu mapping persistent</li>
+                    </ol>
+                    
+                    <h4>📋 Hiện tại có thể làm:</h4>
+                    <ul>
+                        <li>✅ Upload từ web app → Cloudinary</li>
+                        <li>✅ Hiển thị ảnh từ Cloudinary → web app</li>
+                        <li>❌ Tự động detect ảnh mới trên Cloudinary</li>
+                        <li>❌ Sync ngược từ Cloudinary → web app</li>
+                    </ul>
+                </div>
+            `
+        }
+        
+        // Chạy tests
+        testUrls()
+        testCloudinaryAPI()
+        
+        // Log instructions
+        console.log(`
+🔍 Cloudinary Status Check Results:
+
+📋 Uploaded Images:
+${uploadedImages.map(img => `- ${img.fabricCode}: ${img.publicId}`).join('\n')}
+
+🧪 Manual Tests:
+1. Check if images load above
+2. Click URLs to verify accessibility
+3. Check browser console for detailed results
+
+💡 Next Steps for 2-way sync:
+1. Implement server-side Admin API calls
+2. Set up Cloudinary webhooks
+3. Create periodic sync job
+4. Add database for persistent mapping
+        `)
+    </script>
+</body>
+</html>

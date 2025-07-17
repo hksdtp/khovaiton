@@ -13,6 +13,7 @@ import { ImageStatusFilter } from './ImageStatusFilter'
 import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
+import { CloudinarySyncPanel } from './CloudinarySyncPanel'
 import { useQueryClient } from '@tanstack/react-query'
 import { refreshFabricImage } from '@/shared/mocks/fabricData'
 
@@ -23,6 +24,7 @@ export function InventoryPage() {
     message: string
     fabricCode?: string
   }>({ type: null, message: '' })
+  const [showSyncPanel, setShowSyncPanel] = useState(false)
   const queryClient = useQueryClient()
 
   const {
@@ -184,6 +186,15 @@ export function InventoryPage() {
                   <Filter className="w-4 h-4" />
                   Lọc
                 </Button>
+
+                <Button
+                  variant={showSyncPanel ? "primary" : "secondary"}
+                  onClick={() => setShowSyncPanel(!showSyncPanel)}
+                  size="sm"
+                >
+                  <Package className="w-4 h-4" />
+                  Đồng bộ
+                </Button>
                 {/* Tạm ẩn 2 nút này theo yêu cầu */}
                 {/* <Button
                   variant="secondary"
@@ -222,6 +233,13 @@ export function InventoryPage() {
               onResetFilters={resetFilters}
               resultCount={fabricsData?.total}
             />
+
+            {/* Cloudinary Sync Panel */}
+            {showSyncPanel && (
+              <div className="mt-6">
+                <CloudinarySyncPanel />
+              </div>
+            )}
           </div>
         </div>
       </div>

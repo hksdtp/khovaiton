@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Image URL</title>
+</head>
+<body>
+    <h1>Test Fabric Image URL</h1>
+    
+    <div>
+        <h2>Fabric: 3 PASS BO - WHITE - COL 15</h2>
+        
+        <h3>Expected URL (actual upload):</h3>
+        <p><a href="https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png" target="_blank">
+            https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png
+        </a></p>
+        <img src="https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png" 
+             style="max-width: 300px; border: 1px solid #ccc;" 
+             alt="Actual uploaded image"
+             onload="console.log('✅ Actual image loaded successfully')"
+             onerror="console.log('❌ Actual image failed to load')">
+        
+        <h3>Generated URL (by app):</h3>
+        <p><a href="https://res.cloudinary.com/dgaktc3fb/image/upload/q_80,w_800/fabrics/3%20PASS%20BO%20-%20WHITE%20-%20COL%2015.jpg" target="_blank">
+            https://res.cloudinary.com/dgaktc3fb/image/upload/q_80,w_800/fabrics/3%20PASS%20BO%20-%20WHITE%20-%20COL%2015.jpg
+        </a></p>
+        <img src="https://res.cloudinary.com/dgaktc3fb/image/upload/q_80,w_800/fabrics/3%20PASS%20BO%20-%20WHITE%20-%20COL%2015.jpg" 
+             style="max-width: 300px; border: 1px solid #ccc;" 
+             alt="App generated image"
+             onload="console.log('✅ App generated image loaded successfully')"
+             onerror="console.log('❌ App generated image failed to load')">
+             
+        <h3>Test with public_id:</h3>
+        <p><a href="https://res.cloudinary.com/dgaktc3fb/image/upload/kxtnctannhobhvacgtqe" target="_blank">
+            https://res.cloudinary.com/dgaktc3fb/image/upload/kxtnctannhobhvacgtqe
+        </a></p>
+        <img src="https://res.cloudinary.com/dgaktc3fb/image/upload/kxtnctannhobhvacgtqe" 
+             style="max-width: 300px; border: 1px solid #ccc;" 
+             alt="Public ID image"
+             onload="console.log('✅ Public ID image loaded successfully')"
+             onerror="console.log('❌ Public ID image failed to load')">
+    </div>
+    
+    <script>
+        console.log('🧪 Testing image URLs...')
+        
+        // Test actual URL
+        fetch('https://res.cloudinary.com/dgaktc3fb/image/upload/v1752679690/kxtnctannhobhvacgtqe.png', { method: 'HEAD' })
+            .then(response => {
+                console.log('✅ Actual URL accessible:', response.ok, response.status)
+            })
+            .catch(error => {
+                console.error('❌ Actual URL error:', error)
+            })
+            
+        // Test generated URL
+        fetch('https://res.cloudinary.com/dgaktc3fb/image/upload/q_80,w_800/fabrics/3%20PASS%20BO%20-%20WHITE%20-%20COL%2015.jpg', { method: 'HEAD' })
+            .then(response => {
+                console.log('❌ Generated URL accessible:', response.ok, response.status)
+            })
+            .catch(error => {
+                console.error('❌ Generated URL error:', error)
+            })
+            
+        // Test public_id URL
+        fetch('https://res.cloudinary.com/dgaktc3fb/image/upload/kxtnctannhobhvacgtqe', { method: 'HEAD' })
+            .then(response => {
+                console.log('✅ Public ID URL accessible:', response.ok, response.status)
+            })
+            .catch(error => {
+                console.error('❌ Public ID URL error:', error)
+            })
+    </script>
+</body>
+</html>
