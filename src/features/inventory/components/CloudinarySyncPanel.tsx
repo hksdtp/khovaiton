@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { Button } from '@/common/design-system/components'
 import { cloudinarySyncService, type CloudinaryImage } from '@/services/cloudinarySyncService'
 import { syncService } from '@/services/syncService'
-import { RefreshCw, Cloud, Database, CheckCircle, AlertCircle } from 'lucide-react'
+import { RefreshCw, Cloud, Database, CheckCircle, AlertCircle, Smartphone } from 'lucide-react'
 
 interface SyncStatus {
   isLoading: boolean
@@ -93,6 +93,37 @@ export function CloudinarySyncPanel() {
   }
 
   /**
+   * Force cloud sync
+   */
+  const handleCloudSync = async () => {
+    setSyncStatus(prev => ({ ...prev, isLoading: true, error: '' }))
+
+    try {
+      const result = await syncService.forceCloudSync()
+
+      if (result.success) {
+        setSyncStatus(prev => ({
+          ...prev,
+          isLoading: false,
+          lastSync: new Date(),
+          newMappings: result.localToCloud + result.cloudToLocal
+        }))
+
+        // Refresh page to show updated images
+        window.location.reload()
+      } else {
+        throw new Error(result.error || 'Cloud sync failed')
+      }
+    } catch (error) {
+      setSyncStatus(prev => ({
+        ...prev,
+        isLoading: false,
+        error: (error as Error).message
+      }))
+    }
+  }
+
+  /**
    * Clear all storage
    */
   const handleClearStorage = () => {
@@ -148,7 +179,7 @@ export function CloudinarySyncPanel() {
       </div>
 
       {/* Storage Info */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div className="p-3 bg-blue-50 rounded-lg">
           <div className="text-sm text-blue-600 font-medium">Ảnh đã lưu</div>
           <div className="text-2xl font-bold text-blue-900">
@@ -159,6 +190,18 @@ export function CloudinarySyncPanel() {
           <div className="text-sm text-green-600 font-medium">Cache</div>
           <div className="text-2xl font-bold text-green-900">
             {storageInfo.cacheCount}
+          </div>
+        </div>
+        <div className="p-3 bg-purple-50 rounded-lg">
+          <div className="text-sm text-purple-600 font-medium flex items-center gap-1">
+            <Smartphone className="w-3 h-3" />
+            Cloud Sync
+          </div>
+          <div className="text-xs text-purple-700">
+            {storageInfo.cloudSync?.lastSyncTime
+              ? new Date(storageInfo.cloudSync.lastSyncTime).toLocaleTimeString('vi-VN')
+              : 'Chưa sync'
+            }
           </div>
         </div>
       </div>
@@ -187,24 +230,39 @@ export function CloudinarySyncPanel() {
       )}
 
       {/* Actions */}
-      <div className="flex gap-3">
-        <Button
-          onClick={handleFullSync}
-          disabled={syncStatus.isLoading}
-          isLoading={syncStatus.isLoading}
-          className="flex-1"
-        >
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Đồng bộ từ Cloudinary
-        </Button>
-        
-        <Button
-          variant="secondary"
-          onClick={handleClearStorage}
-          disabled={syncStatus.isLoading}
-        >
-          Xóa cache
-        </Button>
+      <div className="space-y-3">
+        <div className="flex gap-3">
+          <Button
+            onClick={handleFullSync}
+            disabled={syncStatus.isLoading}
+            isLoading={syncStatus.isLoading}
+            className="flex-1"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Đồng bộ từ Cloudinary
+          </Button>
+
+          <Button
+            variant="secondary"
+            onClick={handleCloudSync}
+            disabled={syncStatus.isLoading}
+            className="flex-1"
+          >
+            <Smartphone className="w-4 h-4 mr-2" />
+            Đồng bộ thiết bị
+          </Button>
+        </div>
+
+        <div className="flex gap-3">
+          <Button
+            variant="secondary"
+            onClick={handleClearStorage}
+            disabled={syncStatus.isLoading}
+            className="flex-1"
+          >
+            Xóa cache
+          </Button>
+        </div>
       </div>
 
       {/* Mappings List */}
@@ -237,9 +295,10 @@ export function CloudinarySyncPanel() {
       {/* Instructions */}
       <div className="text-xs text-gray-500 space-y-1">
         <div>💡 <strong>Hướng dẫn:</strong></div>
-        <div>• Nhấn "Đồng bộ từ Cloudinary" để tìm ảnh mới</div>
-        <div>• Hệ thống sẽ tự động map ảnh với mã vải</div>
-        <div>• Ảnh được lưu trong localStorage để persist</div>
+        <div>• <strong>Đồng bộ từ Cloudinary:</strong> Tìm ảnh mới trên Cloudinary</div>
+        <div>• <strong>Đồng bộ thiết bị:</strong> Đồng bộ ảnh giữa các thiết bị</div>
+        <div>• Ảnh được lưu trên cloud để hiển thị đồng nhất</div>
+        <div>• Tự động sync mỗi 30 giây</div>
       </div>
     </div>
   )

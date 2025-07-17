@@ -4,6 +4,7 @@
  */
 
 import { cloudinaryService } from './cloudinaryService'
+import { fabricMappingService } from './fabricMappingService'
 
 interface SyncResult {
   fabricCode: string
@@ -34,6 +35,8 @@ class SyncService {
       // Initialize with known uploaded images and load from localStorage
       SyncService.instance.loadFromStorage()
       SyncService.instance.initializeKnownUploads()
+      // Start cloud sync
+      SyncService.instance.initializeCloudSync()
     }
     return SyncService.instance
   }
@@ -310,12 +313,26 @@ class SyncService {
   }
 
   /**
+   * Initialize cloud sync
+   */
+  private async initializeCloudSync(): Promise<void> {
+    try {
+      // Start auto-sync for cross-device consistency
+      fabricMappingService.startAutoSync()
+      console.log('☁️ Cloud sync initialized')
+    } catch (error) {
+      console.warn('⚠️ Failed to initialize cloud sync:', error)
+    }
+  }
+
+  /**
    * Get storage info
    */
   getStorageInfo() {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY)
       const data = stored ? JSON.parse(stored) : null
+      const cloudSyncStatus = fabricMappingService.getSyncStatus()
 
       return {
         hasStorage: !!stored,
@@ -323,7 +340,8 @@ class SyncService {
         runtimeCount: this.runtimeImageMapping.size,
         cacheCount: this.syncCache.size,
         storageData: data,
-        fabricCodes: Array.from(this.fabricToPublicIdMapping.keys())
+        fabricCodes: Array.from(this.fabricToPublicIdMapping.keys()),
+        cloudSync: cloudSyncStatus
       }
     } catch (error) {
       return {
@@ -334,6 +352,18 @@ class SyncService {
         error: (error as Error).message
       }
     }
+  }
+
+  /**
+   * Force cloud sync
+   */
+  async forceCloudSync(): Promise<{
+    success: boolean
+    localToCloud: number
+    cloudToLocal: number
+    error?: string
+  }> {
+    return await fabricMappingService.syncWithCloud()
   }
 
   /**
@@ -367,6 +397,9 @@ class SyncService {
 
       // Save to localStorage for persistence
       this.saveToStorage()
+
+      // Sync with cloud storage for cross-device consistency
+      await fabricMappingService.syncAfterUpload(fabricCode, publicId)
     }
 
     console.log(`🔄 Updated image cache for ${fabricCode}`)
