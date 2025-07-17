@@ -4,8 +4,6 @@
  * Đã loại bỏ static images và ảnh giả/mặc định
  */
 
-import { cloudinaryService } from '@/services/cloudinaryService'
-import { hasRealImage } from '@/data/fabricImageMapping'
 import { syncService } from '@/services/syncService'
 
 export interface ImageMapping {
@@ -68,15 +66,18 @@ export async function getImageMappingReport(
   withoutImages: number
   mappings: ImageMapping[]
 }> {
-  const mappings: ImageMapping[] = fabricCodes.map(code => {
-    const imageUrl = getFabricImageUrl(code)
-    return {
+  const mappings: ImageMapping[] = []
+
+  // Process each fabric code asynchronously
+  for (const code of fabricCodes) {
+    const imageUrl = await getFabricImageUrl(code)
+    mappings.push({
       fabricCode: code,
       imagePath: imageUrl,
       isAvailable: !!imageUrl,
       source: imageUrl ? 'cloudinary' as const : 'none' as const
-    }
-  })
+    })
+  }
 
   const withImages = mappings.filter(m => m.isAvailable).length
   const withoutImages = mappings.length - withImages
