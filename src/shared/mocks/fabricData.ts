@@ -348,6 +348,39 @@ async function updateFabricImagesAsync(fabrics: Fabric[]): Promise<void> {
 }
 
 /**
+ * Force refresh fabric images for specific fabric code
+ * Ninh ơi, function này force refresh ảnh cho fabric code cụ thể
+ */
+export async function refreshFabricImage(fabricCode: string): Promise<void> {
+  console.log(`🔄 Force refreshing image for ${fabricCode}...`)
+
+  if (!cachedFabrics || cachedFabrics.length === 0) {
+    console.warn('⚠️ No cached fabrics to refresh')
+    return
+  }
+
+  const fabric = cachedFabrics.find(f => f.code === fabricCode)
+  if (!fabric) {
+    console.warn(`⚠️ Fabric ${fabricCode} not found in cache`)
+    return
+  }
+
+  try {
+    // Get actual URL from syncService
+    const actualUrl = await syncService.getImageUrl(fabricCode)
+
+    if (actualUrl) {
+      fabric.image = actualUrl
+      console.log(`✅ Refreshed ${fabricCode} with URL: ${actualUrl}`)
+    } else {
+      console.log(`❌ No URL found for ${fabricCode}`)
+    }
+  } catch (error) {
+    console.error(`❌ Failed to refresh image for ${fabricCode}:`, error)
+  }
+}
+
+/**
  * Synchronous version for backward compatibility
  * Returns fallback data immediately, real data will be loaded async
  */

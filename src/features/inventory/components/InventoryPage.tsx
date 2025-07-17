@@ -14,9 +14,15 @@ import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
 import { useQueryClient } from '@tanstack/react-query'
+import { refreshFabricImage } from '@/shared/mocks/fabricData'
 
 export function InventoryPage() {
   const [isUploading, setIsUploading] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState<{
+    type: 'success' | 'error' | null
+    message: string
+    fabricCode?: string
+  }>({ type: null, message: '' })
   const queryClient = useQueryClient()
 
   const {
@@ -50,6 +56,7 @@ export function InventoryPage() {
     if (!uploadingForId) return
 
     setIsUploading(true)
+    setUploadStatus({ type: null, message: '' })
 
     try {
       console.log(`🚀 Starting upload for fabric ID: ${uploadingForId}`)
@@ -74,15 +81,33 @@ export function InventoryPage() {
       queryClient.invalidateQueries({ queryKey: ['fabrics'] })
       queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
 
-      setUploadModal(false)
+      // Force refresh the specific fabric image in cache
+      await refreshFabricImage(fabric.code)
+
+      // Force refresh the specific fabric data
+      queryClient.refetchQueries({ queryKey: ['fabrics'] })
+
+      // Show success message
+      setUploadStatus({
+        type: 'success',
+        message: `Ảnh đã được upload thành công cho ${fabric.code}!`,
+        fabricCode: fabric.code
+      })
 
       console.log(`🎉 Upload completed and cache refreshed for ${fabric.code}`)
 
-      // TODO: Update fabric image in database if needed
+      // Close modal after short delay to show success message
+      setTimeout(() => {
+        setUploadModal(false)
+        setUploadStatus({ type: null, message: '' })
+      }, 2000)
 
     } catch (error) {
       console.error(`❌ Upload failed:`, error)
-      // TODO: Show error toast/notification
+      setUploadStatus({
+        type: 'error',
+        message: `Upload thất bại: ${(error as Error).message}`
+      })
     } finally {
       setIsUploading(false)
     }
@@ -241,9 +266,13 @@ export function InventoryPage() {
       {isUploadModalOpen && uploadingForId && (
         <ImageUploadModal
           isOpen={isUploadModalOpen}
-          onClose={() => setUploadModal(false)}
+          onClose={() => {
+            setUploadModal(false)
+            setUploadStatus({ type: null, message: '' })
+          }}
           onUpload={handleUploadImage}
           isUploading={isUploading}
+          uploadStatus={uploadStatus}
         />
       )}
 
