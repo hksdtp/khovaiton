@@ -3,7 +3,7 @@
  * Allows users to crop, resize, and edit images after upload
  */
 
-import React, { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Save, RotateCw, Square, Maximize, X } from 'lucide-react'
 
 interface ImageEditorProps {

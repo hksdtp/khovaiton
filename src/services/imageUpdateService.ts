@@ -161,7 +161,7 @@ class ImageUpdateService {
       console.log(`🗑️ Processing image deletion for ${fabricCode}`)
 
       // 1. Update sync service cache
-      await syncService.updateFabricImage(fabricCode, null, null)
+      await syncService.updateFabricImage(fabricCode, '', '')
 
       // 2. Update fabric data in cache
       this.updateFabricInCache(fabricCode, '')

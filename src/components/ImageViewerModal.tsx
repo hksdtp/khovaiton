@@ -3,7 +3,7 @@
  * Allows users to view fabric images in full size with zoom and pan
  */
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { X, ZoomIn, ZoomOut, RotateCw, Download, Edit } from 'lucide-react'
 
 interface ImageViewerModalProps {

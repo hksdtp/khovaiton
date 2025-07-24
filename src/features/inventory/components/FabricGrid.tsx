@@ -65,7 +65,7 @@ export function FabricGrid({
           fabric={fabric}
           onSelect={onSelectFabric}
           onUploadImage={onUploadImage}
-          onViewImage={onViewImage}
+          onViewImage={onViewImage || (() => {})}
           className="animate-fade-in"
         />
       ))}

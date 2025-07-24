@@ -38,7 +38,7 @@ export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
 
   // Listen for auto-sync cache invalidation
   useEffect(() => {
-    const handleInvalidateCache = (event: CustomEvent) => {
+    const handleInvalidateCache = (_event: CustomEvent) => {
       console.log('🔄 Auto-sync triggered cache invalidation, refreshing image status...')
 
       // Invalidate all fabric queries to force refresh

@@ -4,7 +4,7 @@
  */
 
 import { syncService } from './syncService'
-import { cloudinaryService } from './cloudinaryService'
+// import { cloudinaryService } from './cloudinaryService'
 
 export interface AutoSyncConfig {
   enabled: boolean

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, Eye, Edit } from 'lucide-react'
+import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useFabricStats } from '../hooks/useFabrics'
 import { cloudinaryService } from '@/services/cloudinaryService'
-import { syncService } from '@/services/syncService'
+
 import { imageUpdateService } from '@/services/imageUpdateService'
 import { useInventoryStore, useInventorySelectors } from '../store/inventoryStore'
 import { FabricGrid } from './FabricGrid'
@@ -20,7 +20,7 @@ import { AutoSyncStatusComponent } from '@/components/AutoSyncStatus'
 import { ImageViewerModal } from '@/components/ImageViewerModal'
 import { ImageEditor } from '@/components/ImageEditor'
 import { useQueryClient } from '@tanstack/react-query'
-import { refreshFabricImage } from '@/shared/mocks/fabricData'
+
 
 export function InventoryPage() {
   const location = useLocation()
@@ -175,7 +175,7 @@ export function InventoryPage() {
       isOpen: true,
       imageUrl,
       fabricCode,
-      fabricName
+      fabricName: fabricName || ''
     })
   }
 
@@ -418,7 +418,7 @@ export function InventoryPage() {
         onClose={() => setImageViewerState({ isOpen: false, imageUrl: '', fabricCode: '', fabricName: '' })}
         imageUrl={imageViewerState.imageUrl}
         fabricCode={imageViewerState.fabricCode}
-        fabricName={imageViewerState.fabricName}
+        fabricName={imageViewerState.fabricName || ''}
         onEdit={() => handleEditImage(imageViewerState.imageUrl, imageViewerState.fabricCode)}
       />
 
