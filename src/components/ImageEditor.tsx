@@ -4,7 +4,7 @@
  */
 
 import { useState, useRef, useCallback } from 'react'
-import { Save, RotateCw, Square, Maximize, X } from 'lucide-react'
+import { Save, RotateCw, Maximize, X } from 'lucide-react'
 
 interface ImageEditorProps {
   isOpen: boolean
