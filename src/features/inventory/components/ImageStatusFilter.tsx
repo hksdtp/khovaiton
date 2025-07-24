@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useInventoryStore } from '../store/inventoryStore'
 import { useFabrics } from '../hooks/useFabrics'
-import { useImageStatusUpdates } from '../hooks/useImageStatusUpdates'
 
 /**
  * 🖼️ IMAGE STATUS FILTER COMPONENT
@@ -15,7 +14,6 @@ interface ImageStatusFilterProps {
 
 export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
   const { filters, setFilters } = useInventoryStore()
-  const { refreshImageStatusCounts } = useImageStatusUpdates()
   const queryClient = useQueryClient()
 
   // Get fabric counts for each image status - THEO CONTEXT HIỆN TẠI
@@ -34,26 +32,23 @@ export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
   // Auto-refresh counts when any query data changes
   useEffect(() => {
     refreshImageStatusCounts()
-  }, [allFabricsQuery.data, withImagesQuery.data, withoutImagesQuery.data, refreshImageStatusCounts])
+  }, [allFabricsQuery.data, withImagesQuery.data, withoutImagesQuery.data])
 
-  // Listen for auto-sync cache invalidation
+  // Listen for realtime updates
   useEffect(() => {
-    const handleInvalidateCache = (_event: CustomEvent) => {
-      console.log('🔄 Auto-sync triggered cache invalidation, refreshing image status...')
+    const handleRealtimeUpdate = (_event: CustomEvent) => {
+      console.log('🔄 Realtime update triggered, refreshing image status...')
 
       // Invalidate all fabric queries to force refresh
       queryClient.invalidateQueries({ queryKey: ['fabrics'] })
-
-      // Also refresh the image status counts
-      refreshImageStatusCounts()
     }
 
-    window.addEventListener('invalidateImageStatusCache', handleInvalidateCache as EventListener)
+    window.addEventListener('realtimeUpdate', handleRealtimeUpdate as EventListener)
 
     return () => {
-      window.removeEventListener('invalidateImageStatusCache', handleInvalidateCache as EventListener)
+      window.removeEventListener('realtimeUpdate', handleRealtimeUpdate as EventListener)
     }
-  }, [queryClient, refreshImageStatusCounts])
+  }, [queryClient])
 
   const handleImageStatusChange = (imageStatus: 'all' | 'with_images' | 'without_images') => {
     setFilters({ ...filters, imageStatus })

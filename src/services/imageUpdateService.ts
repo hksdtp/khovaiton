@@ -6,6 +6,7 @@
 import { QueryClient } from '@tanstack/react-query'
 import { syncService } from './syncService'
 import { CloudinaryUploadResult } from './cloudinaryService'
+import { realtimeUpdateService } from './realtimeUpdateService'
 
 export interface ImageUpdateResult {
   fabricCode: string
@@ -31,6 +32,8 @@ class ImageUpdateService {
    */
   setQueryClient(queryClient: QueryClient) {
     this.queryClient = queryClient
+    // Also set for realtime update service
+    realtimeUpdateService.setQueryClient(queryClient)
   }
 
   /**
@@ -53,11 +56,8 @@ class ImageUpdateService {
       // 2. Update fabric data in React Query cache optimistically
       this.updateFabricInCache(fabricCode, uploadResult.secure_url)
 
-      // 3. Invalidate all related queries to trigger refetch
-      await this.invalidateAllImageQueries()
-
-      // 4. Force refresh specific fabric image
-      await this.refreshFabricImage(fabricCode)
+      // 3. Use realtime update service for efficient updates
+      await realtimeUpdateService.onImageUploaded(fabricCode)
 
       console.log(`✅ Image update completed for ${fabricCode}`)
 
@@ -166,8 +166,8 @@ class ImageUpdateService {
       // 2. Update fabric data in cache
       this.updateFabricInCache(fabricCode, '')
 
-      // 3. Invalidate queries
-      await this.invalidateAllImageQueries()
+      // 3. Use realtime update service for efficient updates
+      await realtimeUpdateService.onImageDeleted(fabricCode)
 
       console.log(`✅ Image deletion completed for ${fabricCode}`)
       return true

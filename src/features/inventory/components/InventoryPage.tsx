@@ -16,9 +16,10 @@ import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
 import { CloudinarySyncPanel } from './CloudinarySyncPanel'
-import { AutoSyncStatusComponent } from '@/components/AutoSyncStatus'
+
 import { ImageViewerModal } from '@/components/ImageViewerModal'
 import { ImageEditor } from '@/components/ImageEditor'
+import { ImageStatsDisplay } from '@/components/ImageStatsDisplay'
 import { useQueryClient } from '@tanstack/react-query'
 
 
@@ -360,10 +361,12 @@ export function InventoryPage() {
           <ImageStatusFilter className="mb-6" />
         )}
 
-        {/* Auto Sync Status - Chỉ hiển thị trong phiên bản Sale */}
+        {/* Image Stats Display - Hiển thị số liệu realtime */}
         {!isMarketingVersion && (
-          <AutoSyncStatusComponent className="mb-6" />
+          <ImageStatsDisplay className="mb-6" />
         )}
+
+
 
         <FabricGrid
           fabrics={fabricsData?.data || []}

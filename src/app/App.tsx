@@ -8,8 +8,7 @@ import {
   setupPerformanceMonitoring,
   type InitializationResult
 } from './services/appInitializationService'
-// Import auto-sync service to initialize it
-import '@/services/autoSyncService'
+
 // import { isDevelopment } from '@/shared/config/environment'
 
 /**
