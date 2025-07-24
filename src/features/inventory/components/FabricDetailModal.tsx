@@ -1,13 +1,16 @@
 import { Camera, MapPin } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
 import { Modal, Button } from '@/common/design-system/components'
 import { formatQuantity } from '@/shared/utils'
 import { Fabric } from '../types'
+
 
 interface FabricDetailModalProps {
   fabric: Fabric
   isOpen: boolean
   onClose: () => void
   onUploadImage: (fabricId: number) => void
+  onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
 }
 
 export function FabricDetailModal({
@@ -15,7 +18,10 @@ export function FabricDetailModal({
   isOpen,
   onClose,
   onUploadImage,
+  onViewImage,
 }: FabricDetailModalProps) {
+  const location = useLocation()
+  const isMarketingVersion = location.pathname === '/marketing'
   const getStatusText = (status: Fabric['status']) => {
     switch (status) {
       case 'available':
@@ -25,7 +31,7 @@ export function FabricDetailModal({
       case 'out_of_stock':
         return 'Hết hàng'
       case 'damaged':
-        return 'Hỏng'
+        return 'Lỗi nhẹ'
       default:
         return 'Không xác định'
     }
@@ -56,12 +62,21 @@ export function FabricDetailModal({
       <div className="p-6 overflow-y-auto max-h-[70vh] bg-white">
         {/* Image */}
         {fabric.image && (
-          <div className="mb-6 rounded-lg overflow-hidden bg-gray-50 border border-gray-200">
+          <div
+            className="mb-6 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 cursor-pointer group/image relative"
+            onClick={() => onViewImage?.(fabric.image!, fabric.code, fabric.name)}
+          >
             <img
               src={fabric.image}
               alt={fabric.name}
-              className="w-full h-64 object-cover"
+              className="w-full h-64 object-cover transition-transform duration-300 group-hover/image:scale-105"
             />
+            {/* View overlay */}
+            <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-200 flex items-center justify-center">
+              <div className="opacity-0 group-hover/image:opacity-100 transition-opacity duration-200 bg-white/90 rounded-lg px-4 py-2">
+                <span className="text-sm font-medium text-gray-800">👁️ Xem ảnh full size</span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -138,17 +153,21 @@ export function FabricDetailModal({
             </div>
           )}
 
-          <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              Vị trí kho
-            </label>
-            <p className="text-gray-900 bg-gray-50 rounded-lg p-4 border border-gray-200 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-blue-600" />
-              {fabric.location}
-            </p>
-          </div>
+          {/* Vị trí kho - Ẩn trong phiên bản Marketing */}
+          {!isMarketingVersion && (
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">
+                Vị trí kho
+              </label>
+              <p className="text-gray-900 bg-gray-50 rounded-lg p-4 border border-gray-200 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-blue-600" />
+                {fabric.location}
+              </p>
+            </div>
+          )}
 
-          {fabric.condition && (
+          {/* Tình trạng - Ẩn trong phiên bản Marketing */}
+          {fabric.condition && !isMarketingVersion && (
             <div>
               <label className="block text-gray-700 text-sm font-medium mb-2">
                 Tình trạng
@@ -181,6 +200,16 @@ export function FabricDetailModal({
               </p>
             </div>
           )}
+
+          {/* Ứng dụng vải */}
+          <div>
+            <label className="block text-gray-700 text-sm font-medium mb-2">
+              Ứng dụng vải
+            </label>
+            <p className="text-blue-800 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              {fabric.application || 'Chưa xác định ứng dụng'}
+            </p>
+          </div>
         </div>
 
         {/* Action Buttons */}

@@ -97,7 +97,7 @@ function addMapping(fabricCode, publicId) {
 /**
  * Main handler function
  */
-export default async function handler(req, res) {
+async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS')
@@ -181,3 +181,6 @@ export default async function handler(req, res) {
 // Initialize with known mappings
 fabricMappings.set('3 PASS BO - WHITE - COL 15', 'kxtnctannhobhvacgtqe')
 fabricMappings.set('33139-2-270', 'n4t1aa79vfgvkmwdlmml') // Latest upload
+
+// Export as default for Vercel
+module.exports = handler

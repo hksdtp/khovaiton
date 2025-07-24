@@ -1,4 +1,5 @@
 import { Camera, MapPin, Package } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
 import { Card } from '@/common/design-system/components'
 import { cn, formatQuantity } from '@/shared/utils'
 import { Fabric } from '../types'
@@ -7,15 +8,19 @@ interface FabricCardProps {
   fabric: Fabric
   onSelect: (fabric: Fabric) => void
   onUploadImage: (fabricId: number) => void
+  onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
   className?: string
 }
 
-export function FabricCard({ 
-  fabric, 
-  onSelect, 
-  onUploadImage, 
-  className 
+export function FabricCard({
+  fabric,
+  onSelect,
+  onUploadImage,
+  onViewImage,
+  className
 }: FabricCardProps) {
+  const location = useLocation()
+  const isMarketingVersion = location.pathname === '/marketing'
   const getStatusColor = (status: Fabric['status']) => {
     switch (status) {
       case 'available':
@@ -40,7 +45,7 @@ export function FabricCard({
       case 'out_of_stock':
         return 'Hết hàng'
       case 'damaged':
-        return 'Hỏng'
+        return 'Lỗi nhẹ'
       default:
         return 'Không xác định'
     }
@@ -58,11 +63,25 @@ export function FabricCard({
       {/* Image Section */}
       <div className="relative h-48 bg-gray-100 overflow-hidden">
         {fabric.image ? (
-          <img
-            src={fabric.image}
-            alt={fabric.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          />
+          <div
+            className="relative w-full h-full cursor-pointer group/image"
+            onClick={(e) => {
+              e.stopPropagation()
+              onViewImage?.(fabric.image!, fabric.code, fabric.name)
+            }}
+          >
+            <img
+              src={fabric.image}
+              alt={fabric.name}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            {/* View overlay */}
+            <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-200 flex items-center justify-center">
+              <div className="opacity-0 group-hover/image:opacity-100 transition-opacity duration-200 bg-white/90 rounded-lg px-3 py-2">
+                <span className="text-sm font-medium text-gray-800">👁️ Xem ảnh</span>
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
@@ -135,21 +154,15 @@ export function FabricCard({
           </div>
         )}
 
-        {/* Location */}
-        <div className="flex items-center gap-2 text-sm mb-3">
-          <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          <span className="text-gray-600 truncate">{fabric.location}</span>
-        </div>
-
-        {/* Condition */}
-        {fabric.condition && (
-          <div className="mt-3 p-2 bg-orange-50 border border-orange-200 rounded-md">
-            <div className="text-orange-800 text-xs">
-              <span className="font-medium">Tình trạng: </span>
-              {fabric.condition}
-            </div>
+        {/* Location - Ẩn trong phiên bản Marketing */}
+        {!isMarketingVersion && (
+          <div className="flex items-center gap-2 text-sm mb-3">
+            <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <span className="text-gray-600 truncate">{fabric.location}</span>
           </div>
         )}
+
+        {/* Condition - Bỏ hiển thị chi tiết */}
 
         {/* Remarks */}
         {fabric.remarks && (

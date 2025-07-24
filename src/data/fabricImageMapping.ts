@@ -129,7 +129,19 @@ const FABRICS_WITH_CLOUDINARY_IMAGES = new Set([
 ])
 
 export function hasRealImage(fabricCode: string): boolean {
-  return FABRICS_WITH_CLOUDINARY_IMAGES.has(fabricCode)
+  // First check the static mapping
+  if (FABRICS_WITH_CLOUDINARY_IMAGES.has(fabricCode)) {
+    return true
+  }
+
+  // Then check runtime cache from syncService for newly uploaded images
+  try {
+    const syncService = require('@/services/syncService').syncService
+    return syncService.hasRuntimeImage(fabricCode)
+  } catch (error) {
+    // Fallback to static mapping if syncService is not available
+    return FABRICS_WITH_CLOUDINARY_IMAGES.has(fabricCode)
+  }
 }
 
 export function getAllFabricsWithImages(): string[] {

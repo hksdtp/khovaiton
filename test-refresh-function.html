@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Refresh Function</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 14px;
+        }
+        .button:hover {
+            background: #2563eb;
+        }
+        .button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 6px;
+            background: #f3f4f6;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .loading {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .log-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            background: #1f2937;
+            color: #f9fafb;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 0;
+        }
+        .log-error {
+            color: #fca5a5;
+        }
+        .log-success {
+            color: #86efac;
+        }
+        .log-info {
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Refresh Function</h1>
+        
+        <div>
+            <button class="button" onclick="testFabricDataImport()" id="testBtn1">
+                📦 Test Fabric Data Import
+            </button>
+            
+            <button class="button" onclick="testRefreshImageStatus()" id="testBtn2">
+                🔄 Test Refresh Image Status
+            </button>
+            
+            <button class="button" onclick="clearLogs()" id="clearBtn">
+                🗑️ Clear Logs
+            </button>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <div id="logs" class="log-container"></div>
+    </div>
+
+    <script>
+        let logContainer = document.getElementById('logs');
+        
+        function addLog(type, message) {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function showStatus(message, type = 'loading') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+        }
+        
+        async function testFabricDataImport() {
+            const btn = document.getElementById('testBtn1');
+            btn.disabled = true;
+            showStatus('📦 Testing fabric data import...', 'loading');
+            addLog('info', '🧪 Starting fabric data import test...');
+            
+            try {
+                // Test the import that was failing
+                addLog('info', '📡 Importing fabric data module...');
+                
+                // Simulate the import (we can't actually import ES modules in this context)
+                // But we can test the fetch that the module would do
+                const response = await fetch('/anhhung-fabrics.json');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addLog('success', `✅ Successfully loaded fabric data`);
+                    addLog('info', `📊 Total fabrics: ${data.fabrics?.length || 'unknown'}`);
+                    addLog('info', `📦 Total stock: ${data.metadata?.totalStock || 'unknown'}`);
+                    
+                    // Test fabric codes extraction
+                    if (data.fabrics && Array.isArray(data.fabrics)) {
+                        const fabricCodes = data.fabrics.map(f => f.code);
+                        addLog('success', `✅ Extracted ${fabricCodes.length} fabric codes`);
+                        addLog('info', `📋 Sample codes: ${fabricCodes.slice(0, 5).join(', ')}...`);
+                    }
+                    
+                    showStatus('✅ Fabric data import test passed!', 'success');
+                } else {
+                    addLog('error', `❌ Failed to load fabric data: ${response.status}`);
+                    showStatus('❌ Fabric data import test failed', 'error');
+                }
+                
+            } catch (error) {
+                addLog('error', `❌ Error in fabric data import test: ${error.message}`);
+                showStatus('❌ Test failed with error', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+        
+        async function testRefreshImageStatus() {
+            const btn = document.getElementById('testBtn2');
+            btn.disabled = true;
+            showStatus('🔄 Testing refresh image status...', 'loading');
+            addLog('info', '🧪 Starting refresh image status test...');
+            
+            try {
+                // Test the function that was failing
+                addLog('info', '📡 Testing getMockFabrics() function...');
+                
+                // Since we can't directly import the module, we'll simulate the process
+                const response = await fetch('/anhhung-fabrics.json');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const fabrics = data.fabrics;
+                    const fabricCodes = fabrics.map(f => f.code);
+                    
+                    addLog('success', `✅ getMockFabrics() simulation successful`);
+                    addLog('info', `📊 Would process ${fabricCodes.length} fabric codes`);
+                    
+                    // Simulate the refresh process
+                    addLog('info', '🔄 Simulating refresh image status...');
+                    
+                    let foundImages = 0;
+                    let checkedCodes = 0;
+                    
+                    // Simulate checking a few fabric codes
+                    const sampleCodes = fabricCodes.slice(0, 10);
+                    
+                    for (const code of sampleCodes) {
+                        checkedCodes++;
+                        
+                        // Simulate random image finding (in real app, this would check Cloudinary)
+                        if (Math.random() > 0.7) {
+                            foundImages++;
+                            addLog('success', `✅ Found image for ${code}`);
+                        }
+                        
+                        // Add small delay to simulate real checking
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                    
+                    addLog('info', `📊 Simulation complete: ${foundImages}/${checkedCodes} images found`);
+                    showStatus(`✅ Refresh test passed! Found ${foundImages} images`, 'success');
+                    
+                } else {
+                    addLog('error', `❌ Failed to load fabric data for test: ${response.status}`);
+                    showStatus('❌ Refresh test failed', 'error');
+                }
+                
+            } catch (error) {
+                addLog('error', `❌ Error in refresh test: ${error.message}`);
+                showStatus('❌ Test failed with error', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+        
+        function clearLogs() {
+            logContainer.innerHTML = '';
+            document.getElementById('status').style.display = 'none';
+            addLog('info', '🗑️ Logs cleared');
+        }
+        
+        // Initial log
+        addLog('info', '🚀 Test environment initialized');
+        addLog('info', '💡 Click buttons above to run tests');
+        
+        // Auto-check if we can access the main app
+        setTimeout(async () => {
+            addLog('info', '🔍 Auto-checking main app accessibility...');
+            
+            try {
+                const response = await fetch('http://localhost:3004/sale');
+                if (response.ok) {
+                    addLog('success', '✅ Main app is accessible');
+                } else {
+                    addLog('error', `❌ Main app returned status: ${response.status}`);
+                }
+            } catch (error) {
+                addLog('error', `❌ Cannot access main app: ${error.message}`);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

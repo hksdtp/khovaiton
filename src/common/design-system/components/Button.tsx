@@ -84,13 +84,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || isLoading}
         {...props}
       >
-        {isLoading ? (
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-        ) : (
-          leftIcon
-        )}
+        {leftIcon}
         {children}
-        {!isLoading && rightIcon}
+        {rightIcon}
       </button>
     )
   }

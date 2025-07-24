@@ -23,7 +23,8 @@ interface SyncResult {
 
 class CloudinarySyncService {
   private static instance: CloudinarySyncService
-  private readonly API_BASE = '/api/cloudinary-sync'
+  private readonly API_BASE = import.meta.env.DEV ? 'http://localhost:3001/api/cloudinary-sync' : '/api/cloudinary-sync'
+  private readonly isDevelopment = import.meta.env.DEV
 
   static getInstance(): CloudinarySyncService {
     if (!CloudinarySyncService.instance) {
@@ -43,13 +44,24 @@ class CloudinarySyncService {
   }> {
     try {
       const response = await fetch(`${this.API_BASE}?action=list&maxResults=${maxResults}`)
-      return await response.json()
+      const result = await response.json()
+
+      if (result.success) {
+        console.log(`📊 Listed ${result.total} images from Cloudinary`)
+      }
+
+      return result
     } catch (error) {
+      const errorMessage = (error as Error).message
+      console.warn('⚠️ Failed to list Cloudinary images:', errorMessage)
+
       return {
         success: false,
         total: 0,
         images: [],
-        error: (error as Error).message
+        error: this.isDevelopment
+          ? 'Backend server chưa được khởi động. Chạy script start-full-app.sh'
+          : errorMessage
       }
     }
   }
@@ -63,6 +75,17 @@ class CloudinarySyncService {
     images: any[]
     error?: string
   }> {
+    // In development mode, return empty result
+    if (this.isDevelopment) {
+      console.log('🚧 Development mode: Skipping Cloudinary search (no backend)')
+      return {
+        success: false,
+        total: 0,
+        images: [],
+        error: 'API không khả dụng trong development mode'
+      }
+    }
+
     try {
       const response = await fetch(this.API_BASE, {
         method: 'POST',
@@ -108,23 +131,36 @@ class CloudinarySyncService {
    * Sync all images from Cloudinary and try to map to fabric codes
    */
   async syncFromCloudinary(): Promise<SyncResult> {
+    // In development mode, return mock result
+    if (this.isDevelopment) {
+      console.log('🚧 Development mode: Skipping Cloudinary sync (no backend)')
+      return {
+        success: false,
+        total: 0,
+        mapped: 0,
+        unmapped: 0,
+        mappings: [],
+        error: 'Sync API không khả dụng trong development mode'
+      }
+    }
+
     try {
       console.log('🔄 Starting sync from Cloudinary...')
-      
+
       const response = await fetch(`${this.API_BASE}?action=sync`)
       const result = await response.json()
-      
+
       if (result.success) {
         console.log(`✅ Sync completed: ${result.mapped}/${result.total} images mapped`)
         console.log(`📊 Found ${result.mappings.length} fabric mappings:`)
-        
+
         result.mappings.forEach((mapping: CloudinaryImage) => {
           console.log(`   • ${mapping.fabricCode}: ${mapping.publicId}`)
         })
       } else {
         console.error('❌ Sync failed:', result.error)
       }
-      
+
       return result
     } catch (error) {
       console.error('❌ Sync error:', error)
@@ -222,9 +258,20 @@ class CloudinarySyncService {
     try {
       const response = await fetch(`${this.API_BASE}?action=list&maxResults=1`)
       const result = await response.json()
-      return result.success
+
+      if (result.success) {
+        console.log('✅ Sync API is available and working')
+        return true
+      } else {
+        console.warn('⚠️ Sync API responded but not successful:', result.error)
+        return false
+      }
     } catch (error) {
-      console.warn('⚠️ Sync API not available:', error)
+      if (this.isDevelopment) {
+        console.log('🚧 Development mode: Sync API not available (start backend server)')
+      } else {
+        console.warn('⚠️ Sync API not available:', error)
+      }
       return false
     }
   }

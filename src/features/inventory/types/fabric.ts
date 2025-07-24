@@ -23,6 +23,7 @@ export interface Fabric extends BaseEntity {
   // Fields mới từ Excel data
   condition?: string | undefined // Tình trạng (từ cột "Tình trạng")
   remarks?: string | undefined // Ghi chú (từ cột "Ghi chú")
+  application?: string | undefined // Ứng dụng vải (lót, voan, bọc, mành...)
 
   // Fields mở rộng cho tương lai
   width?: number | undefined // Khổ vải (cm) - extract từ name
@@ -85,6 +86,7 @@ export interface CreateFabricRequest {
   note?: string
   condition?: string // Tình trạng
   remarks?: string // Ghi chú
+  application?: string // Ứng dụng vải
   width?: number
   material?: string
   color?: string

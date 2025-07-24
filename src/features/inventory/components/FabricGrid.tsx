@@ -5,14 +5,16 @@ interface FabricGridProps {
   fabrics: Fabric[]
   onSelectFabric: (fabric: Fabric) => void
   onUploadImage: (fabricId: number) => void
+  onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
   isLoading?: boolean
 }
 
-export function FabricGrid({ 
-  fabrics, 
-  onSelectFabric, 
-  onUploadImage, 
-  isLoading = false 
+export function FabricGrid({
+  fabrics,
+  onSelectFabric,
+  onUploadImage,
+  onViewImage,
+  isLoading = false
 }: FabricGridProps) {
   if (isLoading) {
     return (
@@ -63,8 +65,8 @@ export function FabricGrid({
           fabric={fabric}
           onSelect={onSelectFabric}
           onUploadImage={onUploadImage}
+          onViewImage={onViewImage}
           className="animate-fade-in"
-
         />
       ))}
     </div>

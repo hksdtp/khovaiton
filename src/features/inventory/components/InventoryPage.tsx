@@ -1,10 +1,12 @@
-import { useState } from 'react'
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, Eye, Edit } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useFabricStats } from '../hooks/useFabrics'
 import { cloudinaryService } from '@/services/cloudinaryService'
 import { syncService } from '@/services/syncService'
+import { imageUpdateService } from '@/services/imageUpdateService'
 import { useInventoryStore, useInventorySelectors } from '../store/inventoryStore'
 import { FabricGrid } from './FabricGrid'
 import { SearchBar } from './SearchBar'
@@ -14,10 +16,17 @@ import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
 import { CloudinarySyncPanel } from './CloudinarySyncPanel'
+import { AutoSyncStatusComponent } from '@/components/AutoSyncStatus'
+import { ImageViewerModal } from '@/components/ImageViewerModal'
+import { ImageEditor } from '@/components/ImageEditor'
 import { useQueryClient } from '@tanstack/react-query'
 import { refreshFabricImage } from '@/shared/mocks/fabricData'
 
 export function InventoryPage() {
+  const location = useLocation()
+  const isMarketingVersion = location.pathname === '/marketing'
+  const queryClient = useQueryClient()
+
   const [isUploading, setIsUploading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState<{
     type: 'success' | 'error' | null
@@ -25,7 +34,32 @@ export function InventoryPage() {
     fabricCode?: string
   }>({ type: null, message: '' })
   const [showSyncPanel, setShowSyncPanel] = useState(false)
-  const queryClient = useQueryClient()
+
+  // Image viewer and editor states
+  const [imageViewerState, setImageViewerState] = useState<{
+    isOpen: boolean
+    imageUrl: string
+    fabricCode: string
+    fabricName?: string
+  }>({
+    isOpen: false,
+    imageUrl: '',
+    fabricCode: '',
+    fabricName: ''
+  })
+
+  const [imageEditorState, setImageEditorState] = useState<{
+    isOpen: boolean
+    imageUrl: string
+    fabricCode: string
+  }>({
+    isOpen: false,
+    imageUrl: '',
+    fabricCode: ''
+  })
+
+  // Initialize image update service with query client
+  imageUpdateService.setQueryClient(queryClient)
 
   const {
     filters,
@@ -54,6 +88,25 @@ export function InventoryPage() {
 
   const { data: statsData } = useFabricStats()
 
+  // Listen for auto-sync updates to refresh data
+  useEffect(() => {
+    const handleAutoSyncUpdate = (event: CustomEvent) => {
+      console.log('🔄 Auto-sync found new images, refreshing inventory data...')
+
+      // Invalidate all fabric-related queries
+      queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+      queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+
+      console.log(`✅ Refreshed data after finding ${event.detail.newImageCount} new images`)
+    }
+
+    window.addEventListener('autoSyncUpdate', handleAutoSyncUpdate as EventListener)
+
+    return () => {
+      window.removeEventListener('autoSyncUpdate', handleAutoSyncUpdate as EventListener)
+    }
+  }, [queryClient])
+
   const handleUploadImage = async (file: File) => {
     if (!uploadingForId) return
 
@@ -76,27 +129,28 @@ export function InventoryPage() {
 
       console.log(`✅ Upload successful for ${fabric.code}:`, result)
 
-      // Update sync service cache immediately with actual URL and public_id
-      await syncService.updateFabricImage(fabric.code, result.secure_url, result.public_id)
+      // Use new image update service for real-time updates
+      const updateResult = await imageUpdateService.handleImageUpload(fabric.code, result)
 
-      // Force refresh fabric data to show new image
-      queryClient.invalidateQueries({ queryKey: ['fabrics'] })
-      queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+      if (updateResult.success) {
+        // Show success message with option to edit
+        setUploadStatus({
+          type: 'success',
+          message: `Ảnh đã được upload thành công cho ${fabric.code}!`,
+          fabricCode: fabric.code
+        })
 
-      // Force refresh the specific fabric image in cache
-      await refreshFabricImage(fabric.code)
+        // Open image editor for immediate editing
+        setImageEditorState({
+          isOpen: true,
+          imageUrl: result.secure_url,
+          fabricCode: fabric.code
+        })
 
-      // Force refresh the specific fabric data
-      queryClient.refetchQueries({ queryKey: ['fabrics'] })
-
-      // Show success message
-      setUploadStatus({
-        type: 'success',
-        message: `Ảnh đã được upload thành công cho ${fabric.code}!`,
-        fabricCode: fabric.code
-      })
-
-      console.log(`🎉 Upload completed and cache refreshed for ${fabric.code}`)
+        console.log(`🎉 Upload completed and cache refreshed for ${fabric.code}`)
+      } else {
+        throw new Error(updateResult.error || 'Failed to update image cache')
+      }
 
       // Close modal after short delay to show success message
       setTimeout(() => {
@@ -112,6 +166,61 @@ export function InventoryPage() {
       })
     } finally {
       setIsUploading(false)
+    }
+  }
+
+  // Handle opening image viewer
+  const handleViewImage = (imageUrl: string, fabricCode: string, fabricName?: string) => {
+    setImageViewerState({
+      isOpen: true,
+      imageUrl,
+      fabricCode,
+      fabricName
+    })
+  }
+
+  // Handle opening image editor
+  const handleEditImage = (imageUrl: string, fabricCode: string) => {
+    setImageViewerState({ isOpen: false, imageUrl: '', fabricCode: '', fabricName: '' })
+    setImageEditorState({
+      isOpen: true,
+      imageUrl,
+      fabricCode
+    })
+  }
+
+  // Handle saving edited image
+  const handleSaveEditedImage = async (editedImageBlob: Blob) => {
+    try {
+      // Convert blob to file
+      const file = new File([editedImageBlob], `${imageEditorState.fabricCode}_edited.jpg`, {
+        type: 'image/jpeg'
+      })
+
+      // Upload the edited image
+      const result = await cloudinaryService.uploadImage(file, {
+        fabricCode: imageEditorState.fabricCode,
+        tags: ['edited_image', 'manual_upload']
+      })
+
+      // Update using image update service
+      await imageUpdateService.handleImageUpload(imageEditorState.fabricCode, result)
+
+      // Show success message
+      setUploadStatus({
+        type: 'success',
+        message: `Ảnh đã được chỉnh sửa và lưu thành công cho ${imageEditorState.fabricCode}!`,
+        fabricCode: imageEditorState.fabricCode
+      })
+
+      console.log(`✅ Edited image saved for ${imageEditorState.fabricCode}`)
+
+    } catch (error) {
+      console.error('Failed to save edited image:', error)
+      setUploadStatus({
+        type: 'error',
+        message: `Không thể lưu ảnh đã chỉnh sửa: ${(error as Error).message}`
+      })
     }
   }
 
@@ -246,13 +355,21 @@ export function InventoryPage() {
 
       {/* Main Content */}
       <div className="relative z-30 max-w-7xl mx-auto px-6 py-8">
-        {/* Image Status Filter */}
-        <ImageStatusFilter className="mb-6" />
+        {/* Image Status Filter - Ẩn trong phiên bản Marketing */}
+        {!isMarketingVersion && (
+          <ImageStatusFilter className="mb-6" />
+        )}
+
+        {/* Auto Sync Status - Chỉ hiển thị trong phiên bản Sale */}
+        {!isMarketingVersion && (
+          <AutoSyncStatusComponent className="mb-6" />
+        )}
 
         <FabricGrid
           fabrics={fabricsData?.data || []}
           onSelectFabric={setSelectedFabric}
           onUploadImage={(fabricId) => setUploadModal(true, fabricId)}
+          onViewImage={handleViewImage}
           isLoading={isLoading}
         />
 
@@ -278,6 +395,7 @@ export function InventoryPage() {
           isOpen={!!selectedFabric}
           onClose={() => setSelectedFabric(null)}
           onUploadImage={(fabricId) => setUploadModal(true, fabricId)}
+          onViewImage={handleViewImage}
         />
       )}
 
@@ -294,8 +412,24 @@ export function InventoryPage() {
         />
       )}
 
+      {/* Image Viewer Modal */}
+      <ImageViewerModal
+        isOpen={imageViewerState.isOpen}
+        onClose={() => setImageViewerState({ isOpen: false, imageUrl: '', fabricCode: '', fabricName: '' })}
+        imageUrl={imageViewerState.imageUrl}
+        fabricCode={imageViewerState.fabricCode}
+        fabricName={imageViewerState.fabricName}
+        onEdit={() => handleEditImage(imageViewerState.imageUrl, imageViewerState.fabricCode)}
+      />
 
-
+      {/* Image Editor Modal */}
+      <ImageEditor
+        isOpen={imageEditorState.isOpen}
+        onClose={() => setImageEditorState({ isOpen: false, imageUrl: '', fabricCode: '' })}
+        imageUrl={imageEditorState.imageUrl}
+        fabricCode={imageEditorState.fabricCode}
+        onSave={handleSaveEditedImage}
+      />
 
     </MainLayout>
   )

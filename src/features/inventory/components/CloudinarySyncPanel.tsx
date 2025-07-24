@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { Button } from '@/common/design-system/components'
 import { cloudinarySyncService, type CloudinaryImage } from '@/services/cloudinarySyncService'
 import { syncService } from '@/services/syncService'
-import { RefreshCw, Cloud, Database, CheckCircle, AlertCircle, Smartphone } from 'lucide-react'
+import { RefreshCw, Cloud, Database, CheckCircle, AlertCircle, Smartphone, ImageIcon } from 'lucide-react'
 
 interface SyncStatus {
   isLoading: boolean
@@ -140,6 +140,45 @@ export function CloudinarySyncPanel() {
     }
   }
 
+  /**
+   * Refresh image status by checking Cloudinary
+   */
+  const handleRefreshImageStatus = async () => {
+    setSyncStatus(prev => ({ ...prev, isLoading: true, error: '' }))
+
+    try {
+      // Get all fabric codes from current data
+      const fabricModule = await import('@/shared/mocks/fabricData')
+      const fabrics = await fabricModule.getMockFabrics()
+      const fabricCodes = fabrics.map(f => f.code)
+
+      // Refresh image status
+      const result = await syncService.refreshImageStatus(fabricCodes)
+
+      setSyncStatus(prev => ({
+        ...prev,
+        isLoading: false,
+        lastSync: new Date(),
+        newMappings: result.updated.length
+      }))
+
+      if (result.updated.length > 0) {
+        console.log(`✅ Updated image status for ${result.updated.length} fabrics:`, result.updated)
+        // Refresh page to show updated counts
+        window.location.reload()
+      } else {
+        console.log('ℹ️ No new images found')
+      }
+
+    } catch (error) {
+      setSyncStatus(prev => ({
+        ...prev,
+        isLoading: false,
+        error: (error as Error).message
+      }))
+    }
+  }
+
   const storageInfo = getStorageInfo()
 
   return (
@@ -256,6 +295,16 @@ export function CloudinarySyncPanel() {
         <div className="flex gap-3">
           <Button
             variant="secondary"
+            onClick={handleRefreshImageStatus}
+            disabled={syncStatus.isLoading}
+            className="flex-1"
+          >
+            <ImageIcon className="w-4 h-4 mr-2" />
+            Làm mới trạng thái ảnh
+          </Button>
+
+          <Button
+            variant="secondary"
             onClick={handleClearStorage}
             disabled={syncStatus.isLoading}
             className="flex-1"
@@ -297,6 +346,7 @@ export function CloudinarySyncPanel() {
         <div>💡 <strong>Hướng dẫn:</strong></div>
         <div>• <strong>Đồng bộ từ Cloudinary:</strong> Tìm ảnh mới trên Cloudinary</div>
         <div>• <strong>Đồng bộ thiết bị:</strong> Đồng bộ ảnh giữa các thiết bị</div>
+        <div>• <strong>Làm mới trạng thái ảnh:</strong> Cập nhật số lượng ảnh có/chưa có</div>
         <div>• Ảnh được lưu trên cloud để hiển thị đồng nhất</div>
         <div>• Tự động sync mỗi 30 giây</div>
       </div>

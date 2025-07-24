@@ -200,13 +200,21 @@ class SyncService {
    */
   private async checkImageExists(url: string): Promise<boolean> {
     try {
-      // For Cloudinary URLs, assume they exist if they match our uploaded fabric codes
+      // For Cloudinary URLs, do a proper check
       if (url.includes('res.cloudinary.com/dgaktc3fb/image/upload/fabrics/')) {
-        // For Cloudinary URLs, try to fetch directly since we know they exist
-        // Skip the network check to avoid CORS/timing issues
-        return true
-
-
+        try {
+          const response = await fetch(url, { method: 'HEAD' })
+          return response.ok
+        } catch (error) {
+          // If CORS error, try with GET request to a small version
+          try {
+            const testUrl = url.replace('/image/upload/', '/image/upload/w_1,h_1/')
+            const response = await fetch(testUrl)
+            return response.ok
+          } catch {
+            return false
+          }
+        }
       }
 
       const response = await fetch(url, { method: 'HEAD' })
@@ -416,24 +424,61 @@ class SyncService {
    */
   private async updateFabricImageMapping(fabricCode: string): Promise<void> {
     try {
-      // Import the current mapping module
-      const mappingModule = await import('@/data/fabricImageMapping')
-
-      // Check if fabric code already exists in mapping
-      if (mappingModule.hasRealImage(fabricCode)) {
-        console.log(`✅ Fabric ${fabricCode} already in mapping`)
-        return
-      }
-
-      // Add to runtime cache for immediate effect
-      // This is a temporary solution until the mapping file is updated
+      // Always add to runtime cache for immediate effect
       this.runtimeImageMapping.add(fabricCode)
 
       console.log(`📝 Added ${fabricCode} to runtime image mapping`)
-      console.log(`🔧 Note: Manual update needed in fabricImageMapping.ts for persistence`)
+      console.log(`✅ Fabric ${fabricCode} now has image status: true`)
 
     } catch (error) {
       console.error(`❌ Failed to update fabric image mapping for ${fabricCode}:`, error)
+    }
+  }
+
+  /**
+   * Check if fabric has runtime image (newly uploaded)
+   */
+  hasRuntimeImage(fabricCode: string): boolean {
+    return this.runtimeImageMapping.has(fabricCode) || this.syncCache.has(fabricCode)
+  }
+
+  /**
+   * Refresh image status by checking Cloudinary directly
+   */
+  async refreshImageStatus(fabricCodes: string[]): Promise<{
+    updated: string[]
+    total: number
+  }> {
+    console.log('🔄 Refreshing image status from Cloudinary...')
+    const updated: string[] = []
+
+    for (const fabricCode of fabricCodes) {
+      try {
+        // Check if image exists on Cloudinary
+        const cloudinaryUrl = cloudinaryService.getFabricImageUrl(fabricCode)
+        if (cloudinaryUrl) {
+          const exists = await this.checkImageExists(cloudinaryUrl)
+
+          if (exists && !this.hasRuntimeImage(fabricCode)) {
+            // Add to runtime mapping if found on Cloudinary but not in our cache
+            this.runtimeImageMapping.add(fabricCode)
+            this.syncCache.set(fabricCode, {
+              url: cloudinaryUrl,
+              timestamp: Date.now()
+            })
+            updated.push(fabricCode)
+            console.log(`✅ Found new image for ${fabricCode}`)
+          }
+        }
+      } catch (error) {
+        console.warn(`⚠️ Failed to check image for ${fabricCode}:`, error)
+      }
+    }
+
+    console.log(`🔄 Image status refresh completed: ${updated.length}/${fabricCodes.length} updated`)
+    return {
+      updated,
+      total: fabricCodes.length
     }
   }
 

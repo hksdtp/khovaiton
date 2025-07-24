@@ -6,8 +6,8 @@ export function VersionSwitcher() {
   const location = useLocation()
   const [isOpen, setIsOpen] = useState(false)
   
-  // Don't show on home page
-  if (location.pathname === '/') {
+  // Don't show on home page or marketing page
+  if (location.pathname === '/' || location.pathname === '/marketing') {
     return null
   }
 

@@ -91,8 +91,8 @@ export function MarketingInventoryPage() {
         </div>
       )}
 
-      {/* Development: Google Sheets Test Button */}
-      {process.env.NODE_ENV === 'development' && (
+      {/* Development: Google Sheets Test Button - HIDDEN */}
+      {false && process.env.NODE_ENV === 'development' && (
         <button
           onClick={() => setShowGoogleSheetsTest(true)}
           className="fixed bottom-20 right-4 bg-blue-500 text-white px-3 py-2 rounded-lg text-xs z-30"

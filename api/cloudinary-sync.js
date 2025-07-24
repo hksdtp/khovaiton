@@ -3,7 +3,7 @@
  * Ninh ơi, API này cho phép đồng bộ 2 chiều với Cloudinary
  */
 
-import crypto from 'crypto'
+const crypto = require('crypto')
 
 // Cloudinary config từ environment variables
 const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || 'dgaktc3fb'
@@ -221,3 +221,6 @@ export default async function handler(req, res) {
     })
   }
 }
+
+// Export as default for Vercel
+module.exports = handler

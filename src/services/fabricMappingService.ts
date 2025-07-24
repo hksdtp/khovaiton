@@ -28,6 +28,7 @@ class FabricMappingService {
   private readonly API_BASE = '/api/fabric-mappings'
   private lastSyncTime = 0
   private readonly SYNC_INTERVAL = 30000 // 30 seconds
+  private readonly isDevelopment = import.meta.env.DEV
 
   static getInstance(): FabricMappingService {
     if (!FabricMappingService.instance) {
@@ -40,14 +41,24 @@ class FabricMappingService {
    * Get all mappings from cloud
    */
   async getAllMappings(): Promise<MappingResponse> {
+    // Skip API calls in development mode
+    if (this.isDevelopment) {
+      console.log('🚧 Development mode: Skipping cloud mappings API call')
+      return {
+        success: true,
+        mappings: {},
+        count: 0
+      }
+    }
+
     try {
       const response = await fetch(this.API_BASE)
       const result = await response.json()
-      
+
       if (result.success) {
         console.log(`☁️ Loaded ${result.count} mappings from cloud`)
       }
-      
+
       return result
     } catch (error) {
       console.error('❌ Failed to get cloud mappings:', error)
@@ -62,19 +73,28 @@ class FabricMappingService {
    * Update mappings in cloud
    */
   async updateMappings(mappings: FabricMapping): Promise<UpdateResponse> {
+    // Skip API calls in development mode
+    if (this.isDevelopment) {
+      console.log('🚧 Development mode: Skipping cloud mappings update')
+      return {
+        success: true,
+        updatedCount: Object.keys(mappings).length
+      }
+    }
+
     try {
       const response = await fetch(this.API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'update', mappings })
       })
-      
+
       const result = await response.json()
-      
+
       if (result.success) {
         console.log(`☁️ Updated ${result.updatedCount} mappings in cloud`)
       }
-      
+
       return result
     } catch (error) {
       console.error('❌ Failed to update cloud mappings:', error)
@@ -89,19 +109,28 @@ class FabricMappingService {
    * Add single mapping to cloud
    */
   async addMapping(fabricCode: string, publicId: string): Promise<UpdateResponse> {
+    // Skip API calls in development mode
+    if (this.isDevelopment) {
+      console.log(`🚧 Development mode: Skipping cloud mapping add for ${fabricCode}`)
+      return {
+        success: true,
+        updatedCount: 1
+      }
+    }
+
     try {
       const response = await fetch(this.API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'add', fabricCode, publicId })
       })
-      
+
       const result = await response.json()
-      
+
       if (result.success) {
         console.log(`☁️ Added mapping ${fabricCode} → ${publicId} to cloud`)
       }
-      
+
       return result
     } catch (error) {
       console.error('❌ Failed to add cloud mapping:', error)

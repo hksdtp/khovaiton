@@ -1,5 +1,8 @@
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useInventoryStore } from '../store/inventoryStore'
 import { useFabrics } from '../hooks/useFabrics'
+import { useImageStatusUpdates } from '../hooks/useImageStatusUpdates'
 
 /**
  * 🖼️ IMAGE STATUS FILTER COMPONENT
@@ -12,6 +15,8 @@ interface ImageStatusFilterProps {
 
 export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
   const { filters, setFilters } = useInventoryStore()
+  const { refreshImageStatusCounts } = useImageStatusUpdates()
+  const queryClient = useQueryClient()
 
   // Get fabric counts for each image status - THEO CONTEXT HIỆN TẠI
   // Lấy filters hiện tại nhưng loại bỏ imageStatus để tính toán chính xác
@@ -25,6 +30,30 @@ export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
   const allCount = allFabricsQuery.data?.total || 0
   const withImagesCount = withImagesQuery.data?.total || 0
   const withoutImagesCount = withoutImagesQuery.data?.total || 0
+
+  // Auto-refresh counts when any query data changes
+  useEffect(() => {
+    refreshImageStatusCounts()
+  }, [allFabricsQuery.data, withImagesQuery.data, withoutImagesQuery.data, refreshImageStatusCounts])
+
+  // Listen for auto-sync cache invalidation
+  useEffect(() => {
+    const handleInvalidateCache = (event: CustomEvent) => {
+      console.log('🔄 Auto-sync triggered cache invalidation, refreshing image status...')
+
+      // Invalidate all fabric queries to force refresh
+      queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+
+      // Also refresh the image status counts
+      refreshImageStatusCounts()
+    }
+
+    window.addEventListener('invalidateImageStatusCache', handleInvalidateCache as EventListener)
+
+    return () => {
+      window.removeEventListener('invalidateImageStatusCache', handleInvalidateCache as EventListener)
+    }
+  }, [queryClient, refreshImageStatusCounts])
 
   const handleImageStatusChange = (imageStatus: 'all' | 'with_images' | 'without_images') => {
     setFilters({ ...filters, imageStatus })
