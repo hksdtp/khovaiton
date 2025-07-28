@@ -110,15 +110,15 @@ class ImageUpdateService {
   /**
    * Invalidate all image-related queries
    */
-  private async invalidateAllImageQueries() {
+  async invalidateAllImageQueries() {
     if (!this.queryClient) return
 
     // Invalidate fabric queries
     await this.queryClient.invalidateQueries({ queryKey: ['fabrics'] })
-    
+
     // Invalidate fabric stats (for image counts)
     await this.queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
-    
+
     // Invalidate any image-specific queries
     await this.queryClient.invalidateQueries({ queryKey: ['fabric-images'] })
 
@@ -128,7 +128,7 @@ class ImageUpdateService {
   /**
    * Force refresh specific fabric image
    */
-  private async refreshFabricImage(fabricCode: string) {
+  async refreshFabricImage(fabricCode: string) {
     try {
       // Force refresh the image URL in sync service
       await syncService.refreshFabricImage(fabricCode)
