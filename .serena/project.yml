@@ -1,0 +1,130 @@
+# Serena Project Configuration for Kho Vải Tồn
+name: "khovaiton"
+description: "Fabric inventory management web application"
+
+# Project-specific settings
+project_type: "web_application"
+framework: "react_typescript_vite"
+language: "typescript"
+
+# Development settings
+dev_server:
+  command: "npm run dev"
+  port: 5173
+  
+build:
+  command: "npm run build"
+  output_dir: "dist"
+  
+test:
+  command: "npm test"
+  coverage_command: "npm run test:coverage"
+
+# Code quality
+linting:
+  command: "npm run lint"
+  fix_command: "npm run lint:fix"
+  
+formatting:
+  command: "npm run format:check"
+  fix_command: "npm run format"
+
+# Deployment
+deployment:
+  platform: "vercel"
+  build_command: "npm run build:production"
+  preview_command: "npm run deploy:preview"
+  production_command: "npm run deploy"
+
+# Project structure
+key_directories:
+  - "src/components"
+  - "src/features"
+  - "src/services"
+  - "src/shared"
+  - "src/data"
+  - "scripts"
+  - "public"
+
+# Important files
+key_files:
+  - "package.json"
+  - "tsconfig.json"
+  - "vite.config.ts"
+  - "tailwind.config.js"
+  - "src/main.tsx"
+  - "src/app/App.tsx"
+
+# External integrations
+integrations:
+  - name: "Cloudinary"
+    description: "Image storage and management"
+    config_files: ["src/services/cloudinaryService.ts"]
+  - name: "Google Sheets"
+    description: "Customer data storage"
+    config_files: ["src/services/googleSheetsService.ts"]
+  - name: "Vercel"
+    description: "Deployment platform"
+    config_files: ["vercel.json"]
+
+# Serena-specific settings
+serena:
+  # Enable all tools for full development support
+  read_only: false
+  
+  # Context for IDE-like assistance
+  context: "desktop-app"
+  
+  # Enable dashboard for monitoring
+  dashboard:
+    enabled: true
+    port: 24282
+    
+  # Memory settings
+  memories:
+    auto_create: true
+    max_memories: 20
+    
+  # Tool preferences
+  tools:
+    enabled:
+      - "activate_project"
+      - "find_symbol"
+      - "get_symbols_overview"
+      - "read_file"
+      - "create_text_file"
+      - "replace_lines"
+      - "insert_at_line"
+      - "execute_shell_command"
+      - "search_for_pattern"
+      - "list_dir"
+      - "onboarding"
+      - "write_memory"
+      - "read_memory"
+      - "find_referencing_code_snippets"
+      - "replace_symbol_body"
+      - "insert_after_symbol"
+      - "insert_before_symbol"
+    
+    # Disable potentially dangerous tools if needed
+    disabled: []
+
+# Project-specific notes
+notes: |
+  This is a React TypeScript application for fabric inventory management.
+  
+  Key features:
+  - Fabric inventory tracking with image support
+  - Cloudinary integration for image storage
+  - Google Sheets integration for customer data
+  - Real-time filtering and search
+  - Marketing forms with lead capture
+  - Deployed on Vercel
+  
+  Development workflow:
+  1. Use 'npm run dev' for development server
+  2. Use 'npm run test' for testing
+  3. Use 'npm run lint:fix' for code quality
+  4. Use 'npm run build' before deployment
+  
+  Important: Always test changes locally before deploying to production.

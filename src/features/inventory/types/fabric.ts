@@ -113,6 +113,8 @@ export interface FabricStats {
   lowStockItems: number
   outOfStockItems: number
   damagedItems: number
+  withImages: number // Số lượng vải có ảnh
+  withoutImages: number // Số lượng vải chưa có ảnh
   byType: Record<FabricType, number>
   byLocation: Record<string, number>
 }

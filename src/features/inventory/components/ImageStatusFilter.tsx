@@ -31,8 +31,9 @@ export function ImageStatusFilter({ className = '' }: ImageStatusFilterProps) {
 
   // Auto-refresh counts when any query data changes
   useEffect(() => {
-    refreshImageStatusCounts()
-  }, [allFabricsQuery.data, withImagesQuery.data, withoutImagesQuery.data])
+    // Invalidate fabric queries to refresh counts
+    queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+  }, [allFabricsQuery.data, withImagesQuery.data, withoutImagesQuery.data, queryClient])
 
   // Listen for realtime updates
   useEffect(() => {

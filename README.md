@@ -2,12 +2,23 @@
 
 Hệ thống quản lý kho vải tồn hiện đại được xây dựng với React, TypeScript và các công nghệ tiên tiến nhất.
 
+## 🤖 AI-Powered Development với Serena
+
+Dự án này đã được tích hợp với **Serena** - một coding agent toolkit mạnh mẽ để hỗ trợ phát triển và bảo trì ứng dụng.
+
+- 🧠 **Semantic Code Analysis**: Phân tích code thông minh ở mức symbol
+- 🔧 **Intelligent Code Editing**: Chỉnh sửa code với AI assistance
+- 🚀 **Automated Development**: Tự động hóa các tác vụ phát triển
+- 📚 **Project Memory**: Lưu trữ và tái sử dụng kiến thức về project
+
+👉 **[Xem hướng dẫn Serena](./SERENA_QUICK_START.md)** | **[Chi tiết tích hợp](./docs/SERENA_INTEGRATION.md)**
+
 ## ✨ Tính năng chính
 
 - 🔍 **Tìm kiếm thông minh**: Tìm kiếm theo mã vải, tên sản phẩm, vị trí kho
 - 🏷️ **Phân loại chi tiết**: Lọc theo loại vải, vị trí, trạng thái
-- 📸 **Quản lý hình ảnh**: Upload và quản lý ảnh sản phẩm
-- ☁️ **Google Drive Sync**: Tự động sync ảnh từ Google Drive
+- 📸 **Quản lý hình ảnh**: Upload và quản lý ảnh sản phẩm với Cloudinary
+- ☁️ **Cloud Integration**: Tích hợp Cloudinary và Google Sheets
 - 🔄 **Auto Image Mapping**: Map ảnh dựa trên mã vải tự động
 - 📊 **Thống kê realtime**: Theo dõi tồn kho, trạng thái vải
 - 🎨 **UI/UX hiện đại**: Glassmorphism design, animations mượt mà
@@ -231,6 +242,55 @@ python3 scripts/test_drive_access.py
 - 🌍 [Domain Setup](./docs/DOMAIN_SETUP.md)
 - 📘 [Local Image Import](./HUONG_DAN_IMPORT_ANH.md)
 - ☁️ [Google Drive Guide](./HUONG_DAN_GOOGLE_DRIVE.md)
+- 🤖 [Serena AI Integration](./docs/SERENA_INTEGRATION.md)
+
+## 🤖 Serena AI Development Assistant
+
+Dự án này sử dụng **Serena** - một coding agent toolkit mạnh mẽ để tăng tốc phát triển:
+
+### 🚀 Quick Start với Serena
+
+```bash
+# Setup Serena với Claude Desktop (Khuyến nghị)
+./scripts/setup-serena.sh
+
+# Hoặc setup với Claude Code
+./scripts/setup-claude-code.sh
+```
+
+### 💡 Lệnh Serena hữu ích
+
+```
+# Kích hoạt project
+"Activate the khovaiton project"
+
+# Phân tích codebase
+"Show me the project structure"
+"Help me understand the React components"
+"Analyze the Cloudinary integration"
+
+# Development workflow
+"Run the development server"
+"Check for TypeScript errors"
+"Run the test suite"
+"Show me any linting issues"
+
+# Code assistance
+"Help me refactor this component"
+"Add error handling to this function"
+"Write tests for the fabric filtering logic"
+```
+
+### 🌐 Serena Dashboard
+
+Khi Serena đang chạy, bạn có thể truy cập dashboard tại:
+**http://localhost:24282/dashboard/**
+
+### 📚 Tài liệu Serena
+
+- **[Quick Start Guide](./SERENA_QUICK_START.md)** - Bắt đầu nhanh với Serena
+- **[Integration Guide](./docs/SERENA_INTEGRATION.md)** - Hướng dẫn tích hợp chi tiết
+- **[Serena GitHub](https://github.com/oraios/serena)** - Repository chính thức
 
 ## 🤝 Contributing
 

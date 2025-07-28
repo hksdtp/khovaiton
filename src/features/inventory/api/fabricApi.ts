@@ -260,6 +260,8 @@ export const fabricApi = {
       lowStockItems: realFabrics.filter(f => f.status === 'low_stock').length,
       outOfStockItems: realFabrics.filter(f => f.status === 'out_of_stock').length,
       damagedItems: realFabrics.filter(f => f.status === 'damaged').length,
+      withImages: realFabrics.filter(f => f.hasImages === true).length,
+      withoutImages: realFabrics.filter(f => f.hasImages !== true).length,
       byType: realFabrics.reduce((acc, fabric) => {
         const type = fabric.type || 'Unknown'
         acc[type] = (acc[type] || 0) + 1

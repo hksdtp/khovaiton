@@ -7,7 +7,6 @@
 import { useState, useEffect } from 'react'
 import { Image, ImageOff, Package } from 'lucide-react'
 import { useFabricStats } from '@/features/inventory/hooks/useFabrics'
-import { realtimeUpdateService } from '@/services/realtimeUpdateService'
 
 interface ImageStatsDisplayProps {
   className?: string

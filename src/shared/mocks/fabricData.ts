@@ -266,10 +266,12 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     const updatedFabrics = cachedFabrics.map(fabric => {
       // CHỈ sử dụng Cloudinary URL - không fallback
       const cloudinaryUrl = cloudinaryImageMap.get(fabric.code)
+      const hasImage = !!cloudinaryUrl
 
       return {
         ...fabric,
-        image: cloudinaryUrl || undefined // Chỉ Cloudinary hoặc undefined
+        image: cloudinaryUrl || undefined, // Chỉ Cloudinary hoặc undefined
+        hasImages: hasImage // Set hasImages based on actual image availability
       }
     })
 

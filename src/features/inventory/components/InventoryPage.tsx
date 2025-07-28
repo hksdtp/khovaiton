@@ -26,6 +26,8 @@ import { useQueryClient } from '@tanstack/react-query'
 export function InventoryPage() {
   const location = useLocation()
   const isMarketingVersion = location.pathname === '/marketing'
+  const isSaleVersion = location.pathname === '/sale'
+  const shouldHideImageStats = isMarketingVersion || isSaleVersion
   const queryClient = useQueryClient()
 
   const [isUploading, setIsUploading] = useState(false)
@@ -297,14 +299,15 @@ export function InventoryPage() {
                   Lọc
                 </Button>
 
-                <Button
+                {/* Tạm ẩn nút Đồng bộ theo yêu cầu */}
+                {/* <Button
                   variant={showSyncPanel ? "primary" : "secondary"}
                   onClick={() => setShowSyncPanel(!showSyncPanel)}
                   size="sm"
                 >
                   <Package className="w-4 h-4" />
                   Đồng bộ
-                </Button>
+                </Button> */}
                 {/* Tạm ẩn 2 nút này theo yêu cầu */}
                 {/* <Button
                   variant="secondary"
@@ -356,13 +359,13 @@ export function InventoryPage() {
 
       {/* Main Content */}
       <div className="relative z-30 max-w-7xl mx-auto px-6 py-8">
-        {/* Image Status Filter - Ẩn trong phiên bản Marketing */}
-        {!isMarketingVersion && (
+        {/* Image Status Filter - Ẩn trong phiên bản Marketing và Sale */}
+        {!shouldHideImageStats && (
           <ImageStatusFilter className="mb-6" />
         )}
 
-        {/* Image Stats Display - Hiển thị số liệu realtime */}
-        {!isMarketingVersion && (
+        {/* Image Stats Display - Ẩn trong phiên bản Marketing và Sale */}
+        {!shouldHideImageStats && (
           <ImageStatsDisplay className="mb-6" />
         )}
 

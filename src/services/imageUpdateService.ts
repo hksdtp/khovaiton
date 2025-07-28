@@ -109,8 +109,9 @@ class ImageUpdateService {
 
   /**
    * Invalidate all image-related queries
+   * @private - Reserved for future use
    */
-  private async invalidateAllImageQueries() {
+  private async _invalidateAllImageQueries() {
     if (!this.queryClient) return
 
     // Invalidate fabric queries
@@ -127,8 +128,9 @@ class ImageUpdateService {
 
   /**
    * Force refresh specific fabric image
+   * @private - Reserved for future use
    */
-  private async refreshFabricImage(fabricCode: string) {
+  private async _refreshFabricImage(fabricCode: string) {
     try {
       // Force refresh the image URL in sync service
       await syncService.refreshFabricImage(fabricCode)

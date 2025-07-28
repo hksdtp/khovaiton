@@ -1,0 +1,72 @@
+# Serena Global Configuration
+version: "0.1.3"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  file_logging: true
+  console_logging: true
+  log_file: "~/.serena/logs/serena.log"
+
+# Dashboard settings
+dashboard:
+  enabled: true
+  port: 24282
+  auto_open: true
+  
+# GUI settings (optional)
+gui:
+  enabled: false  # Set to true if you want GUI on supported platforms
+  auto_open: false
+
+# Tool usage statistics
+record_tool_usage_stats: true
+
+# Default context and modes
+default_context: "desktop-app"
+default_modes: ["interactive"]
+
+# Language server settings
+language_servers:
+  typescript:
+    enabled: true
+    auto_install: true
+  python:
+    enabled: true
+    auto_install: true
+  javascript:
+    enabled: true
+    auto_install: true
+
+# Project settings
+projects:
+  khovaiton:
+    path: "/Users/nih/web app/khovaiton"
+    name: "khovaiton"
+    auto_activate: false
+
+# Memory settings
+memory:
+  max_memories_per_project: 20
+  auto_cleanup: true
+  cleanup_days: 30
+
+# Security settings
+security:
+  confirm_shell_commands: true
+  confirm_file_operations: false
+  read_only_mode: false
+
+# Performance settings
+performance:
+  max_file_size_mb: 10
+  max_search_results: 100
+  cache_enabled: true
+  cache_size_mb: 100
+
+# Integration settings
+integrations:
+  claude_desktop: true
+  claude_code: true
+  vscode: true
+  cursor: true
