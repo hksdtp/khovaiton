@@ -12,7 +12,7 @@ const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'fabric_i
 
 // Fabric code corrections for mismatched names (including display name mappings)
 const FABRIC_CODE_CORRECTIONS: Record<string, any> = {
-  '3 PASS BO - WHITE - COL 15': {"originalCode": "3 PASS BO - WHITE - COL 15", "cloudinaryFileName": "fabric_images/3 PASS BO - WHITE - COL 15", "displayName": "3 PASS BO - WHITE - COL 15", "matchType": "new_fabric_images_structure", "confidence": 100},
+  '3 PASS BO - WHITE - COL 15': {"originalCode": "3 PASS BO - WHITE - COL 15", "cloudinaryFileName": "kxtnctannhobhvacgtqe", "displayName": "3 PASS BO - WHITE - COL 15", "matchType": "fallback_to_working_id", "confidence": 100, "fallbackUrls": ["fabric_images/3 PASS BO - WHITE - COL 15", "fabrics/fabrics/3 PASS BO - WHITE - COL 15"]},
   'AR-079-02B': {"originalCode": "AR-079-02B", "cloudinaryFileName": "AR-071-02B", "matchType": "similar", "confidence": 88},
   'vải nhung màu be': {"originalCode": "vải nhung màu be", "cloudinaryFileName": "fabric_images/a44zn2hnktvmktsfdt7g", "displayName": "vải nhung màu be_edited", "matchType": "moved_to_fabric_images", "confidence": 100},
   'R700-05': {"originalCode": "R700-05", "cloudinaryFileName": "fabric_images/agc184xbjm0n715e5aet", "displayName": "R700-05_edited", "matchType": "moved_to_fabric_images", "confidence": 100},
@@ -1455,8 +1455,9 @@ export class CloudinaryService {
         const correction = FABRIC_CODE_CORRECTIONS[fabricCode]
         if (correction.confidence && correction.confidence > 60) {
           actualFabricCode = correction.cloudinaryFileName
-          isRandomId = true // This is a random ID, not a fabric code
-          console.log(`🔄 Using corrected fabric code: ${fabricCode} → ${actualFabricCode}`)
+          // Check if it's a random ID (no slashes, alphanumeric)
+          isRandomId = /^[a-z0-9]+$/i.test(actualFabricCode)
+          console.log(`🔄 Using corrected fabric code: ${fabricCode} → ${actualFabricCode} (isRandomId: ${isRandomId})`)
         }
       }
 
@@ -1469,7 +1470,12 @@ export class CloudinaryService {
         // For random IDs, use directly without fabrics/ folder
         publicId = actualFabricCode
         if (!actualFabricCode.includes('.')) {
-          publicId += '.jpg'
+          // For specific known IDs, use the correct extension
+          if (actualFabricCode === 'kxtnctannhobhvacgtqe') {
+            publicId += '.png'
+          } else {
+            publicId += '.jpg'
+          }
         }
       } else {
         // For fabric codes, handle both new fabric_images/ and legacy fabrics/ structure
@@ -1516,8 +1522,14 @@ export class CloudinaryService {
       // Add version for specific files that need it
       let versionString = ''
       if (actualFabricCode === 'fabric_images/3 PASS BO - WHITE - COL 15' ||
-          actualFabricCode === 'fabrics/fabrics/3 PASS BO - WHITE - COL 15') {
-        versionString = 'v1751648065/'
+          actualFabricCode === 'fabrics/fabrics/3 PASS BO - WHITE - COL 15' ||
+          actualFabricCode === 'kxtnctannhobhvacgtqe') {
+        // Use the correct version for each file
+        if (actualFabricCode === 'kxtnctannhobhvacgtqe') {
+          versionString = 'v1752679690/'
+        } else {
+          versionString = 'v1751648065/'
+        }
       }
 
       // Return URL with proper format

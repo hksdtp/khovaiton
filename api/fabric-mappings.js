@@ -179,7 +179,7 @@ async function handler(req, res) {
 }
 
 // Initialize with known mappings
-fabricMappings.set('3 PASS BO - WHITE - COL 15', 'kxtnctannhobhvacgtqe')
+fabricMappings.set('3 PASS BO - WHITE - COL 15', 'fabric_images/3 PASS BO - WHITE - COL 15')
 fabricMappings.set('33139-2-270', 'n4t1aa79vfgvkmwdlmml') // Latest upload
 
 // Export as default for Vercel
