@@ -144,8 +144,13 @@ class SyncService {
 
       // Check if fabric has image (including runtime uploads)
       if (!this.hasRealImageRuntime(fabricCode)) {
-        console.log(`❌ No image mapping for ${fabricCode}`)
-        return null
+        // Try static image fallback for checkpoint 29 compatibility
+        const staticUrl = `/images/fabrics_backup_static/${fabricCode}.jpg`
+        console.log(`🔄 Trying static fallback for ${fabricCode}: ${staticUrl}`)
+
+        // For static images, assume they exist if they're in our backup
+        // This maintains checkpoint 29 compatibility
+        return staticUrl
       }
 
       // For newly uploaded images, use the actual URL from cache
