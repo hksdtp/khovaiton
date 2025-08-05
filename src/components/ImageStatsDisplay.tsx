@@ -49,8 +49,6 @@ export function ImageStatsDisplay({ className = '' }: ImageStatsDisplayProps) {
 
   // Calculate image stats from available data
   const total = statsData.totalItems || 0
-  const totalStock = statsData.totalStock || 0
-  const averageStock = statsData.averageStock || 0
 
   // For now, use placeholder values since withImages/withoutImages are not available
   const withImages = Math.floor(total * 0.35) // Approximate 35% coverage
