@@ -7,6 +7,8 @@ interface FabricUpdate {
   price?: number | null
   priceNote?: string | undefined
   isHidden?: boolean
+  customImageUrl?: string
+  customImageUpdatedAt?: string
   updatedAt: string
 }
 
@@ -77,6 +79,22 @@ class LocalStorageService {
   }
 
   /**
+   * Update custom image URL in localStorage
+   */
+  updateCustomImageUrl(fabricId: number, customImageUrl: string): void {
+    const updates = this.getUpdates()
+    updates[fabricId] = {
+      ...updates[fabricId],
+      id: fabricId,
+      customImageUrl,
+      customImageUpdatedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+    this.saveUpdates(updates)
+    console.log(`💾 Custom image URL updated in localStorage for fabric ${fabricId}`)
+  }
+
+  /**
    * Get fabric update from localStorage
    */
   getFabricUpdate(fabricId: number): FabricUpdate | null {
@@ -106,13 +124,22 @@ class LocalStorageService {
     const update = this.getFabricUpdate(fabric.id)
     if (!update) return fabric
 
-    return {
+    const updatedFabric = {
       ...fabric,
       price: update.price !== undefined ? update.price : fabric.price,
       priceNote: update.priceNote !== undefined ? update.priceNote : fabric.priceNote,
       isHidden: update.isHidden !== undefined ? update.isHidden : fabric.isHidden,
-      priceUpdatedAt: update.price !== undefined ? new Date(update.updatedAt) : fabric.priceUpdatedAt
+      priceUpdatedAt: update.price !== undefined ? new Date(update.updatedAt) : fabric.priceUpdatedAt,
+      customImageUrl: update.customImageUrl !== undefined ? update.customImageUrl : fabric.customImageUrl,
+      customImageUpdatedAt: update.customImageUpdatedAt ? new Date(update.customImageUpdatedAt) : fabric.customImageUpdatedAt
     }
+
+    // If there's a custom image URL, use it instead of the original image
+    if (updatedFabric.customImageUrl) {
+      updatedFabric.image = updatedFabric.customImageUrl
+    }
+
+    return updatedFabric
   }
 }
 

@@ -8,6 +8,7 @@ import { syncService } from './syncService'
 import { CloudinaryUploadResult } from './cloudinaryService'
 import { realtimeUpdateService } from './realtimeUpdateService'
 import { fabricMappingService } from './fabricMappingService'
+import { fabricUpdateService } from '@/features/inventory/services/fabricUpdateService'
 
 export interface ImageUpdateResult {
   fabricCode: string
@@ -98,6 +99,43 @@ class ImageUpdateService {
 
       // 1.1) Push mapping lên cloud để đa thiết bị (lưu trực tiếp URL)
       await fabricMappingService.updateMappings({ [fabricCode]: imageUrl })
+
+      // 1.2) Save to database for cross-device sync
+      try {
+        // Find fabric ID from code
+        const fabricQueries = this.queryClient?.getQueriesData({ queryKey: ['fabrics'] }) || []
+        let fabricId: number | null = null
+
+        for (const [, data] of fabricQueries) {
+          let fabricList: any[] = []
+
+          if (Array.isArray(data)) {
+            fabricList = data
+          } else if (data && typeof data === 'object' && 'data' in data && Array.isArray((data as any).data)) {
+            fabricList = (data as any).data
+          }
+
+          const fabric = fabricList.find((f: any) => f.code === fabricCode)
+          if (fabric) {
+            fabricId = fabric.id
+            break
+          }
+        }
+
+        if (fabricId) {
+          console.log(`💾 Saving custom image URL to database for fabric ${fabricId}`)
+          const dbResult = await fabricUpdateService.updateCustomImageUrl(fabricId, imageUrl)
+          if (dbResult.success) {
+            console.log(`✅ Custom image URL saved to database`)
+          } else {
+            console.warn(`⚠️ Database save failed, but local cache updated:`, dbResult.error)
+          }
+        } else {
+          console.warn(`⚠️ Could not find fabric ID for code ${fabricCode}, skipping database save`)
+        }
+      } catch (dbError) {
+        console.warn(`⚠️ Database save failed, but local cache updated:`, dbError)
+      }
 
       // 2) Optimistically update UI (React Query caches)
       this.updateFabricInCache(fabricCode, imageUrl)

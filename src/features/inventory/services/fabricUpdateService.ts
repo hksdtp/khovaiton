@@ -213,6 +213,83 @@ class FabricUpdateService {
   }
 
   /**
+   * Cập nhật custom image URL
+   */
+  async updateCustomImageUrl(
+    fabricId: number,
+    customImageUrl: string
+  ): Promise<FabricUpdateResult> {
+    // Check if Supabase is configured
+    if (!isSupabaseConfigured) {
+      console.warn('⚠️ Supabase not configured, using localStorage for custom image URL')
+      localStorageService.updateCustomImageUrl(fabricId, customImageUrl)
+      return {
+        success: true
+      }
+    }
+
+    try {
+      console.log(`🖼️ Updating custom image URL for fabric ${fabricId}:`, customImageUrl)
+
+      const updateData = {
+        custom_image_url: customImageUrl,
+        custom_image_updated_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+
+      const { data, error } = await supabase
+        .from('fabrics')
+        .update(updateData)
+        .eq('id', fabricId)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('❌ Supabase error updating custom image URL:', error)
+        return {
+          success: false,
+          error: `Không thể cập nhật URL ảnh: ${error.message}`
+        }
+      }
+
+      console.log('✅ Custom image URL updated successfully:', data)
+
+      // Convert database format to app format
+      const updatedFabric: Fabric = {
+        ...data,
+        price: data.price,
+        priceNote: data.price_note,
+        priceUpdatedAt: data.price_updated_at ? new Date(data.price_updated_at) : undefined,
+        isHidden: data.is_hidden || false,
+        customImageUrl: data.custom_image_url,
+        customImageUpdatedAt: data.custom_image_updated_at ? new Date(data.custom_image_updated_at) : undefined,
+        createdAt: new Date(data.created_at),
+        updatedAt: new Date(data.updated_at)
+      }
+
+      return {
+        success: true,
+        fabric: updatedFabric
+      }
+    } catch (error) {
+      console.error('❌ Exception updating custom image URL:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+
+      if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
+        return {
+          success: false,
+          error: 'Không thể kết nối đến database. Vui lòng kiểm tra kết nối mạng và thử lại.'
+        }
+      }
+
+      return {
+        success: false,
+        error: `Lỗi cập nhật URL ảnh: ${errorMessage}`
+      }
+    }
+  }
+
+  /**
    * Get fabric statistics including hidden and priced items
    */
   async getFabricStats(): Promise<{

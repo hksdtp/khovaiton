@@ -42,6 +42,10 @@ export interface Fabric extends BaseEntity {
   priceNote?: string | undefined // Ghi chú về giá
   priceUpdatedAt?: Date | undefined // Thời gian cập nhật giá
 
+  // Custom image URL override
+  customImageUrl?: string | undefined // URL ảnh tùy chỉnh thủ công
+  customImageUpdatedAt?: Date | undefined // Thời gian cập nhật ảnh tùy chỉnh
+
   // Fields từ tích hợp dữ liệu
   images?: FabricImage[] | undefined // Danh sách ảnh
   hasImages?: boolean | undefined // Có ảnh hay không

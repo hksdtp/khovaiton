@@ -14,7 +14,13 @@
 - ✅ Lọc để xem sản phẩm đã ẩn
 - ✅ Batch operations (ẩn/hiện nhiều sản phẩm cùng lúc)
 
-### 3. **Đồng bộ Database**
+### 3. **Custom Image URL (Cross-Device Sync)**
+- ✅ Đổi URL ảnh thủ công với đồng bộ database
+- ✅ Hiển thị nhất quán trên tất cả thiết bị
+- ✅ Ưu tiên custom URL over auto-generated images
+- ✅ Fallback to localStorage khi offline
+
+### 4. **Đồng bộ Database**
 - ✅ Tự động lưu vào Supabase
 - ✅ Real-time updates
 - ✅ Error handling và fallback
@@ -39,15 +45,19 @@ CREATE TABLE fabrics (
   location TEXT,
   status VARCHAR(20) DEFAULT 'available',
   image TEXT,
-  
+
   -- Trường mới cho giá
   price DECIMAL(15,2),
   price_note TEXT,
   price_updated_at TIMESTAMP,
-  
+
   -- Trường mới cho ẩn/hiện
   is_hidden BOOLEAN DEFAULT FALSE,
-  
+
+  -- Trường mới cho custom image URL
+  custom_image_url TEXT,
+  custom_image_updated_at TIMESTAMP,
+
   -- Metadata
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
