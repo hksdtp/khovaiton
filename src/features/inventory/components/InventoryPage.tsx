@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, ArrowUpDown } from 'lucide-react'
+import { Package, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useFabricStats } from '../hooks/useFabrics'
@@ -12,13 +12,14 @@ import { getContextualFilters } from '../utils/marketingFilters'
 import { useInventoryStore, useInventorySelectors } from '../store/inventoryStore'
 import { FabricGrid } from './FabricGrid'
 import { SearchBar } from './SearchBar'
-import { FilterPanel } from './FilterPanel'
-import { SortPanel } from './SortPanel'
+{/* Tạm comment các import không sử dụng */}
+{/* import { FilterPanel } from './FilterPanel' */}
+{/* import { SortPanel } from './SortPanel' */}
 import { ImageStatusFilter } from './ImageStatusFilter'
 import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
-import { CloudinarySyncPanel } from './CloudinarySyncPanel'
+{/* import { CloudinarySyncPanel } from './CloudinarySyncPanel' */}
 
 import { ImageViewerModal } from '@/components/ImageViewerModal'
 import { ImageEditor } from '@/components/ImageEditor'
@@ -37,8 +38,9 @@ export function InventoryPage() {
     message: string
     fabricCode?: string
   }>({ type: null, message: '' })
-  const [showSyncPanel, setShowSyncPanel] = useState(false)
-  const [isSortOpen, setIsSortOpen] = useState(false)
+  // Tạm comment các state không sử dụng
+  // const [showSyncPanel, setShowSyncPanel] = useState(false)
+  // const [isSortOpen, setIsSortOpen] = useState(false)
 
   // Image viewer and editor states
   const [imageViewerState, setImageViewerState] = useState<{
@@ -68,22 +70,22 @@ export function InventoryPage() {
 
   const {
     filters,
-    sortOptions,
+    // sortOptions, // Tạm comment vì không dùng
     searchTerm,
     selectedFabric,
-    isFilterOpen,
+    // isFilterOpen, // Tạm comment vì không dùng
     isUploadModalOpen,
     uploadingForId,
     itemsPerPage,
     setSearchTerm,
     setSelectedFabric,
-    setFilterOpen,
+    // setFilterOpen, // Tạm comment vì không dùng
     setUploadModal,
-    setFilters,
-    setSortOptions,
+    // setFilters, // Tạm comment vì không dùng
+    // setSortOptions, // Tạm comment vì không dùng
     setCurrentPage,
     setItemsPerPage,
-    resetFilters,
+    // resetFilters, // Tạm comment vì không dùng
   } = useInventoryStore()
 
   const { getPaginationParams } = useInventorySelectors()
@@ -352,7 +354,8 @@ export function InventoryPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <Button
+                {/* Tạm ẩn các nút Lọc, Sắp xếp, Đồng bộ theo yêu cầu */}
+                {/* <Button
                   variant={isFilterOpen ? "primary" : "secondary"}
                   onClick={() => setFilterOpen(!isFilterOpen)}
                   size="sm"
@@ -377,7 +380,8 @@ export function InventoryPage() {
                 >
                   <Package className="w-4 h-4" />
                   Đồng bộ
-                </Button>
+                </Button> */}
+
                 {/* Tạm ẩn 2 nút này theo yêu cầu */}
                 {/* <Button
                   variant="secondary"
@@ -407,18 +411,19 @@ export function InventoryPage() {
               onChange={setSearchTerm}
             />
 
+            {/* Tạm ẩn các panel theo yêu cầu */}
             {/* Advanced Filter Panel */}
-            <FilterPanel
+            {/* <FilterPanel
               isOpen={isFilterOpen}
               onClose={() => setFilterOpen(false)}
               filters={filters}
               onFiltersChange={setFilters}
               onResetFilters={resetFilters}
               resultCount={fabricsData?.total}
-            />
+            /> */}
 
             {/* Sort Panel */}
-            {isSortOpen && (
+            {/* {isSortOpen && (
               <div className="mb-6">
                 <SortPanel
                   sortOptions={sortOptions}
@@ -426,14 +431,14 @@ export function InventoryPage() {
                   className="max-w-md"
                 />
               </div>
-            )}
+            )} */}
 
             {/* Cloudinary Sync Panel */}
-            {showSyncPanel && (
+            {/* {showSyncPanel && (
               <div className="mt-6">
                 <CloudinarySyncPanel />
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
