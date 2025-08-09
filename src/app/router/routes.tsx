@@ -8,6 +8,7 @@ const MarketingInventoryPage = lazy(() => import('@/features/marketing/component
 const VersionSelector = lazy(() => import('@/features/marketing/components/VersionSelector').then(module => ({ default: module.VersionSelector })))
 const BulkImageUploader = lazy(() => import('@/tools/BulkImageUploader').then(module => ({ default: module.BulkImageUploader })))
 const SyncManager = lazy(() => import('@/tools/SyncManager').then(module => ({ default: module.SyncManager })))
+const SupabaseTest = lazy(() => import('@/debug/SupabaseTest'))
 
 /**
  * Application routes configuration
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
   {
     path: '/tools/sync-manager',
     element: <SyncManager />,
+  },
+  {
+    path: '/debug/supabase',
+    element: <SupabaseTest />,
   },
   // Add more routes here as features are added
   {

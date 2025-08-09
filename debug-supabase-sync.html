@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Supabase Cross-Device Sync</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success { border-color: #4CAF50; background: #f8fff8; }
+        .warning { border-color: #ff9800; background: #fff8f0; }
+        .error { border-color: #f44336; background: #fff8f8; }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #1976D2; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .fabric-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .fabric-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .step {
+            background: #e3f2fd;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #2196F3;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Supabase Cross-Device Sync</h1>
+        <p>Tool để debug vấn đề custom image URL không sync giữa các thiết bị</p>
+
+        <div class="test-section">
+            <h3>📋 Hướng dẫn debug:</h3>
+            <div class="step">
+                <strong>Bước 1:</strong> Kiểm tra Supabase connection
+            </div>
+            <div class="step">
+                <strong>Bước 2:</strong> Test đọc/ghi database
+            </div>
+            <div class="step">
+                <strong>Bước 3:</strong> Simulate custom URL update
+            </div>
+            <div class="step">
+                <strong>Bước 4:</strong> Verify cross-device sync
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Debug Tools:</h3>
+            <button onclick="checkSupabaseConnection()">1. Check Supabase Connection</button>
+            <button onclick="testDatabaseRead()">2. Test Database Read</button>
+            <button onclick="testDatabaseWrite()">3. Test Database Write</button>
+            <button onclick="simulateCustomUrlUpdate()">4. Simulate Custom URL Update</button>
+            <button onclick="clearLogs()">Clear Logs</button>
+            
+            <div id="debugLog" class="log"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🧪 Test Custom URL Update:</h3>
+            <div>
+                <label>Fabric Code:</label>
+                <input type="text" id="fabricCode" value="COTTON001" placeholder="Enter fabric code">
+            </div>
+            <div>
+                <label>New Image URL:</label>
+                <input type="url" id="newImageUrl" value="https://picsum.photos/400/300?random=999" placeholder="Enter new image URL">
+            </div>
+            <button onclick="updateCustomImageUrl()">Update Custom Image URL</button>
+            <button onclick="checkFabricData()">Check Fabric Data</button>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Current Fabric Data:</h3>
+            <div id="fabricDisplay"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔍 Expected vs Actual:</h3>
+            <div id="comparisonDisplay"></div>
+        </div>
+    </div>
+
+    <script>
+        let supabaseClient = null;
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
+            logDiv.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('debugLog').textContent = '';
+        }
+
+        async function checkSupabaseConnection() {
+            log('🔍 Checking Supabase connection...');
+            
+            try {
+                // Check if running in webapp context
+                if (typeof window !== 'undefined' && window.location.origin.includes('localhost:5173')) {
+                    log('✅ Running in webapp context');
+                    
+                    // Try to access Supabase from webapp
+                    const response = await fetch('/api/debug/supabase-status');
+                    if (response.ok) {
+                        const data = await response.json();
+                        log(`✅ Supabase status: ${JSON.stringify(data)}`);
+                    } else {
+                        log('⚠️ No API endpoint, checking client-side...', 'warning');
+                        
+                        // Check environment variables
+                        log('🔍 Checking environment variables...');
+                        log(`VITE_SUPABASE_URL: ${import.meta?.env?.VITE_SUPABASE_URL ? 'Set' : 'Not set'}`);
+                        log(`VITE_SUPABASE_ANON_KEY: ${import.meta?.env?.VITE_SUPABASE_ANON_KEY ? 'Set' : 'Not set'}`);
+                    }
+                } else {
+                    log('⚠️ Not running in webapp context', 'warning');
+                    log('Please open this from the webapp at http://localhost:5173');
+                }
+            } catch (error) {
+                log(`❌ Error checking Supabase: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDatabaseRead() {
+            log('📖 Testing database read...');
+            
+            try {
+                // This would need to be adapted based on your actual implementation
+                const response = await fetch('/api/fabrics');
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Read ${data.length || 0} fabrics from database`);
+                    
+                    // Check for custom image URLs
+                    const fabricsWithCustomUrls = data.filter(f => f.custom_image_url);
+                    log(`📊 Found ${fabricsWithCustomUrls.length} fabrics with custom image URLs`);
+                    
+                    fabricsWithCustomUrls.forEach(fabric => {
+                        log(`  - ${fabric.code}: ${fabric.custom_image_url}`);
+                    });
+                } else {
+                    log(`❌ Database read failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Database read error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDatabaseWrite() {
+            log('✏️ Testing database write...');
+            
+            try {
+                const testData = {
+                    code: 'TEST_SYNC_' + Date.now(),
+                    name: 'Test Sync Fabric',
+                    custom_image_url: 'https://picsum.photos/400/300?random=' + Date.now(),
+                    custom_image_updated_at: new Date().toISOString()
+                };
+                
+                const response = await fetch('/api/fabrics', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    log(`✅ Database write successful: ${JSON.stringify(result)}`);
+                } else {
+                    log(`❌ Database write failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Database write error: ${error.message}`, 'error');
+            }
+        }
+
+        async function simulateCustomUrlUpdate() {
+            log('🎭 Simulating custom URL update...');
+            
+            const fabricCode = document.getElementById('fabricCode').value;
+            const newUrl = document.getElementById('newImageUrl').value;
+            
+            if (!fabricCode || !newUrl) {
+                log('❌ Please enter both fabric code and image URL', 'error');
+                return;
+            }
+            
+            try {
+                log(`🔄 Updating ${fabricCode} with URL: ${newUrl}`);
+                
+                // Simulate the update process
+                const updateData = {
+                    custom_image_url: newUrl,
+                    custom_image_updated_at: new Date().toISOString()
+                };
+                
+                log(`📤 Sending update: ${JSON.stringify(updateData)}`);
+                
+                // This would call your actual update service
+                const response = await fetch(`/api/fabrics/${fabricCode}/custom-image`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updateData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    log(`✅ Custom URL update successful: ${JSON.stringify(result)}`);
+                    
+                    // Wait a bit then check if it's synced
+                    setTimeout(() => {
+                        checkFabricData();
+                    }, 2000);
+                } else {
+                    log(`❌ Custom URL update failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Custom URL update error: ${error.message}`, 'error');
+            }
+        }
+
+        async function updateCustomImageUrl() {
+            log('🖼️ Updating custom image URL via webapp...');
+            
+            const fabricCode = document.getElementById('fabricCode').value;
+            const newUrl = document.getElementById('newImageUrl').value;
+            
+            if (!fabricCode || !newUrl) {
+                log('❌ Please enter both fabric code and image URL', 'error');
+                return;
+            }
+            
+            try {
+                // This simulates what happens in the webapp
+                log(`🔄 Simulating webapp custom URL update for ${fabricCode}`);
+                log(`📤 New URL: ${newUrl}`);
+                
+                // Store in localStorage (what currently happens)
+                const localUpdate = {
+                    fabricCode,
+                    customImageUrl: newUrl,
+                    customImageUpdatedAt: new Date().toISOString(),
+                    timestamp: Date.now()
+                };
+                
+                localStorage.setItem(`custom_image_${fabricCode}`, JSON.stringify(localUpdate));
+                log(`💾 Stored in localStorage: ${JSON.stringify(localUpdate)}`);
+                
+                // Check if it would go to Supabase
+                log('🔍 Checking if Supabase would be updated...');
+                
+                setTimeout(() => {
+                    checkFabricData();
+                }, 1000);
+                
+            } catch (error) {
+                log(`❌ Update error: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkFabricData() {
+            log('📊 Checking current fabric data...');
+            
+            const fabricCode = document.getElementById('fabricCode').value;
+            if (!fabricCode) {
+                log('❌ Please enter fabric code', 'error');
+                return;
+            }
+            
+            try {
+                // Check localStorage
+                const localData = localStorage.getItem(`custom_image_${fabricCode}`);
+                if (localData) {
+                    const parsed = JSON.parse(localData);
+                    log(`💾 localStorage data: ${JSON.stringify(parsed)}`);
+                } else {
+                    log('💾 No localStorage data found');
+                }
+                
+                // Check what the webapp would show
+                log('🔍 Checking webapp fabric data...');
+                
+                // This would need to call your actual fabric API
+                const response = await fetch(`/api/fabrics/${fabricCode}`);
+                if (response.ok) {
+                    const fabricData = await response.json();
+                    log(`📊 Database fabric data: ${JSON.stringify(fabricData)}`);
+                    
+                    // Display in UI
+                    displayFabricData(fabricData);
+                } else {
+                    log(`❌ Failed to fetch fabric data: ${response.status}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Check error: ${error.message}`, 'error');
+            }
+        }
+
+        function displayFabricData(fabric) {
+            const display = document.getElementById('fabricDisplay');
+            display.innerHTML = `
+                <div class="fabric-card">
+                    <h4>${fabric.code} - ${fabric.name}</h4>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div>
+                            <strong>Current Image:</strong><br>
+                            <img src="${fabric.image || 'https://via.placeholder.com/100x100?text=No+Image'}" 
+                                 class="fabric-image" alt="${fabric.code}">
+                            <br><small>${fabric.image || 'No image'}</small>
+                        </div>
+                        <div>
+                            <strong>Custom Image URL:</strong><br>
+                            ${fabric.custom_image_url ? `
+                                <img src="${fabric.custom_image_url}" class="fabric-image" alt="Custom">
+                                <br><small>${fabric.custom_image_url}</small>
+                                <br><small>Updated: ${fabric.custom_image_updated_at}</small>
+                            ` : '<em>No custom URL set</em>'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Auto-run basic checks on load
+        window.addEventListener('load', () => {
+            log('🚀 Debug tool loaded');
+            log('📱 User Agent: ' + navigator.userAgent);
+            log('🌐 URL: ' + window.location.href);
+            
+            // Auto-check connection
+            setTimeout(() => {
+                checkSupabaseConnection();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
