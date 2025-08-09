@@ -28,6 +28,7 @@ class SyncService {
   private fabricToPublicIdMapping = new Map<string, string>() // Map fabric codes to actual Cloudinary public_ids
   private fabricToDirectUrlMapping = new Map<string, string>() // Map fabric codes to direct URLs (manual)
   private readonly CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+  private mappingsLoaded = false // Track if we've loaded mappings from cloud
   private readonly STORAGE_KEY = 'khovaiton_fabric_uploads' // localStorage key
 
   static getInstance(): SyncService {
@@ -36,10 +37,48 @@ class SyncService {
       // Initialize with known uploaded images and load from localStorage
       SyncService.instance.loadFromStorage()
       SyncService.instance.initializeKnownUploads()
+      // Load mappings from cloud for cross-device sync
+      SyncService.instance.loadMappingsFromCloud()
       // Start cloud sync
       SyncService.instance.initializeCloudSync()
     }
     return SyncService.instance
+  }
+
+  /**
+   * Load mappings from cloud storage for cross-device sync
+   */
+  private async loadMappingsFromCloud(): Promise<void> {
+    if (this.mappingsLoaded) {
+      return // Already loaded
+    }
+
+    try {
+      console.log('☁️ Loading fabric mappings from cloud for cross-device sync...')
+      const response = await fabricMappingService.getAllMappings()
+
+      if (response.success && response.mappings) {
+        // Load mappings into direct URL mapping (these are custom URLs)
+        for (const [fabricCode, url] of Object.entries(response.mappings)) {
+          if (url.startsWith('http')) {
+            // This is a direct URL (custom image)
+            this.fabricToDirectUrlMapping.set(fabricCode, url)
+            console.log(`☁️ Loaded custom URL for ${fabricCode}: ${url}`)
+          } else {
+            // This is a publicId (uploaded image)
+            this.fabricToPublicIdMapping.set(fabricCode, url)
+            console.log(`☁️ Loaded publicId for ${fabricCode}: ${url}`)
+          }
+        }
+
+        console.log(`✅ Loaded ${Object.keys(response.mappings).length} mappings from cloud`)
+        this.mappingsLoaded = true
+      } else {
+        console.warn('⚠️ Failed to load mappings from cloud:', response.error)
+      }
+    } catch (error) {
+      console.warn('⚠️ Error loading mappings from cloud:', error)
+    }
   }
 
   /**
@@ -153,6 +192,9 @@ class SyncService {
    */
   async getImageUrl(fabricCode: string): Promise<string | null> {
     try {
+      // Ensure mappings are loaded from cloud for cross-device sync
+      await this.loadMappingsFromCloud()
+
       // Check cache first (for uploaded images with actual URLs)
       const cached = this.syncCache.get(fabricCode)
       if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {

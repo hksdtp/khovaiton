@@ -98,7 +98,9 @@ class ImageUpdateService {
       await syncService.updateFabricImage(fabricCode, imageUrl)
 
       // 1.1) Push mapping lên cloud để đa thiết bị (lưu trực tiếp URL)
+      console.log(`☁️ Saving custom URL to cloud for cross-device sync: ${fabricCode} -> ${imageUrl}`)
       await fabricMappingService.updateMappings({ [fabricCode]: imageUrl })
+      console.log(`✅ Custom URL saved to cloud mapping`)
 
       // 1.2) Save to database for cross-device sync
       try {
