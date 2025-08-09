@@ -28,11 +28,9 @@ class FabricMappingService {
   private readonly API_BASE = '/api/fabric-mappings'
   private lastSyncTime = 0
   private readonly SYNC_INTERVAL = 30000 // 30 seconds
-  private readonly isDevelopment = import.meta.env.DEV
   private get shouldUseCloud() {
-    // Dùng cloud nếu không phải dev, hoặc được ép bật qua biến môi trường
-    const force = (import.meta as any)?.env?.VITE_FORCE_CLOUD_SYNC
-    return !this.isDevelopment || !!force
+    // Always use cloud for cross-device sync
+    return true
   }
 
   static getInstance(): FabricMappingService {

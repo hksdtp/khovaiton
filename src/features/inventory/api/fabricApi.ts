@@ -9,6 +9,7 @@ import { PaginationParams, PaginationResponse } from '@/shared/types'
 import { mockFabrics, getMockFabrics } from '@/shared/mocks/fabricData'
 import { hasRealImage } from '@/data/fabricImageMapping'
 import { localStorageService } from '../services/localStorageService'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
 // Cache for real fabric data
 let realFabrics: Fabric[] = mockFabrics
@@ -26,11 +27,68 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 const shouldSimulateError = () => Math.random() < 0.05 // 5% chance
 
 /**
+ * Load fabrics from Supabase database
+ */
+async function loadFabricsFromSupabase(): Promise<Fabric[]> {
+  if (!isSupabaseConfigured) {
+    console.log('📦 Supabase not configured, using mock data')
+    return getMockFabrics()
+  }
+
+  try {
+    console.log('☁️ Loading fabrics from Supabase...')
+    const { data, error } = await supabase
+      .from('fabrics')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('❌ Supabase error:', error)
+      console.log('📦 Falling back to mock data')
+      return getMockFabrics()
+    }
+
+    if (!data || data.length === 0) {
+      console.log('📦 No data in Supabase, using mock data')
+      return getMockFabrics()
+    }
+
+    // Convert Supabase data to Fabric format
+    const fabrics: Fabric[] = data.map(row => ({
+      id: row.id,
+      code: row.code,
+      name: row.name,
+      type: row.type || 'unknown',
+      quantity: row.quantity || 0,
+      unit: row.unit || 'pieces',
+      location: row.location || 'Unknown',
+      status: row.status || 'available',
+      image: row.custom_image_url || row.image || '',
+      price: row.price,
+      priceNote: row.price_note,
+      priceUpdatedAt: row.price_updated_at ? new Date(row.price_updated_at) : undefined,
+      isHidden: row.is_hidden || false,
+      customImageUrl: row.custom_image_url,
+      customImageUpdatedAt: row.custom_image_updated_at ? new Date(row.custom_image_updated_at) : undefined,
+      createdAt: new Date(row.created_at),
+      updatedAt: new Date(row.updated_at)
+    }))
+
+    console.log(`✅ Loaded ${fabrics.length} fabrics from Supabase`)
+    return fabrics
+  } catch (error) {
+    console.error('❌ Error loading from Supabase:', error)
+    console.log('📦 Falling back to mock data')
+    return getMockFabrics()
+  }
+}
+
+/**
  * Initialize real fabric data
  */
 async function initializeRealData() {
   try {
-    realFabrics = await getMockFabrics()
+    realFabrics = await loadFabricsFromSupabase()
   } catch (error) {
     console.warn('Using fallback fabric data:', error)
   }
@@ -42,7 +100,7 @@ async function initializeRealData() {
 async function forceRefreshFabricData() {
   try {
     console.log('🔄 Force refreshing fabric data...')
-    realFabrics = await getMockFabrics()
+    realFabrics = await loadFabricsFromSupabase()
     console.log('✅ Fabric data refreshed')
   } catch (error) {
     console.warn('Failed to refresh fabric data:', error)
