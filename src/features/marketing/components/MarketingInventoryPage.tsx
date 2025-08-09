@@ -56,8 +56,10 @@ export function MarketingInventoryPage() {
       {/* Version Switcher */}
       <VersionSwitcher />
 
-      {/* Regular inventory page */}
-      <InventoryPage />
+      {/* Regular inventory page with bottom padding for banner */}
+      <div className={showBottomBanner ? "pb-16" : ""}>
+        <InventoryPage />
+      </div>
       
       {/* Marketing overlay */}
       <SecurityAlertModal

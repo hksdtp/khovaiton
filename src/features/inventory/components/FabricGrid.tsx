@@ -6,6 +6,9 @@ interface FabricGridProps {
   onSelectFabric: (fabric: Fabric) => void
   onUploadImage: (fabricId: number) => void
   onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
+  onPriceUpdate?: (fabricId: number, price: number | null, note?: string) => Promise<void>
+  onVisibilityToggle?: (fabricId: number, isHidden: boolean) => Promise<void>
+  isMarketingMode?: boolean
   isLoading?: boolean
 }
 
@@ -14,6 +17,9 @@ export function FabricGrid({
   onSelectFabric,
   onUploadImage,
   onViewImage,
+  onPriceUpdate,
+  onVisibilityToggle,
+  isMarketingMode = false,
   isLoading = false
 }: FabricGridProps) {
   if (isLoading) {
@@ -66,6 +72,9 @@ export function FabricGrid({
           onSelect={onSelectFabric}
           onUploadImage={onUploadImage}
           onViewImage={onViewImage || (() => {})}
+          onPriceUpdate={onPriceUpdate}
+          onVisibilityToggle={onVisibilityToggle}
+          isMarketingMode={isMarketingMode}
           className="animate-fade-in"
         />
       ))}

@@ -57,16 +57,64 @@ export class DataService {
     }
 
     try {
-      const response = await fetch('/src/data/fabrics_data.json')
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      // Thử các đường dẫn khác nhau
+      const paths = [
+        '/src/data/fabrics_data.json',
+        '/data/fabrics_data.json',
+        './src/data/fabrics_data.json'
+      ]
+
+      let response: Response | null = null
+      let lastError: Error | null = null
+
+      for (const path of paths) {
+        try {
+          console.log(`🔍 Trying to fetch data from: ${path}`)
+          response = await fetch(path)
+          if (response.ok) {
+            console.log(`✅ Successfully fetched from: ${path}`)
+            break
+          }
+        } catch (err) {
+          lastError = err as Error
+          console.warn(`❌ Failed to fetch from ${path}:`, err)
+        }
       }
-      
+
+      if (!response || !response.ok) {
+        throw lastError || new Error('All data paths failed')
+      }
+
       this.fabricsData = await response.json()
+      console.log(`📊 Loaded fabric data with ${this.fabricsData?.fabrics?.length || 0} items`)
       return this.fabricsData!
     } catch (error) {
       console.error('Lỗi load dữ liệu vải:', error)
-      throw new Error('Không thể load dữ liệu vải')
+      console.log('🔄 Falling back to mock data...')
+
+      // Fallback to mock data
+      try {
+        const { getMockFabrics } = await import('@/shared/mocks/fabricData')
+        const mockFabrics = await getMockFabrics()
+        this.fabricsData = {
+          metadata: {
+            total_items: mockFabrics.length,
+            total_images: 0,
+            mapped_images: 0,
+            fabrics_with_images: 0,
+            generated_at: new Date().toISOString(),
+            source_excel: 'mock',
+            source_images: 'mock'
+          },
+          fabrics: mockFabrics,
+          image_mapping: {}
+        }
+        console.log(`✅ Using mock data with ${mockFabrics.length} fabrics`)
+        return this.fabricsData
+      } catch (mockError) {
+        console.error('❌ Mock data also failed:', mockError)
+        throw new Error('Không thể load dữ liệu vải')
+      }
     }
   }
 
@@ -96,8 +144,12 @@ export class DataService {
    * Lấy danh sách tất cả vải
    */
   async getAllFabrics(): Promise<Fabric[]> {
-    const data = await this.loadFabricsData()
-    return data.fabrics
+    // Temporary: Use mock data directly to fix the issue
+    console.log('📦 Loading fabrics from mock data...')
+    const { getMockFabrics } = await import('@/shared/mocks/fabricData')
+    const fabrics = await getMockFabrics()
+    console.log(`✅ Loaded ${fabrics.length} fabrics from mock data`)
+    return fabrics
   }
 
   /**
@@ -300,10 +352,17 @@ export class DataService {
   }
 
   /**
-   * Sắp xếp vải
+   * Sắp xếp vải với ưu tiên trạng thái
    */
   sortFabrics(fabrics: Fabric[], field: keyof Fabric, direction: 'asc' | 'desc'): Fabric[] {
     return [...fabrics].sort((a, b) => {
+      // Ưu tiên sắp xếp theo trạng thái trước
+      const statusPriority = this.getStatusPriority(a.status) - this.getStatusPriority(b.status)
+      if (statusPriority !== 0) {
+        return statusPriority
+      }
+
+      // Nếu cùng trạng thái, sắp xếp theo field được chỉ định
       const aValue = a[field]
       const bValue = b[field]
 
@@ -316,6 +375,50 @@ export class DataService {
 
       return direction === 'desc' ? -comparison : comparison
     })
+  }
+
+  /**
+   * Sắp xếp vải chỉ theo trạng thái (không theo field khác)
+   */
+  sortFabricsByStatus(fabrics: Fabric[]): Fabric[] {
+    return [...fabrics].sort((a, b) => {
+      const statusPriority = this.getStatusPriority(a.status) - this.getStatusPriority(b.status)
+      if (statusPriority !== 0) {
+        return statusPriority
+      }
+
+      // Nếu cùng trạng thái, sắp xếp theo tên để đảm bảo thứ tự ổn định
+      return a.name.localeCompare(b.name, 'vi', { numeric: true })
+    })
+  }
+
+  /**
+   * Định nghĩa thứ tự ưu tiên cho trạng thái
+   * Số càng nhỏ = ưu tiên càng cao (hiển thị trước)
+   */
+  private getStatusPriority(status: FabricStatus): number {
+    const priorities = {
+      'available': 1,      // Có sẵn - ưu tiên cao nhất
+      'low_stock': 2,      // Sắp hết - ưu tiên cao
+      'out_of_stock': 3,   // Hết hàng - ưu tiên trung bình
+      'expired': 4,        // Hết hạn - ưu tiên thấp
+      'damaged': 5         // Lỗi nhẹ - ưu tiên thấp nhất
+    }
+    return priorities[status] || 999
+  }
+
+  /**
+   * Lấy tên hiển thị cho trạng thái
+   */
+  getStatusDisplayName(status: FabricStatus): string {
+    const displayNames = {
+      'available': 'Có sẵn',
+      'low_stock': 'Sắp hết',
+      'out_of_stock': 'Hết hàng',
+      'expired': 'Hết hạn',
+      'damaged': 'Lỗi nhẹ'
+    }
+    return displayNames[status] || status
   }
 
   /**

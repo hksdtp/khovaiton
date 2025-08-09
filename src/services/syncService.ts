@@ -26,6 +26,7 @@ class SyncService {
   private syncCache = new Map<string, { url: string; timestamp: number }>()
   private runtimeImageMapping = new Set<string>() // Runtime cache for newly uploaded images
   private fabricToPublicIdMapping = new Map<string, string>() // Map fabric codes to actual Cloudinary public_ids
+  private fabricToDirectUrlMapping = new Map<string, string>() // Map fabric codes to direct URLs (manual)
   private readonly CACHE_TTL = 5 * 60 * 1000 // 5 minutes
   private readonly STORAGE_KEY = 'khovaiton_fabric_uploads' // localStorage key
 
@@ -66,6 +67,22 @@ class SyncService {
 
           console.log(`💾 Loaded ${this.fabricToPublicIdMapping.size} uploaded images from storage`)
         }
+
+        // Restore fabric to direct URL mapping (manual URLs)
+        if (data.fabricToDirectUrlMapping) {
+          Object.entries(data.fabricToDirectUrlMapping).forEach(([fabricCode, directUrl]) => {
+            this.fabricToDirectUrlMapping.set(fabricCode, directUrl as string)
+            this.runtimeImageMapping.add(fabricCode)
+
+            // Use direct URL
+            this.syncCache.set(fabricCode, {
+              url: directUrl as string,
+              timestamp: Date.now()
+            })
+          })
+
+          console.log(`💾 Loaded ${this.fabricToDirectUrlMapping.size} manual URLs from storage`)
+        }
       }
     } catch (error) {
       console.warn('⚠️ Failed to load from storage:', error)
@@ -79,11 +96,12 @@ class SyncService {
     try {
       const data = {
         fabricToPublicIdMapping: Object.fromEntries(this.fabricToPublicIdMapping),
+        fabricToDirectUrlMapping: Object.fromEntries(this.fabricToDirectUrlMapping),
         timestamp: Date.now()
       }
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data))
-      console.log(`💾 Saved ${this.fabricToPublicIdMapping.size} uploaded images to storage`)
+      console.log(`💾 Saved ${this.fabricToPublicIdMapping.size} publicIds + ${this.fabricToDirectUrlMapping.size} direct URLs to storage`)
     } catch (error) {
       console.warn('⚠️ Failed to save to storage:', error)
     }
@@ -142,15 +160,41 @@ class SyncService {
         return cached.url
       }
 
-      // Check if fabric has image (including runtime uploads)
+      // FORCE USE CLOUDINARY ONLY - All images uploaded to Cloudinary
+      // Check if fabric has image in runtime mapping first
       if (!this.hasRealImageRuntime(fabricCode)) {
-        // Try static image fallback for checkpoint 29 compatibility
-        const staticUrl = `/images/fabrics_backup_static/${fabricCode}.jpg`
-        console.log(`🔄 Trying static fallback for ${fabricCode}: ${staticUrl}`)
+        console.log(`🔍 No runtime mapping for ${fabricCode}, checking Cloudinary directly...`)
+        
+        // Direct Cloudinary check - force use since all images uploaded
+        const cloudinaryUrl = cloudinaryService.getFabricImageUrl(fabricCode)
+        if (cloudinaryUrl) {
+          console.log(`☁️ Using Cloudinary URL for ${fabricCode}: ${cloudinaryUrl}`)
+          
+          // Cache the Cloudinary URL
+          this.syncCache.set(fabricCode, {
+            url: cloudinaryUrl,
+            timestamp: Date.now()
+          })
+          
+          return cloudinaryUrl
+        }
+        
+        console.log(`❌ No Cloudinary URL available for ${fabricCode}`)
+        return null
+      }
 
-        // For static images, assume they exist if they're in our backup
-        // This maintains checkpoint 29 compatibility
-        return staticUrl
+      // Check for manual direct URL first (highest priority)
+      if (this.fabricToDirectUrlMapping.has(fabricCode)) {
+        const directUrl = this.fabricToDirectUrlMapping.get(fabricCode)!
+        console.log(`🎯 Using manual direct URL for ${fabricCode}: ${directUrl}`)
+
+        // Cache the direct URL
+        this.syncCache.set(fabricCode, {
+          url: directUrl,
+          timestamp: Date.now()
+        })
+
+        return directUrl
       }
 
       // For newly uploaded images, use the actual URL from cache
@@ -316,6 +360,7 @@ class SyncService {
     this.syncCache.clear()
     this.runtimeImageMapping.clear()
     this.fabricToPublicIdMapping.clear()
+    this.fabricToDirectUrlMapping.clear()
 
     try {
       localStorage.removeItem(this.STORAGE_KEY)
@@ -330,11 +375,43 @@ class SyncService {
    */
   private async initializeCloudSync(): Promise<void> {
     try {
+      // Load mappings from cloud immediately (for fresh devices)
+      await this.loadFromCloud()
       // Start auto-sync for cross-device consistency
       fabricMappingService.startAutoSync()
       console.log('☁️ Cloud sync initialized')
     } catch (error) {
       console.warn('⚠️ Failed to initialize cloud sync:', error)
+    }
+  }
+
+  /**
+   * Load mappings from cloud and apply to runtime caches
+   */
+  private async loadFromCloud(): Promise<void> {
+    try {
+      const res = await fabricMappingService.getAllMappings()
+      if (!res.success || !res.mappings) return
+
+      Object.entries(res.mappings).forEach(([fabricCode, value]) => {
+        // value có thể là publicId hoặc là URL đầy đủ
+        let url = ''
+        if (typeof value === 'string' && /^https?:\/\//i.test(value)) {
+          url = value
+        } else {
+          const publicId = String(value)
+          this.fabricToPublicIdMapping.set(fabricCode, publicId)
+          url = `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`
+        }
+        this.syncCache.set(fabricCode, { url, timestamp: Date.now() })
+      })
+
+      // Persist to localStorage as well (optional)
+      this.saveToStorage()
+
+      console.log(`☁️ Loaded ${Object.keys(res.mappings).length} mappings from cloud into runtime cache`)
+    } catch (error) {
+      console.warn('⚠️ Could not load mappings from cloud:', error)
     }
   }
 
@@ -403,16 +480,23 @@ class SyncService {
       timestamp: Date.now()
     })
 
-    // Store public_id mapping if provided
-    if (publicId) {
+    // If we have a Cloudinary publicId, store and sync it to cloud for cross-device
+    if (publicId && publicId.trim()) {
       this.fabricToPublicIdMapping.set(fabricCode, publicId)
       console.log(`🔗 Mapped ${fabricCode} to public_id: ${publicId}`)
 
-      // Save to localStorage for persistence
+      // Save to localStorage for persistence (optional)
       this.saveToStorage()
 
       // Sync with cloud storage for cross-device consistency
       await fabricMappingService.syncAfterUpload(fabricCode, publicId)
+    } else {
+      // This is a manual URL (no publicId), save as direct URL
+      this.fabricToDirectUrlMapping.set(fabricCode, cloudinaryUrl)
+      console.log(`🔗 Mapped ${fabricCode} to direct URL: ${cloudinaryUrl}`)
+
+      // Save to localStorage for persistence
+      this.saveToStorage()
     }
 
     console.log(`🔄 Updated image cache for ${fabricCode}`)

@@ -1,15 +1,13 @@
 /**
- * Fabric Image Mapping - CLOUDINARY ONLY (UPDATED)
- * Ninh ơi, file này chứa fabric codes có ảnh THẬT trên Cloudinary
- * Đã cập nhật với tất cả ảnh đã upload lên Cloudinary
- * 
- * Generated: 2025-08-07T10:01:29.454Z
- * Total fabrics with Cloudinary images: 219
- * 
- * ✅ ALL IMAGES NOW ON CLOUDINARY - NO STATIC FALLBACK
+ * Update Fabric Image Mapping - Sync với Cloudinary
+ * Script để cập nhật fabricImageMapping.ts với tất cả fabric codes có ảnh
  */
 
-const FABRICS_WITH_CLOUDINARY_IMAGES = new Set([
+const fs = require('fs')
+const path = require('path')
+
+// Danh sách fabric codes từ static folder
+const STATIC_FABRIC_CODES = [
   '0248243680103',
   '07013D -31',
   '07013D-88',
@@ -229,6 +227,36 @@ const FABRICS_WITH_CLOUDINARY_IMAGES = new Set([
   'm907-12',
   'moir',
   'w5601-6'
+]
+
+async function updateFabricMapping() {
+  console.log('🔄 Updating fabricImageMapping.ts with all uploaded Cloudinary images...')
+  
+  const mappingPath = path.join(__dirname, 'src/data/fabricImageMapping.ts')
+  
+  // Đọc file hiện tại
+  let currentContent = ''
+  try {
+    currentContent = fs.readFileSync(mappingPath, 'utf8')
+  } catch (error) {
+    console.error('❌ Failed to read current mapping file:', error.message)
+    return
+  }
+  
+  // Tạo nội dung mới
+  const newContent = `/**
+ * Fabric Image Mapping - CLOUDINARY ONLY (UPDATED)
+ * Ninh ơi, file này chứa fabric codes có ảnh THẬT trên Cloudinary
+ * Đã cập nhật với tất cả ảnh đã upload lên Cloudinary
+ * 
+ * Generated: ${new Date().toISOString()}
+ * Total fabrics with Cloudinary images: ${STATIC_FABRIC_CODES.length}
+ * 
+ * ✅ ALL IMAGES NOW ON CLOUDINARY - NO STATIC FALLBACK
+ */
+
+const FABRICS_WITH_CLOUDINARY_IMAGES = new Set([
+${STATIC_FABRIC_CODES.map(code => `  '${code}'`).join(',\n')}
 ])
 
 export function hasRealImage(fabricCode: string): boolean {
@@ -264,5 +292,19 @@ export function hasCloudinaryImage(fabricCode: string): boolean {
   return FABRICS_WITH_CLOUDINARY_IMAGES.has(fabricCode)
 }
 
-// ✅ TỔNG KẾT: 219 fabric codes có ảnh trên Cloudinary
+// ✅ TỔNG KẾT: ${STATIC_FABRIC_CODES.length} fabric codes có ảnh trên Cloudinary
 // 🚀 TẤT CẢ ẢNH ĐÃ ĐƯỢC UPLOAD LÊN CLOUDINARY
+`
+  
+  // Ghi file mới
+  try {
+    fs.writeFileSync(mappingPath, newContent, 'utf8')
+    console.log(`✅ Updated fabricImageMapping.ts with ${STATIC_FABRIC_CODES.length} fabric codes`)
+    console.log('🚀 All fabric codes now mapped to Cloudinary images')
+  } catch (error) {
+    console.error('❌ Failed to write mapping file:', error.message)
+  }
+}
+
+// Chạy update
+updateFabricMapping()

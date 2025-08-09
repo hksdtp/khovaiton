@@ -213,6 +213,40 @@ export function FilterPanel({
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
+
+        {/* Price Status Filter */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Trạng thái giá
+          </label>
+          <select
+            value={localFilters.priceStatus || 'all'}
+            onChange={(e) => handleLocalFilterChange('priceStatus', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="all">Tất cả</option>
+            <option value="with_price">Có giá</option>
+            <option value="without_price">Chưa có giá</option>
+          </select>
+        </div>
+
+        {/* Visibility Filter */}
+        <div>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={localFilters.showHidden || false}
+              onChange={(e) => handleLocalFilterChange('showHidden', e.target.checked)}
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <span className="text-sm font-medium text-gray-700">
+              Hiển thị sản phẩm đã ẩn
+            </span>
+          </label>
+          <p className="text-xs text-gray-500 mt-1">
+            Bao gồm các sản phẩm đã bị ẩn khỏi danh sách chính
+          </p>
+        </div>
       </div>
 
       {/* Action Buttons */}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Fixed Cloudinary URLs</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .fabric-test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .fabric-test h3 { margin-top: 0; color: #333; }
+        .url { font-family: monospace; background: #f5f5f5; padding: 5px; border-radius: 3px; word-break: break-all; }
+        .image-container { margin: 10px 0; }
+        .image-container img { max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px; }
+        .status { font-weight: bold; padding: 2px 8px; border-radius: 3px; }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .loading { color: #6c757d; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Fixed Cloudinary URLs</h1>
+    <p>Kiểm tra URLs sau khi sửa CloudinaryService để dùng thư mục <code>fabrics/</code></p>
+
+    <div id="results"></div>
+
+    <script>
+        const fabricCodes = [
+            'AR-071-02B',
+            'BERTONE-30', 
+            'TP01623-224',
+            'DCR-RP1120',
+            '71022-10',
+            'YB0320-7',
+            'M907-12',
+            'W5601-6',
+            '83102-19'
+        ]
+
+        function createFabricImageUrl(fabricCode) {
+            return `https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/${fabricCode}.jpg`
+        }
+
+        async function testFabricImage(fabricCode) {
+            const url = createFabricImageUrl(fabricCode)
+            const container = document.createElement('div')
+            container.className = 'fabric-test'
+            container.innerHTML = `
+                <h3>${fabricCode}</h3>
+                <div class="url">${url}</div>
+                <div class="image-container">
+                    <div class="loading">Đang tải...</div>
+                </div>
+                <div class="status-container"></div>
+            `
+            
+            document.getElementById('results').appendChild(container)
+            
+            const img = new Image()
+            const imageContainer = container.querySelector('.image-container')
+            const statusContainer = container.querySelector('.status-container')
+            
+            img.onload = function() {
+                imageContainer.innerHTML = ''
+                imageContainer.appendChild(img)
+                statusContainer.innerHTML = '<span class="status success">✅ Ảnh tải thành công</span>'
+            }
+            
+            img.onerror = function() {
+                imageContainer.innerHTML = '<div style="color: #666; font-style: italic;">❌ Không thể tải ảnh</div>'
+                statusContainer.innerHTML = '<span class="status error">❌ Ảnh không tồn tại hoặc lỗi tải</span>'
+            }
+            
+            img.src = url
+            
+            // Cũng test bằng fetch
+            try {
+                const response = await fetch(url, { method: 'HEAD' })
+                if (!response.ok) {
+                    console.log(`❌ ${fabricCode}: ${response.status} ${response.statusText}`)
+                } else {
+                    console.log(`✅ ${fabricCode}: ${response.status} OK`)
+                }
+            } catch (error) {
+                console.log(`❌ ${fabricCode}: Fetch error - ${error.message}`)
+            }
+        }
+
+        // Test tất cả fabric codes
+        console.log('🚀 Bắt đầu test fixed URLs...')
+        fabricCodes.forEach(testFabricImage)
+    </script>
+</body>
+</html>

@@ -38,7 +38,7 @@ export function useAllFabrics() {
  */
 export function useFabrics(
   filters: FabricFilters = {},
-  sort: FabricSortOptions = { field: 'updatedAt', direction: 'desc' },
+  sort: FabricSortOptions = { field: 'status', direction: 'asc' },
   page: number = 1,
   limit: number = 20
 ) {
@@ -47,12 +47,35 @@ export function useFabrics(
   return useQuery({
     queryKey: fabricQueryKeys.list(filters, sort, page, limit),
     queryFn: async () => {
+      console.log('🔍 useFabrics query running with:', { filters, sort, page, limit })
+
       // Lấy tất cả dữ liệu từ cache hoặc load mới
       let allFabrics = queryClient.getQueryData<Fabric[]>(fabricQueryKeys.all)
-      
+
       if (!allFabrics) {
-        allFabrics = await dataService.getAllFabrics()
-        queryClient.setQueryData(fabricQueryKeys.all, allFabrics)
+        console.log('📦 Loading fabrics from dataService...')
+        try {
+          allFabrics = await dataService.getAllFabrics()
+          console.log(`✅ Loaded ${allFabrics.length} fabrics`)
+          queryClient.setQueryData(fabricQueryKeys.all, allFabrics)
+        } catch (error) {
+          console.error('❌ Failed to load fabrics:', error)
+          throw error
+        }
+      } else {
+        console.log(`📋 Using cached fabrics: ${allFabrics.length} items`)
+      }
+
+      if (!allFabrics || allFabrics.length === 0) {
+        console.warn('⚠️ No fabrics data available')
+        return {
+          items: [],
+          totalItems: 0,
+          totalPages: 0,
+          currentPage: page,
+          hasNextPage: false,
+          hasPrevPage: false
+        }
       }
 
       // Apply filters
@@ -115,11 +138,22 @@ export function useFabrics(
         }
       }
 
-      // Apply sorting
-      const sortedFabrics = dataService.sortFabrics(filteredFabrics, sort.field, sort.direction)
+      // Apply sorting - ưu tiên sắp xếp theo trạng thái
+      console.log(`🔄 Sorting ${filteredFabrics.length} fabrics by ${sort.field} ${sort.direction}`)
+      let sortedFabrics: Fabric[]
+      if (sort.field === 'status') {
+        // Sắp xếp chỉ theo trạng thái
+        sortedFabrics = dataService.sortFabricsByStatus(filteredFabrics)
+        console.log('📊 Sorted by status priority')
+      } else {
+        // Sắp xếp theo field khác nhưng vẫn ưu tiên trạng thái
+        sortedFabrics = dataService.sortFabrics(filteredFabrics, sort.field, sort.direction)
+        console.log(`📊 Sorted by ${sort.field} with status priority`)
+      }
 
       // Apply pagination
       const paginatedResult = dataService.paginateFabrics(sortedFabrics, page, limit)
+      console.log(`📄 Paginated result: ${paginatedResult.items.length} items on page ${page}/${paginatedResult.totalPages}`)
 
       return paginatedResult
     },

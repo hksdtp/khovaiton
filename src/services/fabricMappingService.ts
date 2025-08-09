@@ -29,6 +29,11 @@ class FabricMappingService {
   private lastSyncTime = 0
   private readonly SYNC_INTERVAL = 30000 // 30 seconds
   private readonly isDevelopment = import.meta.env.DEV
+  private get shouldUseCloud() {
+    // Dùng cloud nếu không phải dev, hoặc được ép bật qua biến môi trường
+    const force = (import.meta as any)?.env?.VITE_FORCE_CLOUD_SYNC
+    return !this.isDevelopment || !!force
+  }
 
   static getInstance(): FabricMappingService {
     if (!FabricMappingService.instance) {
@@ -42,13 +47,9 @@ class FabricMappingService {
    */
   async getAllMappings(): Promise<MappingResponse> {
     // Skip API calls in development mode
-    if (this.isDevelopment) {
-      console.log('🚧 Development mode: Skipping cloud mappings API call')
-      return {
-        success: true,
-        mappings: {},
-        count: 0
-      }
+    if (!this.shouldUseCloud) {
+      console.log('🚧 Local mode: Skipping cloud mappings API call')
+      return { success: true, mappings: {}, count: 0 }
     }
 
     try {
@@ -74,12 +75,9 @@ class FabricMappingService {
    */
   async updateMappings(mappings: FabricMapping): Promise<UpdateResponse> {
     // Skip API calls in development mode
-    if (this.isDevelopment) {
-      console.log('🚧 Development mode: Skipping cloud mappings update')
-      return {
-        success: true,
-        updatedCount: Object.keys(mappings).length
-      }
+    if (!this.shouldUseCloud) {
+      console.log('🚧 Local mode: Skipping cloud mappings update')
+      return { success: true, updatedCount: Object.keys(mappings).length }
     }
 
     try {
@@ -110,12 +108,9 @@ class FabricMappingService {
    */
   async addMapping(fabricCode: string, publicId: string): Promise<UpdateResponse> {
     // Skip API calls in development mode
-    if (this.isDevelopment) {
-      console.log(`🚧 Development mode: Skipping cloud mapping add for ${fabricCode}`)
-      return {
-        success: true,
-        updatedCount: 1
-      }
+    if (!this.shouldUseCloud) {
+      console.log(`🚧 Local mode: Skipping cloud mapping add for ${fabricCode}`)
+      return { success: true, updatedCount: 1 }
     }
 
     try {

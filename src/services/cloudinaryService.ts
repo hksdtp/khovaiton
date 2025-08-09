@@ -1316,6 +1316,49 @@ const FABRIC_CODE_CORRECTIONS: Record<string, any> = {
     "cloudinaryFileName": "BWB-8043",
     "matchType": "static_upload",
     "confidence": 100
+  },
+  // Missing fabric codes that were causing 404 errors
+  'FB15141A21': {
+    "originalCode": "FB15141A21",
+    "cloudinaryFileName": "FB15141A21",
+    "matchType": "static_upload",
+    "confidence": 100
+  },
+  'FB15148A21': {
+    "originalCode": "FB15148A21",
+    "cloudinaryFileName": "FB15148A21",
+    "matchType": "static_upload",
+    "confidence": 100
+  },
+  'FB15198A6': {
+    "originalCode": "FB15198A6",
+    "cloudinaryFileName": "FB15198A6",
+    "matchType": "static_upload",
+    "confidence": 100
+  },
+  'FS-PURPLE': {
+    "originalCode": "FS-PURPLE",
+    "cloudinaryFileName": "FS-PURPLE",
+    "matchType": "static_upload",
+    "confidence": 100
+  },
+  'FB15198A5': {
+    "originalCode": "FB15198A5",
+    "cloudinaryFileName": "FB15198A5",
+    "matchType": "static_upload",
+    "confidence": 100
+  },
+  'FB15157A1': {
+    "originalCode": "FB15157A1",
+    "cloudinaryFileName": "FB15157A1",
+    "matchType": "static_upload",
+    "confidence": 100
+  },
+  'AS22878-7': {
+    "originalCode": "AS22878-7",
+    "cloudinaryFileName": "AS22878-7",
+    "matchType": "static_upload",
+    "confidence": 100
   },};
 
 // Initialize Cloudinary instance (for future use)
@@ -1478,20 +1521,20 @@ export class CloudinaryService {
           }
         }
       } else {
-        // For fabric codes, handle both new fabric_images/ and legacy fabrics/ structure
-        if (actualFabricCode.startsWith('fabric_images/')) {
-          // New structure: fabric_images/ folder
-          publicId = actualFabricCode
-        } else if (actualFabricCode.startsWith('fabrics/')) {
-          // Legacy structure: fabrics/ folder
+        // For fabric codes, handle both main fabrics/ and alternative fabric_images/ structure
+        if (actualFabricCode.startsWith('fabrics/')) {
+          // Main structure: fabrics/ folder (where most images are stored)
           publicId = actualFabricCode
           // Fix duplicate fabrics/ folder issue for legacy images
           if (publicId.startsWith('fabrics/fabrics/')) {
             publicId = publicId.replace('fabrics/fabrics/', 'fabrics/')
           }
+        } else if (actualFabricCode.startsWith('fabric_images/')) {
+          // Alternative structure: fabric_images/ folder
+          publicId = actualFabricCode
         } else {
-          // Default: add fabric_images/ prefix for new uploads
-          publicId = `fabric_images/${actualFabricCode}`
+          // Default: add fabrics/ prefix (main folder where images are stored)
+          publicId = `fabrics/${actualFabricCode}`
         }
         if (!actualFabricCode.includes('.')) {
           publicId += '.jpg'
@@ -1535,15 +1578,23 @@ export class CloudinaryService {
       // Return URL with proper format
       const finalUrl = `${baseUrl}/${transformString}${versionString}${publicId}`
 
-      // Debug log for specific fabric codes
-      if (fabricCode === 'TP01623-0035' || fabricCode === '3 PASS BO - WHITE - COL 15') {
+      // Debug log for specific fabric codes and problematic ones
+      const debugCodes = [
+        'TP01623-0035', '3 PASS BO - WHITE - COL 15',
+        'FB15169A4', 'A9003-5', 'FB15141A21', 'FB15148A21',
+        '8059', 'FB15198A6', 'AS22541-5', 'FS-PURPLE',
+        'FB15144A3', 'FB15198A5', 'FB15157A1', 'AS22878-7', '8015-1'
+      ]
+
+      if (debugCodes.includes(fabricCode)) {
         console.log(`🔍 DEBUG URL generation for ${fabricCode}:`)
         console.log(`   Original: ${fabricCode}`)
         console.log(`   Corrected: ${actualFabricCode}`)
         console.log(`   PublicId: ${publicId}`)
         console.log(`   Version: ${versionString}`)
         console.log(`   Final URL: ${finalUrl}`)
-        console.log(`   🆕 Using NEW fabric_images structure`)
+        console.log(`   IsRandomId: ${isRandomId}`)
+        console.log(`   Has correction: ${!!FABRIC_CODE_CORRECTIONS[fabricCode]}`)
       }
 
       return finalUrl

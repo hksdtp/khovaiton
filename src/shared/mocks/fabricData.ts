@@ -2,6 +2,7 @@ import { Fabric, FabricType, FabricStatus } from '@/features/inventory/types'
 import { cloudinaryService } from '../../services/cloudinaryService'
 import { syncService } from '../../services/syncService'
 import { hasRealImage } from '@/data/fabricImageMapping'
+import { localStorageService } from '@/features/inventory/services/localStorageService'
 
 /**
  * Real fabric data from Excel file "File tổng hợp tồn kho tầng 4 (27.06.2025).xlsx"
@@ -220,7 +221,11 @@ let cachedFabrics: Fabric[] | null = null
 
 export async function getMockFabrics(): Promise<Fabric[]> {
   if (cachedFabrics) {
-    return cachedFabrics
+    // Apply localStorage updates to cached fabrics
+    const updatedFabrics = cachedFabrics.map(fabric =>
+      localStorageService.applyUpdatesToFabric(fabric)
+    )
+    return updatedFabrics
   }
 
   try {
@@ -314,7 +319,12 @@ export async function getMockFabrics(): Promise<Fabric[]> {
     // Update images with actual URLs from syncService (async)
     updateFabricImagesAsync(updatedFabrics)
 
-    return updatedFabrics
+    // Apply localStorage updates before returning
+    const finalFabrics = updatedFabrics.map(fabric =>
+      localStorageService.applyUpdatesToFabric(fabric)
+    )
+
+    return finalFabrics
 
   } catch (error) {
     console.error('Failed to load fabric data:', error)
@@ -336,8 +346,11 @@ async function updateFabricImagesAsync(fabrics: Fabric[]): Promise<void> {
       const actualUrl = await syncService.getImageUrl(fabric.code)
 
       if (actualUrl && actualUrl !== fabric.image) {
+        const oldUrl = fabric.image
         fabric.image = actualUrl
-        console.log(`🔄 Updated ${fabric.code} with actual URL: ${actualUrl}`)
+        console.log(`🔄 Updated ${fabric.code}: ${oldUrl} -> ${actualUrl}`)
+      } else if (actualUrl) {
+        console.log(`✅ ${fabric.code} already has correct URL: ${actualUrl}`)
       }
     } catch (error) {
       console.warn(`⚠️ Failed to get actual URL for ${fabric.code}:`, error)
@@ -378,6 +391,21 @@ export async function refreshFabricImage(fabricCode: string): Promise<void> {
   } catch (error) {
     console.error(`❌ Failed to refresh image for ${fabricCode}:`, error)
   }
+}
+
+/**
+ * Force refresh all fabric images from syncService
+ * Useful after manual URL updates
+ */
+export async function forceRefreshAllFabricImages(): Promise<void> {
+  if (!cachedFabrics || cachedFabrics.length === 0) {
+    console.warn('⚠️ No cached fabrics to refresh')
+    return
+  }
+
+  console.log('🔄 Force refreshing all fabric images...')
+  await updateFabricImagesAsync(cachedFabrics)
+  console.log('✅ All fabric images refreshed')
 }
 
 /**

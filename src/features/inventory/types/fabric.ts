@@ -36,6 +36,12 @@ export interface Fabric extends BaseEntity {
   maxStock?: number | undefined // Tồn kho tối đa
   costPerUnit?: number | undefined // Giá thành/đơn vị
 
+  // New fields for hiding and pricing
+  isHidden?: boolean | undefined // Ẩn sản phẩm tạm thời
+  price?: number | undefined // Giá bán (VND)
+  priceNote?: string | undefined // Ghi chú về giá
+  priceUpdatedAt?: Date | undefined // Thời gian cập nhật giá
+
   // Fields từ tích hợp dữ liệu
   images?: FabricImage[] | undefined // Danh sách ảnh
   hasImages?: boolean | undefined // Có ảnh hay không
@@ -69,6 +75,8 @@ export interface FabricFilters {
   minQuantity?: number
   maxQuantity?: number
   imageStatus?: 'all' | 'with_images' | 'without_images'
+  showHidden?: boolean // Hiển thị sản phẩm đã ẩn
+  priceStatus?: 'all' | 'with_price' | 'without_price' // Lọc theo có giá hay không
 }
 
 export interface FabricSortOptions {

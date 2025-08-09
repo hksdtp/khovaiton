@@ -3,6 +3,9 @@ import { useLocation } from 'react-router-dom'
 import { Modal, Button } from '@/common/design-system/components'
 import { formatQuantity } from '@/shared/utils'
 import { Fabric } from '../types'
+import { ManualUrlForm } from './ManualUrlForm'
+import { PriceManager } from './PriceManager'
+import { VisibilityManager } from './VisibilityManager'
 
 
 interface FabricDetailModalProps {
@@ -11,6 +14,8 @@ interface FabricDetailModalProps {
   onClose: () => void
   onUploadImage: (fabricId: number) => void
   onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
+  onPriceUpdate?: (fabricId: number, price: number | null, note?: string) => Promise<void>
+  onVisibilityToggle?: (fabricId: number, isHidden: boolean) => Promise<void>
 }
 
 export function FabricDetailModal({
@@ -19,6 +24,8 @@ export function FabricDetailModal({
   onClose,
   onUploadImage,
   onViewImage,
+  onPriceUpdate,
+  onVisibilityToggle,
 }: FabricDetailModalProps) {
   const location = useLocation()
   const isMarketingVersion = location.pathname === '/marketing'
@@ -212,15 +219,47 @@ export function FabricDetailModal({
           </div>
         </div>
 
+        {/* Price Management */}
+        {onPriceUpdate && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <PriceManager
+              fabric={fabric}
+              onPriceUpdate={onPriceUpdate}
+              compact={false}
+            />
+          </div>
+        )}
+
+        {/* Visibility Management */}
+        {onVisibilityToggle && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <VisibilityManager
+              fabric={fabric}
+              onVisibilityToggle={onVisibilityToggle}
+              compact={false}
+            />
+          </div>
+        )}
+
         {/* Action Buttons */}
-        <div className="mt-8 flex gap-4">
+        <div className="mt-8 flex flex-col gap-4">
           <Button
             onClick={() => onUploadImage(fabric.id)}
-            className="flex-1"
+            className="w-full"
             leftIcon={<Camera className="w-4 h-4" />}
           >
             {fabric.image ? 'Đổi ảnh' : 'Thêm ảnh'}
           </Button>
+
+          {/* Nút/ô đổi URL ảnh thủ công */}
+          <div className="border-t border-gray-200 pt-4">
+            <div className="text-sm text-gray-600 mb-3 font-medium">
+              🔧 Đổi URL ảnh thủ công
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3">
+              <ManualUrlForm fabricCode={fabric.code} compact={false} />
+            </div>
+          </div>
         </div>
       </div>
     </Modal>

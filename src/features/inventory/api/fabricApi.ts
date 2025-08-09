@@ -8,6 +8,7 @@ import {
 import { PaginationParams, PaginationResponse } from '@/shared/types'
 import { mockFabrics, getMockFabrics } from '@/shared/mocks/fabricData'
 import { hasRealImage } from '@/data/fabricImageMapping'
+import { localStorageService } from '../services/localStorageService'
 
 // Cache for real fabric data
 let realFabrics: Fabric[] = mockFabrics
@@ -35,8 +36,47 @@ async function initializeRealData() {
   }
 }
 
+/**
+ * Force refresh fabric data (useful after manual URL updates)
+ */
+async function forceRefreshFabricData() {
+  try {
+    console.log('🔄 Force refreshing fabric data...')
+    realFabrics = await getMockFabrics()
+    console.log('✅ Fabric data refreshed')
+  } catch (error) {
+    console.warn('Failed to refresh fabric data:', error)
+  }
+}
+
 // Initialize data on module load
 initializeRealData()
+
+/**
+ * Sort fabrics with status priority
+ */
+function sortFabricsWithStatusPriority(fabrics: Fabric[]): Fabric[] {
+  return [...fabrics].sort((a, b) => {
+    // Status priority (lower number = higher priority)
+    const statusPriority = {
+      'available': 1,      // Có sẵn - ưu tiên cao nhất
+      'low_stock': 2,      // Sắp hết - ưu tiên cao
+      'out_of_stock': 3,   // Hết hàng - ưu tiên trung bình
+      'expired': 4,        // Hết hạn - ưu tiên thấp
+      'damaged': 5         // Lỗi nhẹ - ưu tiên thấp nhất
+    }
+
+    const aPriority = statusPriority[a.status] || 999
+    const bPriority = statusPriority[b.status] || 999
+
+    if (aPriority !== bPriority) {
+      return aPriority - bPriority
+    }
+
+    // If same status, sort by name
+    return a.name.localeCompare(b.name, 'vi', { numeric: true })
+  })
+}
 
 /**
  * Fabric API service
@@ -58,13 +98,18 @@ export const fabricApi = {
     // Ensure we have the latest real data
     if (realFabrics.length <= 10) {
       try {
+        console.log('🔄 Refreshing fabric data...')
         realFabrics = await getMockFabrics()
+        console.log(`✅ Loaded ${realFabrics.length} fabrics`)
       } catch (error) {
         console.warn('Could not refresh fabric data:', error)
       }
     }
 
-    let filteredFabrics = [...realFabrics]
+    // Apply localStorage updates to all fabrics
+    let filteredFabrics = realFabrics.map(fabric =>
+      localStorageService.applyUpdatesToFabric(fabric)
+    )
 
     // Apply filters
     if (filters.search) {
@@ -107,6 +152,25 @@ export const fabricApi = {
       filteredFabrics = filteredFabrics.filter(fabric => fabric.quantity <= filters.maxQuantity!)
     }
 
+    // Apply visibility filter - IMPORTANT: Filter hidden products unless explicitly requested
+    if (!filters.showHidden) {
+      // By default, hide products that are marked as hidden
+      filteredFabrics = filteredFabrics.filter(fabric => !fabric.isHidden)
+    }
+
+    // Apply price status filter
+    if (filters.priceStatus && filters.priceStatus !== 'all') {
+      if (filters.priceStatus === 'with_price') {
+        filteredFabrics = filteredFabrics.filter(fabric =>
+          fabric.price !== null && fabric.price !== undefined && fabric.price > 0
+        )
+      } else if (filters.priceStatus === 'without_price') {
+        filteredFabrics = filteredFabrics.filter(fabric =>
+          !fabric.price || fabric.price <= 0
+        )
+      }
+    }
+
     // Apply image status filter with real image checking
     if (filters.imageStatus && filters.imageStatus !== 'all') {
       if (filters.imageStatus === 'with_images') {
@@ -122,10 +186,13 @@ export const fabricApi = {
       }
     }
 
+    // Apply sorting with status priority
+    const sortedFabrics = sortFabricsWithStatusPriority(filteredFabrics)
+
     // Apply pagination
     const startIndex = (pagination.page - 1) * pagination.limit
     const endIndex = startIndex + pagination.limit
-    const paginatedFabrics = filteredFabrics.slice(startIndex, endIndex)
+    const paginatedFabrics = sortedFabrics.slice(startIndex, endIndex)
 
     return {
       data: paginatedFabrics,
@@ -273,5 +340,12 @@ export const fabricApi = {
     }
 
     return stats
+  },
+
+  /**
+   * Force refresh fabric data
+   */
+  async forceRefreshData(): Promise<void> {
+    await forceRefreshFabricData()
   },
 }

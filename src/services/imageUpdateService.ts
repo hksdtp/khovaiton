@@ -7,6 +7,7 @@ import { QueryClient } from '@tanstack/react-query'
 import { syncService } from './syncService'
 import { CloudinaryUploadResult } from './cloudinaryService'
 import { realtimeUpdateService } from './realtimeUpdateService'
+import { fabricMappingService } from './fabricMappingService'
 
 export interface ImageUpdateResult {
   fabricCode: string
@@ -40,7 +41,7 @@ class ImageUpdateService {
    * Handle successful image upload with comprehensive cache updates
    */
   async handleImageUpload(
-    fabricCode: string, 
+    fabricCode: string,
     uploadResult: CloudinaryUploadResult
   ): Promise<ImageUpdateResult> {
     try {
@@ -48,8 +49,8 @@ class ImageUpdateService {
 
       // 1. Update sync service cache immediately
       await syncService.updateFabricImage(
-        fabricCode, 
-        uploadResult.secure_url, 
+        fabricCode,
+        uploadResult.secure_url,
         uploadResult.public_id
       )
 
@@ -70,13 +71,60 @@ class ImageUpdateService {
 
     } catch (error) {
       console.error(`❌ Failed to process image update for ${fabricCode}:`, error)
-      
+
       return {
         fabricCode,
         imageUrl: uploadResult.secure_url,
         publicId: uploadResult.public_id,
         success: false,
         error: (error as Error).message
+      }
+    }
+  }
+
+  /**
+   * Manually set/override image URL for a fabric (temporary/manual fix)
+   * Useful when auto-mapping is not correct.
+   */
+  async handleManualUrlUpdate(
+    fabricCode: string,
+    imageUrl: string
+  ): Promise<ImageUpdateResult> {
+    try {
+      console.log(`✍️ Manually setting image URL for ${fabricCode}`)
+
+      // 1) Update sync cache immediately (no publicId for manual URL)
+      await syncService.updateFabricImage(fabricCode, imageUrl)
+
+      // 1.1) Push mapping lên cloud để đa thiết bị (lưu trực tiếp URL)
+      await fabricMappingService.updateMappings({ [fabricCode]: imageUrl })
+
+      // 2) Optimistically update UI (React Query caches)
+      this.updateFabricInCache(fabricCode, imageUrl)
+
+      // 3) Trigger realtime refresh for any counters/views
+      await realtimeUpdateService.onImageUploaded(fabricCode)
+
+      // 4) Debug: verify URL is actually stored
+      const verifyUrl = await syncService.getImageUrl(fabricCode)
+      console.log(`🔍 Verification: ${fabricCode} -> ${verifyUrl}`)
+
+      console.log(`✅ Manual image URL set for ${fabricCode}`)
+
+      return {
+        fabricCode,
+        imageUrl,
+        publicId: '',
+        success: true,
+      }
+    } catch (error) {
+      console.error(`❌ Failed to set manual image URL for ${fabricCode}:`, error)
+      return {
+        fabricCode,
+        imageUrl,
+        publicId: '',
+        success: false,
+        error: (error as Error).message,
       }
     }
   }
@@ -93,18 +141,30 @@ class ImageUpdateService {
       (oldData: any) => {
         if (!oldData?.data) return oldData
 
-        return {
+        let updated = false
+        const newData = {
           ...oldData,
-          data: oldData.data.map((fabric: any) => 
-            fabric.code === fabricCode 
-              ? { ...fabric, image: imageUrl }
-              : fabric
-          )
+          data: oldData.data.map((fabric: any) => {
+            if (fabric.code === fabricCode) {
+              updated = true
+              return { ...fabric, image: imageUrl }
+            }
+            return fabric
+          })
         }
+
+        if (updated) {
+          console.log(`🔄 Updated fabric ${fabricCode} in cache with new image`)
+        } else {
+          console.log(`⚠️ Fabric ${fabricCode} not found in this cache (${oldData.data.length} items)`)
+        }
+
+        return newData
       }
     )
 
-    console.log(`🔄 Updated fabric ${fabricCode} in cache with new image`)
+    // Also invalidate all fabric queries to ensure fresh data
+    this.queryClient.invalidateQueries({ queryKey: ['fabrics'] })
   }
 
   /**

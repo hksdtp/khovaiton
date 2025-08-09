@@ -84,8 +84,8 @@ const urlData = typeof window !== 'undefined' ? getFiltersFromURL() : {
 const initialFilters: FabricFilters = urlData.filters
 
 const initialSortOptions: FabricSortOptions = {
-  field: 'updatedAt',
-  direction: 'desc',
+  field: 'status',
+  direction: 'asc',
 }
 
 export const useInventoryStore = create<InventoryState>()(

@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
+import { Package, Filter, MoreHorizontal, TrendingUp, AlertTriangle, ArrowUpDown } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useFabricStats } from '../hooks/useFabrics'
 import { cloudinaryService } from '@/services/cloudinaryService'
 
 import { imageUpdateService } from '@/services/imageUpdateService'
+import { fabricUpdateService } from '../services/fabricUpdateService'
+import { getContextualFilters } from '../utils/marketingFilters'
 import { useInventoryStore, useInventorySelectors } from '../store/inventoryStore'
 import { FabricGrid } from './FabricGrid'
 import { SearchBar } from './SearchBar'
 import { FilterPanel } from './FilterPanel'
+import { SortPanel } from './SortPanel'
 import { ImageStatusFilter } from './ImageStatusFilter'
 import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
@@ -35,6 +38,7 @@ export function InventoryPage() {
     fabricCode?: string
   }>({ type: null, message: '' })
   const [showSyncPanel, setShowSyncPanel] = useState(false)
+  const [isSortOpen, setIsSortOpen] = useState(false)
 
   // Image viewer and editor states
   const [imageViewerState, setImageViewerState] = useState<{
@@ -64,6 +68,7 @@ export function InventoryPage() {
 
   const {
     filters,
+    sortOptions,
     searchTerm,
     selectedFabric,
     isFilterOpen,
@@ -75,6 +80,7 @@ export function InventoryPage() {
     setFilterOpen,
     setUploadModal,
     setFilters,
+    setSortOptions,
     setCurrentPage,
     setItemsPerPage,
     resetFilters,
@@ -82,8 +88,11 @@ export function InventoryPage() {
 
   const { getPaginationParams } = useInventorySelectors()
 
+  // Apply contextual filters based on current page (marketing vs sales)
+  const contextualFilters = getContextualFilters(location.pathname, filters)
+
   const { data: fabricsData, isLoading, error } = useFabrics(
-    filters,
+    contextualFilters,
     getPaginationParams()
   )
 
@@ -178,6 +187,61 @@ export function InventoryPage() {
       fabricCode,
       fabricName: fabricName || ''
     })
+  }
+
+  // Handle price update
+  const handlePriceUpdate = async (fabricId: number, price: number | null, note?: string) => {
+    try {
+      const result = await fabricUpdateService.updatePrice(fabricId, price, note)
+      if (result.success) {
+        console.log('✅ Price updated successfully')
+
+        // Show success message
+        if (result.error) {
+          // Mock mode - show warning
+          alert(`⚠️ Giá đã được cập nhật tạm thời.\n\n${result.error}`)
+        } else {
+          // Real database update
+          alert('✅ Giá đã được cập nhật thành công!')
+        }
+
+        // Refresh data to show updated price
+        window.location.reload()
+      } else {
+        throw new Error(result.error || 'Failed to update price')
+      }
+    } catch (error) {
+      console.error('❌ Failed to update price:', error)
+      alert(`❌ ${(error as Error).message}`)
+    }
+  }
+
+  // Handle visibility toggle
+  const handleVisibilityToggle = async (fabricId: number, isHidden: boolean) => {
+    try {
+      const result = await fabricUpdateService.updateVisibility(fabricId, isHidden)
+      if (result.success) {
+        console.log(`✅ Visibility updated: ${isHidden ? 'hidden' : 'visible'}`)
+
+        // Show success message
+        if (result.error) {
+          // Mock mode - show warning
+          alert(`⚠️ Trạng thái hiển thị đã được cập nhật tạm thời.\n\n${result.error}`)
+        } else {
+          // Real database update
+          const action = isHidden ? 'ẩn' : 'hiện'
+          alert(`✅ Sản phẩm đã được ${action} thành công!`)
+        }
+
+        // Refresh data to show updated visibility
+        window.location.reload()
+      } else {
+        throw new Error(result.error || 'Failed to update visibility')
+      }
+    } catch (error) {
+      console.error('❌ Failed to update visibility:', error)
+      alert(`❌ ${(error as Error).message}`)
+    }
   }
 
   // Handle opening image editor
@@ -298,6 +362,15 @@ export function InventoryPage() {
                 </Button>
 
                 <Button
+                  variant={isSortOpen ? "primary" : "secondary"}
+                  onClick={() => setIsSortOpen(!isSortOpen)}
+                  size="sm"
+                >
+                  <ArrowUpDown className="w-4 h-4" />
+                  Sắp xếp
+                </Button>
+
+                <Button
                   variant={showSyncPanel ? "primary" : "secondary"}
                   onClick={() => setShowSyncPanel(!showSyncPanel)}
                   size="sm"
@@ -344,6 +417,17 @@ export function InventoryPage() {
               resultCount={fabricsData?.total}
             />
 
+            {/* Sort Panel */}
+            {isSortOpen && (
+              <div className="mb-6">
+                <SortPanel
+                  sortOptions={sortOptions}
+                  onSortChange={setSortOptions}
+                  className="max-w-md"
+                />
+              </div>
+            )}
+
             {/* Cloudinary Sync Panel */}
             {showSyncPanel && (
               <div className="mt-6">
@@ -373,12 +457,15 @@ export function InventoryPage() {
           onSelectFabric={setSelectedFabric}
           onUploadImage={(fabricId) => setUploadModal(true, fabricId)}
           onViewImage={handleViewImage}
+          onPriceUpdate={handlePriceUpdate}
+          onVisibilityToggle={!isMarketingVersion ? handleVisibilityToggle : undefined}
+          isMarketingMode={isMarketingVersion}
           isLoading={isLoading}
         />
 
         {/* Pagination */}
         {fabricsData && (
-          <div className="mt-8">
+          <div className="mt-8 mb-24 relative z-50">
             <Pagination
               currentPage={fabricsData.page}
               totalPages={fabricsData.totalPages}
@@ -399,6 +486,8 @@ export function InventoryPage() {
           onClose={() => setSelectedFabric(null)}
           onUploadImage={(fabricId) => setUploadModal(true, fabricId)}
           onViewImage={handleViewImage}
+          onPriceUpdate={!isMarketingVersion ? handlePriceUpdate : undefined}
+          onVisibilityToggle={!isMarketingVersion ? handleVisibilityToggle : undefined}
         />
       )}
 

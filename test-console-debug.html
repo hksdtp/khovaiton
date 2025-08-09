@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Debug - Fabric Images</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f8f9fa; 
+        }
+        .debug-section { 
+            background: white; 
+            margin: 20px 0; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .console-output {
+            background: #1e1e1e;
+            color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .btn { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 5px;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn.success { background: #28a745; }
+        .btn.danger { background: #dc3545; }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background: #28a745; }
+        .status-error { background: #dc3545; }
+        .status-warning { background: #ffc107; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Console Debug - Fabric Images</h1>
+    <p>Debug console để kiểm tra tại sao ảnh không hiển thị trong web app</p>
+
+    <div class="debug-section">
+        <h2>📡 Kiểm tra Web App</h2>
+        <div>
+            <span class="status-indicator" id="webapp-status"></span>
+            <span id="webapp-text">Checking...</span>
+        </div>
+        <button class="btn" onclick="openWebAppWithDebug()">🚀 Mở Web App + DevTools</button>
+        <button class="btn" onclick="injectDebugScript()">🔧 Inject Debug Script</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>🐛 Debug Console</h2>
+        <div class="console-output" id="console-output">
+Initializing debug console...
+
+📋 HƯỚNG DẪN DEBUG:
+
+1. Mở web app: http://localhost:3001
+2. Mở DevTools (F12)
+3. Vào tab Console
+4. Chạy các lệnh debug sau:
+
+// Kiểm tra Cloudinary config
+cloudinaryService.getConfig()
+
+// Kiểm tra fabric data có ảnh
+fabricData = await getFabrics()
+fabricsWithImages = fabricData.data.filter(f => f.image)
+console.log(`Fabrics with images: ${fabricsWithImages.length}`)
+fabricsWithImages.slice(0,5).forEach(f => console.log(`${f.code}: ${f.image}`))
+
+// Kiểm tra hasRealImage function
+import { hasRealImage } from './src/data/fabricImageMapping'
+console.log('AR-071-02B has image:', hasRealImage('AR-071-02B'))
+console.log('BERTONE-30 has image:', hasRealImage('BERTONE-30'))
+
+5. Copy kết quả và dán vào đây để phân tích
+        </div>
+        <textarea id="user-console-input" placeholder="Dán console output từ web app vào đây..." 
+                  style="width: 100%; height: 100px; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+        <button class="btn" onclick="analyzeConsoleOutput()">🔍 Phân tích Console Output</button>
+        <button class="btn danger" onclick="clearConsole()">🗑️ Clear</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>🧪 Direct Image Tests</h2>
+        <div id="image-test-results"></div>
+        <button class="btn success" onclick="testDirectImages()">🖼️ Test Direct Images</button>
+    </div>
+
+    <script>
+        let consoleOutput = document.getElementById('console-output')
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString()
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'
+            consoleOutput.textContent += `[${timestamp}] ${prefix} ${message}\n`
+            consoleOutput.scrollTop = consoleOutput.scrollHeight
+        }
+
+        async function checkWebAppStatus() {
+            try {
+                const response = await fetch('http://localhost:3001')
+                if (response.ok) {
+                    document.getElementById('webapp-status').className = 'status-indicator status-success'
+                    document.getElementById('webapp-text').textContent = 'Web App Online'
+                    log('Web app is running correctly', 'success')
+                    return true
+                } else {
+                    throw new Error(`HTTP ${response.status}`)
+                }
+            } catch (error) {
+                document.getElementById('webapp-status').className = 'status-indicator status-error'
+                document.getElementById('webapp-text').textContent = 'Web App Offline'
+                log(`Web app error: ${error.message}`, 'error')
+                return false
+            }
+        }
+
+        function openWebAppWithDebug() {
+            const webappWindow = window.open('http://localhost:3001', '_blank')
+            
+            log('Opened web app in new window')
+            log('NEXT STEPS:')
+            log('1. Open DevTools in the new window (F12)')
+            log('2. Go to Console tab')
+            log('3. Run the debug commands shown above')
+            log('4. Copy the results back here for analysis')
+            
+            // Inject instructions
+            setTimeout(() => {
+                try {
+                    webappWindow.console.log(`
+🔍 DEBUG INSTRUCTIONS:
+
+1. Run this to check Cloudinary config:
+   cloudinaryService?.getConfig?.() || "CloudinaryService not available"
+
+2. Check fabric data loading:
+   // Open Network tab and reload to see API calls
+   
+3. Check image URLs:
+   // Look for img elements in Elements tab
+   document.querySelectorAll('img').forEach(img => console.log(img.src))
+   
+4. Check console errors:
+   // Look for red error messages in Console
+                    `)
+                } catch (e) {
+                    log('Cannot inject into webapp (CORS), use manual instructions', 'warning')
+                }
+            }, 2000)
+        }
+
+        function injectDebugScript() {
+            const script = `
+            // Debug script for Kho Vải Tôn
+            console.log("🔧 Debug script injected");
+            
+            // Check all img elements
+            const imgs = document.querySelectorAll('img');
+            console.log(\`Found \${imgs.length} img elements\`);
+            imgs.forEach((img, index) => {
+                console.log(\`Img \${index}: src="\${img.src}" alt="\${img.alt}"\`);
+                if (!img.src || img.src.includes('undefined')) {
+                    console.warn(\`⚠️ Img \${index} has invalid src\`);
+                }
+            });
+            
+            // Check for fabric cards
+            const fabricCards = document.querySelectorAll('[class*="fabric"], [class*="card"]');
+            console.log(\`Found \${fabricCards.length} potential fabric cards\`);
+            
+            // Check localStorage for cached data
+            Object.keys(localStorage).forEach(key => {
+                if (key.includes('fabric') || key.includes('image')) {
+                    console.log(\`LocalStorage: \${key} = \`, localStorage.getItem(key));
+                }
+            });
+            `
+            
+            navigator.clipboard.writeText(script).then(() => {
+                log('Debug script copied to clipboard!', 'success')
+                log('Paste and run in web app console')
+            }).catch(() => {
+                log('Copy failed, here is the script:', 'warning')
+                log(script)
+            })
+        }
+
+        function analyzeConsoleOutput() {
+            const input = document.getElementById('user-console-input').value
+            if (!input.trim()) {
+                log('No console output provided', 'warning')
+                return
+            }
+            
+            log('Analyzing console output...', 'info')
+            
+            // Analyze for common issues
+            if (input.includes('404') || input.includes('Not Found')) {
+                log('Found 404 errors - images not found on server', 'error')
+            }
+            
+            if (input.includes('CORS')) {
+                log('Found CORS errors - cross-origin issues', 'error')
+            }
+            
+            if (input.includes('undefined') && input.includes('src')) {
+                log('Found undefined src attributes - image URLs not generated', 'error')
+            }
+            
+            if (input.includes('cloudinaryService') && input.includes('undefined')) {
+                log('CloudinaryService not available - import/configuration issue', 'error')
+            }
+            
+            if (input.includes('isConfigured') && input.includes('false')) {
+                log('Cloudinary not configured - missing environment variables', 'error')
+            }
+            
+            // Look for positive indicators
+            if (input.includes('dgaktc3fb')) {
+                log('Found Cloudinary URLs - good sign!', 'success')
+            }
+            
+            if (input.includes('fabrics/') && input.includes('.jpg')) {
+                log('Found correct fabric URLs pattern', 'success')
+            }
+            
+            log('Analysis complete - check messages above', 'info')
+        }
+
+        async function testDirectImages() {
+            const testCodes = ['AR-071-02B', 'BERTONE-30', 'TP01623-224']
+            const resultsDiv = document.getElementById('image-test-results')
+            
+            let html = '<h4>Direct Image URL Tests:</h4>'
+            
+            for (const code of testCodes) {
+                const url = `https://res.cloudinary.com/dgaktc3fb/image/upload/fabrics/${code}.jpg`
+                
+                try {
+                    const response = await fetch(url, { method: 'HEAD' })
+                    const status = response.ok ? '✅' : '❌'
+                    html += `<p>${status} ${code}: ${response.status} - <small>${url}</small></p>`
+                    log(`Direct test ${code}: ${response.status}`, response.ok ? 'success' : 'error')
+                } catch (error) {
+                    html += `<p>❌ ${code}: Error - <small>${error.message}</small></p>`
+                    log(`Direct test ${code}: ${error.message}`, 'error')
+                }
+            }
+            
+            resultsDiv.innerHTML = html
+        }
+
+        function clearConsole() {
+            consoleOutput.textContent = 'Console cleared.\n'
+        }
+
+        // Initialize
+        window.onload = function() {
+            log('Debug console initialized')
+            checkWebAppStatus()
+            
+            log('📋 READY TO DEBUG!')
+            log('Click "Mở Web App + DevTools" to start debugging')
+        }
+    </script>
+</body>
+</html>

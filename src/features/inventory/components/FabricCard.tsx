@@ -3,12 +3,19 @@ import { useLocation } from 'react-router-dom'
 import { Card } from '@/common/design-system/components'
 import { cn, formatQuantity } from '@/shared/utils'
 import { Fabric } from '../types'
+import { ManualUrlForm } from './ManualUrlForm'
+import { StatusBadge } from './StatusBadge'
+import { PriceManager } from './PriceManager'
+import { VisibilityManager } from './VisibilityManager'
 
 interface FabricCardProps {
   fabric: Fabric
   onSelect: (fabric: Fabric) => void
   onUploadImage: (fabricId: number) => void
   onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
+  onPriceUpdate?: (fabricId: number, price: number | null, note?: string) => Promise<void>
+  onVisibilityToggle?: (fabricId: number, isHidden: boolean) => Promise<void>
+  isMarketingMode?: boolean
   className?: string
 }
 
@@ -17,48 +24,34 @@ export function FabricCard({
   onSelect,
   onUploadImage,
   onViewImage,
-  className
+  onPriceUpdate,
+  onVisibilityToggle,
+  isMarketingMode = false,
+  className = ''
 }: FabricCardProps) {
   const location = useLocation()
   const isMarketingVersion = location.pathname === '/marketing'
-  const getStatusColor = (status: Fabric['status']) => {
-    switch (status) {
-      case 'available':
-        return 'text-green-700 border-green-200'
-      case 'low_stock':
-        return 'text-yellow-700 border-yellow-200'
-      case 'out_of_stock':
-        return 'text-red-700 border-red-200'
-      case 'damaged':
-        return 'text-orange-700 border-orange-200'
-      default:
-        return 'text-gray-700 border-gray-200'
+
+  // Handle card click differently for marketing vs sales
+  const handleCardClick = () => {
+    if (isMarketingMode && !fabric.price && onPriceUpdate) {
+      // On marketing page, if no price, don't open modal - let user click "Thêm giá" button
+      return
     }
+    // Otherwise, open detail modal as usual
+    onSelect(fabric)
   }
 
-  const getStatusText = (status: Fabric['status']) => {
-    switch (status) {
-      case 'available':
-        return 'Có sẵn'
-      case 'low_stock':
-        return 'Sắp hết'
-      case 'out_of_stock':
-        return 'Hết hàng'
-      case 'damaged':
-        return 'Lỗi nhẹ'
-      default:
-        return 'Không xác định'
-    }
-  }
 
   return (
     <Card
       hover
       className={cn(
         'group cursor-pointer animate-fade-in overflow-hidden',
+        fabric.isHidden && 'opacity-60 border-red-200 bg-red-50/30',
         className
       )}
-      onClick={() => onSelect(fabric)}
+      onClick={handleCardClick}
     >
       {/* Image Section */}
       <div className="relative h-48 bg-gray-100 overflow-hidden">
@@ -92,7 +85,7 @@ export function FabricCard({
             </div>
           </div>
         )}
-        
+
         {/* Floating Camera Button */}
         <button
           onClick={(e) => {
@@ -104,17 +97,14 @@ export function FabricCard({
           <Camera className="w-4 h-4" />
         </button>
 
-        {/* Status Badge */}
-        <div className="absolute bottom-3 left-3">
-          <span
-            className={cn(
-              'px-2 py-1 text-xs font-medium rounded-md bg-white/90 border',
-              getStatusColor(fabric.status)
-            )}
-          >
-            {getStatusText(fabric.status)}
-          </span>
-        </div>
+        {/* Hidden Badge */}
+        {fabric.isHidden && (
+          <div className="absolute top-3 right-3">
+            <div className="bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm">
+              ĐÃ ẨN
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Content Section */}
@@ -124,9 +114,12 @@ export function FabricCard({
           <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-md border border-blue-200">
             {fabric.code}
           </span>
-          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-md border border-gray-200">
-            {fabric.type}
-          </span>
+          <StatusBadge status={fabric.status} />
+          {fabric.type && (
+            <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-md border border-gray-200">
+              {fabric.type}
+            </span>
+          )}
         </div>
 
         {/* Title */}
@@ -164,6 +157,59 @@ export function FabricCard({
 
         {/* Condition - Bỏ hiển thị chi tiết */}
 
+        {/* Price Display & Management */}
+        <div className="mb-3">
+          {fabric.price ? (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xl font-bold text-green-700">
+                    {new Intl.NumberFormat('vi-VN', {
+                      style: 'currency',
+                      currency: 'VND',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0
+                    }).format(fabric.price)}
+                  </div>
+                  {fabric.priceNote && (
+                    <div className="text-sm text-green-600 mt-1">{fabric.priceNote}</div>
+                  )}
+                </div>
+                {onPriceUpdate && (
+                  <div className="flex items-center gap-1">
+                    <PriceManager
+                      fabric={fabric}
+                      onPriceUpdate={onPriceUpdate}
+                      compact={true}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="mb-3">
+              {onPriceUpdate && (
+                <PriceManager
+                  fabric={fabric}
+                  onPriceUpdate={onPriceUpdate}
+                  compact={true}
+                />
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Visibility Management */}
+        <div className="flex items-center justify-end mb-3">
+          {onVisibilityToggle && (
+            <VisibilityManager
+              fabric={fabric}
+              onVisibilityToggle={onVisibilityToggle}
+              compact={true}
+            />
+          )}
+        </div>
+
         {/* Remarks */}
         {fabric.remarks && (
           <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded-md">
@@ -180,6 +226,21 @@ export function FabricCard({
             <span className="text-yellow-800 text-xs">{fabric.note}</span>
           </div>
         )}
+
+        {/* Manual Image URL override */}
+        <div className="mt-4 border-t border-gray-100 pt-3">
+          <details className="group">
+            <summary className="text-xs text-gray-500 cursor-pointer select-none hover:text-blue-600 transition-colors list-none">
+              <div className="flex items-center gap-1">
+                <span className="group-open:rotate-90 transition-transform">▶</span>
+                <span>⚙️ Đổi URL ảnh thủ công</span>
+              </div>
+            </summary>
+            <div className="mt-2">
+              <ManualUrlForm fabricCode={fabric.code} />
+            </div>
+          </details>
+        </div>
       </div>
     </Card>
   )
