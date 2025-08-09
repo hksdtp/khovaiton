@@ -1,5 +1,5 @@
 // src/features/inventory/services/dataService.ts
-import { Fabric } from '../types/fabric'
+import { Fabric, FabricStatus } from '../types/fabric'
 
 interface FabricsData {
   metadata: {

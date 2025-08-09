@@ -5,7 +5,7 @@
 interface FabricUpdate {
   id: number
   price?: number | null
-  priceNote?: string
+  priceNote?: string | undefined
   isHidden?: boolean
   updatedAt: string
 }
@@ -54,7 +54,7 @@ class LocalStorageService {
       ...updates[fabricId],
       id: fabricId,
       price,
-      priceNote: note,
+      priceNote: note || undefined,
       updatedAt: new Date().toISOString()
     }
     this.saveUpdates(updates)

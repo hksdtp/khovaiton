@@ -14,8 +14,8 @@ interface FabricDetailModalProps {
   onClose: () => void
   onUploadImage: (fabricId: number) => void
   onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
-  onPriceUpdate?: (fabricId: number, price: number | null, note?: string) => Promise<void>
-  onVisibilityToggle?: (fabricId: number, isHidden: boolean) => Promise<void>
+  onPriceUpdate?: ((fabricId: number, price: number | null, note?: string) => Promise<void>) | undefined
+  onVisibilityToggle?: ((fabricId: number, isHidden: boolean) => Promise<void>) | undefined
 }
 
 export function FabricDetailModal({

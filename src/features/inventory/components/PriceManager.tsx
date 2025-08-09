@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DollarSign, Edit3, Save, X, Trash2 } from 'lucide-react'
+import { DollarSign, Edit3, Trash2 } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { Fabric } from '../types'
 

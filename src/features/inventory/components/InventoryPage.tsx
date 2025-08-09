@@ -458,7 +458,7 @@ export function InventoryPage() {
           onUploadImage={(fabricId) => setUploadModal(true, fabricId)}
           onViewImage={handleViewImage}
           onPriceUpdate={handlePriceUpdate}
-          onVisibilityToggle={!isMarketingVersion ? handleVisibilityToggle : undefined}
+          onVisibilityToggle={isMarketingVersion ? undefined : handleVisibilityToggle}
           isMarketingMode={isMarketingVersion}
           isLoading={isLoading}
         />
@@ -486,8 +486,8 @@ export function InventoryPage() {
           onClose={() => setSelectedFabric(null)}
           onUploadImage={(fabricId) => setUploadModal(true, fabricId)}
           onViewImage={handleViewImage}
-          onPriceUpdate={!isMarketingVersion ? handlePriceUpdate : undefined}
-          onVisibilityToggle={!isMarketingVersion ? handleVisibilityToggle : undefined}
+          onPriceUpdate={isMarketingVersion ? undefined : handlePriceUpdate}
+          onVisibilityToggle={isMarketingVersion ? undefined : handleVisibilityToggle}
         />
       )}
 
