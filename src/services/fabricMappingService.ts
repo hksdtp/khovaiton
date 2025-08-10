@@ -25,12 +25,13 @@ interface UpdateResponse {
 
 class FabricMappingService {
   private static instance: FabricMappingService
-  private readonly API_BASE = '/api/fabric-mappings'
+  private readonly MAPPING_FILE = '/image_mapping.json'
   private lastSyncTime = 0
   private readonly SYNC_INTERVAL = 30000 // 30 seconds
   private get shouldUseCloud() {
-    // Always use cloud for cross-device sync
-    return true
+    // Disable cloud API calls to prevent errors
+    // Use static file mapping instead
+    return false
   }
 
   static getInstance(): FabricMappingService {
@@ -41,26 +42,24 @@ class FabricMappingService {
   }
 
   /**
-   * Get all mappings from cloud
+   * Get all mappings from static file
    */
   async getAllMappings(): Promise<MappingResponse> {
-    // Skip API calls in development mode
-    if (!this.shouldUseCloud) {
-      console.log('🚧 Local mode: Skipping cloud mappings API call')
-      return { success: true, mappings: {}, count: 0 }
-    }
-
     try {
-      const response = await fetch(this.API_BASE)
-      const result = await response.json()
+      const response = await fetch(this.MAPPING_FILE)
 
-      if (result.success) {
-        console.log(`☁️ Loaded ${result.count} mappings from cloud`)
+      if (!response.ok) {
+        console.warn(`⚠️ Mapping file not found: ${this.MAPPING_FILE}`)
+        return { success: true, mappings: {}, count: 0 }
       }
 
-      return result
+      const mappings = await response.json()
+      const count = Object.keys(mappings).length
+
+      console.log(`📁 Loaded ${count} mappings from static file`)
+      return { success: true, mappings, count }
     } catch (error) {
-      console.error('❌ Failed to get cloud mappings:', error)
+      console.error('❌ Failed to get mappings from file:', error)
       return {
         success: false,
         error: (error as Error).message
@@ -79,19 +78,9 @@ class FabricMappingService {
     }
 
     try {
-      const response = await fetch(this.API_BASE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update', mappings })
-      })
-
-      const result = await response.json()
-
-      if (result.success) {
-        console.log(`☁️ Updated ${result.updatedCount} mappings in cloud`)
-      }
-
-      return result
+      // This should never be reached since shouldUseCloud is false
+      console.warn('⚠️ Attempting to use cloud API when disabled')
+      return { success: false, error: 'Cloud API disabled' }
     } catch (error) {
       console.error('❌ Failed to update cloud mappings:', error)
       return {
@@ -104,7 +93,7 @@ class FabricMappingService {
   /**
    * Add single mapping to cloud
    */
-  async addMapping(fabricCode: string, publicId: string): Promise<UpdateResponse> {
+  async addMapping(fabricCode: string, _publicId: string): Promise<UpdateResponse> {
     // Skip API calls in development mode
     if (!this.shouldUseCloud) {
       console.log(`🚧 Local mode: Skipping cloud mapping add for ${fabricCode}`)
@@ -112,19 +101,9 @@ class FabricMappingService {
     }
 
     try {
-      const response = await fetch(this.API_BASE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'add', fabricCode, publicId })
-      })
-
-      const result = await response.json()
-
-      if (result.success) {
-        console.log(`☁️ Added mapping ${fabricCode} → ${publicId} to cloud`)
-      }
-
-      return result
+      // This should never be reached since shouldUseCloud is false
+      console.warn('⚠️ Attempting to use cloud API when disabled')
+      return { success: false, error: 'Cloud API disabled' }
     } catch (error) {
       console.error('❌ Failed to add cloud mapping:', error)
       return {
