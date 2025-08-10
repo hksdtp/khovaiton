@@ -19,7 +19,7 @@ export const runSupabaseTest = async () => {
   try {
     // 2. Test basic connection
     console.log('🔗 Testing basic connection...')
-    const { data: testData, error: testError } = await supabase
+    const { error: testError } = await supabase
       .from('fabrics')
       .select('count')
       .limit(1)
@@ -106,6 +106,6 @@ export const runSupabaseTest = async () => {
 console.log('🚀 Supabase console test loaded. Run runSupabaseTest() to start.')
 
 // Make it available globally for console access
-(window as any).runSupabaseTest = runSupabaseTest
-(window as any).supabase = supabase
-(window as any).isSupabaseConfigured = isSupabaseConfigured
+;(window as any).runSupabaseTest = runSupabaseTest
+;(window as any).supabase = supabase
+;(window as any).isSupabaseConfigured = isSupabaseConfigured

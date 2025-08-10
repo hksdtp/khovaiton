@@ -28,7 +28,7 @@ setTimeout(async () => {
 
   if (isSupabaseConfigured) {
     try {
-      const { data, error } = await supabase.from('fabrics').select('count').limit(1)
+      const { error } = await supabase.from('fabrics').select('count').limit(1)
       if (error) {
         console.error('❌ Supabase connection failed:', error)
       } else {

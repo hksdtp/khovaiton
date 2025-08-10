@@ -30,13 +30,17 @@ console.log(`🔗 Supabase configured: ${isSupabaseConfigured}`)
 
 // Test connection immediately if configured
 if (isSupabaseConfigured) {
-  supabase.from('fabrics').select('count').limit(1).then(({ data, error }) => {
-    if (error) {
-      console.error('❌ Supabase connection test failed:', error)
-    } else {
-      console.log('✅ Supabase connection test successful!')
+  const testConnection = async () => {
+    try {
+      const { error } = await supabase.from('fabrics').select('count').limit(1)
+      if (error) {
+        console.error('❌ Supabase connection test failed:', error)
+      } else {
+        console.log('✅ Supabase connection test successful!')
+      }
+    } catch (err) {
+      console.error('❌ Supabase connection exception:', err)
     }
-  }).catch(err => {
-    console.error('❌ Supabase connection exception:', err)
-  })
+  }
+  testConnection()
 }
