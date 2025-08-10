@@ -24,7 +24,14 @@ export const supabase = createClient(
   supabaseAnonKey || 'placeholder-key',
   {
     auth: {
-      persistSession: false // Disable auth for simpler setup
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    },
+    global: {
+      headers: {
+        'apikey': supabaseAnonKey || 'placeholder-key'
+      }
     }
   }
 )

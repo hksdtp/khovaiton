@@ -1,4 +1,8 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+
+// Get Supabase config for fallback REST API
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://zgrfqkytbmahxcbgpkxx.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs'
 import { localStorageService } from './localStorageService'
 import { Fabric } from '../types'
 
@@ -6,6 +10,21 @@ export interface FabricUpdateResult {
   success: boolean
   error?: string
   fabric?: Fabric
+}
+
+// Helper function to convert database format to app format
+function convertDatabaseToApp(data: any): Fabric {
+  return {
+    ...data,
+    price: data.price,
+    priceNote: data.price_note,
+    priceUpdatedAt: data.price_updated_at ? new Date(data.price_updated_at) : undefined,
+    isHidden: data.is_hidden || false,
+    customImageUrl: data.custom_image_url,
+    customImageUpdatedAt: data.custom_image_updated_at ? new Date(data.custom_image_updated_at) : undefined,
+    createdAt: new Date(data.created_at),
+    updatedAt: new Date(data.updated_at)
+  }
 }
 
 class FabricUpdateService {
@@ -64,6 +83,38 @@ class FabricUpdateService {
           hint: error.hint,
           code: error.code
         })
+
+        // Try fallback with REST API if Supabase client fails
+        console.log('🔄 Trying fallback with REST API...')
+        try {
+          const fallbackResponse = await fetch(`${supabaseUrl}/rest/v1/fabrics?id=eq.${fabricId}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': supabaseAnonKey,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(updateData)
+          })
+
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json()
+            console.log('✅ Fallback REST API success:', fallbackData)
+
+            if (fallbackData && fallbackData.length > 0) {
+              return {
+                success: true,
+                fabric: convertDatabaseToApp(fallbackData[0])
+              }
+            }
+          } else {
+            const fallbackError = await fallbackResponse.text()
+            console.error('❌ Fallback REST API failed:', fallbackError)
+          }
+        } catch (fallbackErr) {
+          console.error('❌ Fallback REST API exception:', fallbackErr)
+        }
+
         return {
           success: false,
           error: `Không thể cập nhật giá: ${error.message}`
@@ -72,20 +123,9 @@ class FabricUpdateService {
 
       console.log('✅ Price updated successfully:', data)
 
-      // Convert database format to app format
-      const updatedFabric: Fabric = {
-        ...data,
-        price: data.price,
-        priceNote: data.price_note,
-        priceUpdatedAt: data.price_updated_at ? new Date(data.price_updated_at) : undefined,
-        isHidden: data.is_hidden || false,
-        createdAt: new Date(data.created_at),
-        updatedAt: new Date(data.updated_at)
-      }
-
       return {
         success: true,
-        fabric: updatedFabric
+        fabric: convertDatabaseToApp(data)
       }
     } catch (error) {
       console.error('❌ Exception updating price:', error)
