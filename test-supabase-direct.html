@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Direct Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #1976D2; }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Test Supabase Direct Connection</h1>
+        
+        <div>
+            <button onclick="testConnection()">1. Test Connection</button>
+            <button onclick="testRead()">2. Test Read</button>
+            <button onclick="testUpdate()">3. Test Update</button>
+            <button onclick="clearLogs()">Clear Logs</button>
+        </div>
+        
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script>
+        // Initialize Supabase client
+        const supabaseUrl = 'https://zgrfqkytbmahxcbgpkxx.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs'
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+            auth: {
+                persistSession: false
+            }
+        })
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('logs');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            logDiv.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+        }
+
+        async function testConnection() {
+            log('🔍 Testing Supabase connection...');
+            log(`📊 URL: ${supabaseUrl}`);
+            log(`🔑 Key: ${supabaseKey.substring(0, 20)}...`);
+            
+            try {
+                const { error } = await supabase.from('fabrics').select('count').limit(1);
+                
+                if (error) {
+                    log(`❌ Connection failed: ${error.message}`, 'error');
+                    log(`❌ Error code: ${error.code}`, 'error');
+                    log(`❌ Error details: ${error.details}`, 'error');
+                } else {
+                    log('✅ Connection successful!', 'success');
+                }
+            } catch (err) {
+                log(`❌ Exception: ${err.message}`, 'error');
+            }
+        }
+
+        async function testRead() {
+            log('📖 Testing fabric read...');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('fabrics')
+                    .select('id, code, name, price, custom_image_url')
+                    .limit(3);
+                
+                if (error) {
+                    log(`❌ Read failed: ${error.message}`, 'error');
+                } else {
+                    log(`✅ Read ${data.length} fabrics:`, 'success');
+                    data.forEach(fabric => {
+                        log(`  - ${fabric.code}: price=${fabric.price || 'None'}, custom_url=${fabric.custom_image_url || 'None'}`);
+                    });
+                }
+            } catch (err) {
+                log(`❌ Read exception: ${err.message}`, 'error');
+            }
+        }
+
+        async function testUpdate() {
+            log('💰 Testing price update...');
+            
+            const testPrice = Math.floor(Math.random() * 1000000) + 100000;
+            const testNote = `Direct test at ${new Date().toLocaleTimeString()}`;
+            
+            try {
+                log(`🔄 Updating COTTON001 price to ${testPrice.toLocaleString('vi-VN')} VND`);
+                
+                const { data, error } = await supabase
+                    .from('fabrics')
+                    .update({
+                        price: testPrice,
+                        price_note: testNote,
+                        price_updated_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('code', 'COTTON001')
+                    .select()
+                    .single();
+                
+                if (error) {
+                    log(`❌ Update failed: ${error.message}`, 'error');
+                    log(`❌ Error code: ${error.code}`, 'error');
+                    log(`❌ Error details: ${error.details}`, 'error');
+                    log(`❌ Error hint: ${error.hint}`, 'error');
+                } else {
+                    log('✅ Update successful!', 'success');
+                    log(`📊 Updated data: ${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (err) {
+                log(`❌ Update exception: ${err.message}`, 'error');
+            }
+        }
+
+        // Auto-run connection test
+        log('🚀 Direct Supabase test loaded');
+        setTimeout(testConnection, 1000);
+    </script>
+</body>
+</html>

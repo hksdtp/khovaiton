@@ -37,6 +37,8 @@ class FabricUpdateService {
 
     try {
       console.log(`💰 Updating price for fabric ${fabricId}:`, { price, note })
+      console.log(`🔗 Supabase URL: ${supabase.supabaseUrl}`)
+      console.log(`🔑 Using API key: ${supabase.supabaseKey.substring(0, 20)}...`)
 
       const updateData: any = {
         price,
@@ -44,6 +46,8 @@ class FabricUpdateService {
         price_updated_at: price ? new Date().toISOString() : null,
         updated_at: new Date().toISOString()
       }
+
+      console.log(`📤 Update data:`, updateData)
 
       const { data, error } = await supabase
         .from('fabrics')
@@ -54,6 +58,12 @@ class FabricUpdateService {
 
       if (error) {
         console.error('❌ Supabase error updating price:', error)
+        console.error('❌ Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        })
         return {
           success: false,
           error: `Không thể cập nhật giá: ${error.message}`

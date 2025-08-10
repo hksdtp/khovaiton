@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
 // Force Supabase configuration (bypass environment variables if needed)
+// Updated with correct API key from Supabase dashboard
 const FORCE_SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co'
 const FORCE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs'
 
@@ -20,7 +21,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key'
+  supabaseAnonKey || 'placeholder-key',
+  {
+    auth: {
+      persistSession: false // Disable auth for simpler setup
+    }
+  }
 )
 
 // Mock mode for development when Supabase is not configured
