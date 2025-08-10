@@ -37,8 +37,8 @@ class FabricUpdateService {
 
     try {
       console.log(`💰 Updating price for fabric ${fabricId}:`, { price, note })
-      console.log(`🔗 Supabase URL: ${supabase.supabaseUrl}`)
-      console.log(`🔑 Using API key: ${supabase.supabaseKey.substring(0, 20)}...`)
+      console.log(`🔗 Supabase configured: ${isSupabaseConfigured}`)
+      console.log(`🔑 Using Supabase client for update`)
 
       const updateData: any = {
         price,
