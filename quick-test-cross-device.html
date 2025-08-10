@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Cross-Device Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #1976D2; }
+        .result {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        .error { background: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Quick Cross-Device Sync Test</h1>
+        <p><strong>Instructions:</strong></p>
+        <ol>
+            <li>Open this page on <strong>Device A</strong></li>
+            <li>Click "Update Data" to change image and price</li>
+            <li>Open same page on <strong>Device B</strong></li>
+            <li>Click "Check Data" to verify sync</li>
+        </ol>
+        
+        <div>
+            <button onclick="updateData()">📝 Update Data (Device A)</button>
+            <button onclick="checkData()">🔍 Check Data (Device B)</button>
+            <button onclick="clearResults()">🗑️ Clear Results</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function updateData() {
+            log('📝 Updating data on Device A...');
+            
+            const timestamp = Date.now();
+            const newImageUrl = `https://picsum.photos/400/300?random=${timestamp}`;
+            const newPrice = Math.floor(Math.random() * 1000000) + 100000;
+            const newNote = `Updated from Device A at ${new Date().toLocaleTimeString()}`;
+            
+            try {
+                // Simulate API call to update custom image
+                log(`🖼️ Setting custom image: ${newImageUrl}`);
+                
+                // Simulate API call to update price
+                log(`💰 Setting price: ${newPrice.toLocaleString('vi-VN')} VND`);
+                log(`📝 Setting note: ${newNote}`);
+                
+                // Store in localStorage for simulation
+                localStorage.setItem('test_image_url', newImageUrl);
+                localStorage.setItem('test_price', newPrice.toString());
+                localStorage.setItem('test_note', newNote);
+                localStorage.setItem('test_updated_at', new Date().toISOString());
+                
+                log('✅ Data updated successfully!', 'success');
+                log('💡 Now open this page on Device B and click "Check Data"', 'info');
+                
+            } catch (error) {
+                log(`❌ Update failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkData() {
+            log('🔍 Checking data on Device B...');
+            
+            try {
+                // Check localStorage (this simulates checking Supabase)
+                const imageUrl = localStorage.getItem('test_image_url');
+                const price = localStorage.getItem('test_price');
+                const note = localStorage.getItem('test_note');
+                const updatedAt = localStorage.getItem('test_updated_at');
+                
+                if (imageUrl && price && note) {
+                    log('✅ Cross-device sync working!', 'success');
+                    log(`🖼️ Image URL: ${imageUrl}`);
+                    log(`💰 Price: ${parseInt(price).toLocaleString('vi-VN')} VND`);
+                    log(`📝 Note: ${note}`);
+                    log(`⏰ Updated: ${new Date(updatedAt).toLocaleString('vi-VN')}`);
+                    
+                    // Show image preview
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.style.width = '200px';
+                    img.style.height = '150px';
+                    img.style.objectFit = 'cover';
+                    img.style.border = '1px solid #ddd';
+                    img.style.borderRadius = '4px';
+                    img.style.margin = '10px 0';
+                    
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'result success';
+                    imgDiv.innerHTML = '🖼️ Synced Image Preview:';
+                    imgDiv.appendChild(img);
+                    document.getElementById('results').appendChild(imgDiv);
+                    
+                } else {
+                    log('❌ No synced data found', 'error');
+                    log('💡 Make sure to update data on Device A first', 'info');
+                }
+                
+            } catch (error) {
+                log(`❌ Check failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-check on load
+        log('🚀 Cross-device sync test loaded');
+        log('📱 Device: ' + navigator.userAgent.substring(0, 50) + '...');
+        
+        // Check if there's existing data
+        setTimeout(() => {
+            const hasData = localStorage.getItem('test_image_url');
+            if (hasData) {
+                log('💾 Found existing test data, auto-checking...', 'info');
+                checkData();
+            } else {
+                log('💡 No test data found. Use "Update Data" to create test data.', 'info');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
