@@ -7,6 +7,7 @@ import { useFabrics, useFabricStats } from '../hooks/useFabrics'
 import { cloudinaryService } from '@/services/cloudinaryService'
 
 import { imageUpdateService } from '@/services/imageUpdateService'
+import { realtimeUpdateService } from '@/services/realtimeUpdateService'
 import { fabricUpdateService } from '../services/fabricUpdateService'
 import { getContextualFilters } from '../utils/marketingFilters'
 import { useInventoryStore, useInventorySelectors } from '../store/inventoryStore'
@@ -65,8 +66,9 @@ export function InventoryPage() {
     fabricCode: ''
   })
 
-  // Initialize image update service with query client
+  // Initialize services with query client
   imageUpdateService.setQueryClient(queryClient)
+  realtimeUpdateService.setQueryClient(queryClient)
 
   const {
     filters,
@@ -207,8 +209,40 @@ export function InventoryPage() {
           alert('✅ Giá đã được cập nhật thành công!')
         }
 
-        // Refresh data to show updated price
-        window.location.reload()
+        // Invalidate React Query cache for smooth updates (no page reload)
+        queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+        queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+
+        // Update specific fabric in cache if we have the updated data
+        if (result.fabric) {
+          queryClient.setQueriesData(
+            { queryKey: ['fabrics'] },
+            (oldData: any) => {
+              if (!oldData?.data) return oldData
+
+              const updatedData = oldData.data.map((fabric: any) => {
+                if (fabric.id === fabricId) {
+                  return {
+                    ...fabric,
+                    price: result.fabric!.price,
+                    priceNote: result.fabric!.priceNote,
+                    priceUpdatedAt: result.fabric!.priceUpdatedAt,
+                    updatedAt: result.fabric!.updatedAt
+                  }
+                }
+                return fabric
+              })
+
+              return { ...oldData, data: updatedData }
+            }
+          )
+          console.log(`📝 Updated fabric ${fabricId} in cache with new price data`)
+        }
+
+        // Trigger real-time update event
+        await realtimeUpdateService.onPriceUpdated(fabricId, price)
+
+        console.log('🔄 Price update completed without page reload')
       } else {
         throw new Error(result.error || 'Failed to update price')
       }
@@ -235,8 +269,38 @@ export function InventoryPage() {
           alert(`✅ Sản phẩm đã được ${action} thành công!`)
         }
 
-        // Refresh data to show updated visibility
-        window.location.reload()
+        // Invalidate React Query cache for smooth updates (no page reload)
+        queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+        queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+
+        // Update specific fabric in cache if we have the updated data
+        if (result.fabric) {
+          queryClient.setQueriesData(
+            { queryKey: ['fabrics'] },
+            (oldData: any) => {
+              if (!oldData?.data) return oldData
+
+              const updatedData = oldData.data.map((fabric: any) => {
+                if (fabric.id === fabricId) {
+                  return {
+                    ...fabric,
+                    isHidden: result.fabric!.isHidden,
+                    updatedAt: result.fabric!.updatedAt
+                  }
+                }
+                return fabric
+              })
+
+              return { ...oldData, data: updatedData }
+            }
+          )
+          console.log(`📝 Updated fabric ${fabricId} in cache with new visibility: ${isHidden ? 'hidden' : 'visible'}`)
+        }
+
+        // Trigger real-time update event
+        await realtimeUpdateService.onVisibilityToggled(fabricId, isHidden)
+
+        console.log('🔄 Visibility update completed without page reload')
       } else {
         throw new Error(result.error || 'Failed to update visibility')
       }

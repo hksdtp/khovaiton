@@ -35,7 +35,7 @@ export const SupabaseTest: React.FC = () => {
       log('✅ Supabase configured, testing connection...')
       
       // Test basic connection
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('fabrics')
         .select('count')
         .limit(1)
@@ -83,7 +83,7 @@ export const SupabaseTest: React.FC = () => {
 
   const testCustomImageUpdate = async () => {
     log('🖼️ Testing custom image URL update...')
-    
+
     if (!testFabricCode || !testImageUrl) {
       log('❌ Please enter both fabric code and image URL')
       return
@@ -108,6 +108,11 @@ export const SupabaseTest: React.FC = () => {
       }
 
       const fabric = fabrics[0]
+      if (!fabric) {
+        log(`❌ No fabric data found`)
+        return
+      }
+
       log(`✅ Found fabric: ${fabric.code} (ID: ${fabric.id})`)
       log(`📊 Current image: ${fabric.image}`)
       log(`📊 Current custom URL: ${fabric.custom_image_url || 'None'}`)
@@ -127,6 +132,65 @@ export const SupabaseTest: React.FC = () => {
       }
     } catch (error) {
       log(`❌ Update test failed: ${(error as Error).message}`)
+    }
+  }
+
+  const testPriceUpdate = async () => {
+    log('💰 Testing price update...')
+
+    if (!testFabricCode) {
+      log('❌ Please enter fabric code')
+      return
+    }
+
+    try {
+      // First, find the fabric ID
+      const { data: fabrics, error: findError } = await supabase
+        .from('fabrics')
+        .select('id, code, name, price, price_note, price_updated_at')
+        .eq('code', testFabricCode)
+        .limit(1)
+
+      if (findError) {
+        log(`❌ Error finding fabric: ${findError.message}`)
+        return
+      }
+
+      if (!fabrics || fabrics.length === 0) {
+        log(`❌ Fabric with code "${testFabricCode}" not found`)
+        return
+      }
+
+      const fabric = fabrics[0]
+      if (!fabric) {
+        log(`❌ No fabric data found`)
+        return
+      }
+
+      log(`✅ Found fabric: ${fabric.code} (ID: ${fabric.id})`)
+      log(`📊 Current price: ${fabric.price ? `${fabric.price.toLocaleString('vi-VN')} VND` : 'None'}`)
+      log(`📊 Current note: ${fabric.price_note || 'None'}`)
+
+      // Test price update
+      const testPrice = Math.floor(Math.random() * 1000000) + 100000 // Random price 100k-1.1M
+      const testNote = `Test price update at ${new Date().toLocaleTimeString()}`
+
+      log(`🔄 Updating price to: ${testPrice.toLocaleString('vi-VN')} VND`)
+      log(`🔄 Note: ${testNote}`)
+
+      const result = await fabricUpdateService.updatePrice(fabric.id, testPrice, testNote)
+
+      if (result.success) {
+        log('✅ Price updated successfully')
+        if (result.fabric) {
+          log(`📊 Updated fabric data: ${JSON.stringify(result.fabric, null, 2)}`)
+          setFabricData(result.fabric)
+        }
+      } else {
+        log(`❌ Price update failed: ${result.error}`)
+      }
+    } catch (error) {
+      log(`❌ Price update test failed: ${(error as Error).message}`)
     }
   }
 
@@ -204,6 +268,7 @@ export const SupabaseTest: React.FC = () => {
           <button onClick={checkSupabaseConnection}>Check Connection</button>
           <button onClick={testDatabaseRead}>Test Read</button>
           <button onClick={testCustomImageUpdate}>Test Custom URL Update</button>
+          <button onClick={testPriceUpdate}>Test Price Update</button>
           <button onClick={checkFabricData}>Check Fabric Data</button>
           <button onClick={forceRefreshWebapp}>Force Refresh Webapp</button>
           <button onClick={clearLogs}>Clear Logs</button>
@@ -230,31 +295,49 @@ export const SupabaseTest: React.FC = () => {
       {fabricData && (
         <div style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px' }}>
           <h3>📊 Current Fabric Data</h3>
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', alignItems: 'start' }}>
             <div>
               <strong>Original Image:</strong><br />
-              <img 
-                src={fabricData.image || 'https://via.placeholder.com/100x100?text=No+Image'} 
+              <img
+                src={fabricData.image || 'https://via.placeholder.com/100x100?text=No+Image'}
                 alt={fabricData.code}
                 style={{ width: '100px', height: '100px', objectFit: 'cover', border: '1px solid #ddd' }}
               />
               <br />
               <small>{fabricData.image || 'No image'}</small>
             </div>
-            {fabricData.custom_image_url && (
+
+            {fabricData.customImageUrl && (
               <div>
                 <strong>Custom Image:</strong><br />
-                <img 
-                  src={fabricData.custom_image_url} 
+                <img
+                  src={fabricData.customImageUrl}
                   alt="Custom"
                   style={{ width: '100px', height: '100px', objectFit: 'cover', border: '1px solid #ddd' }}
                 />
                 <br />
-                <small>{fabricData.custom_image_url}</small>
+                <small>{fabricData.customImageUrl}</small>
                 <br />
-                <small>Updated: {fabricData.custom_image_updated_at}</small>
+                <small>Updated: {fabricData.customImageUpdatedAt}</small>
               </div>
             )}
+
+            <div>
+              <strong>Price Information:</strong><br />
+              <div style={{ padding: '10px', background: '#f9f9f9', borderRadius: '4px' }}>
+                <div><strong>Price:</strong> {fabricData.price ? `${fabricData.price.toLocaleString('vi-VN')} VND` : 'No price set'}</div>
+                <div><strong>Note:</strong> {fabricData.priceNote || 'No note'}</div>
+                <div><strong>Updated:</strong> {fabricData.priceUpdatedAt ? new Date(fabricData.priceUpdatedAt).toLocaleString('vi-VN') : 'Never'}</div>
+              </div>
+            </div>
+
+            <div>
+              <strong>Visibility:</strong><br />
+              <div style={{ padding: '10px', background: fabricData.isHidden ? '#fee' : '#efe', borderRadius: '4px' }}>
+                <div><strong>Status:</strong> {fabricData.isHidden ? '🚫 Hidden' : '✅ Visible'}</div>
+                <div><strong>Updated:</strong> {fabricData.updatedAt ? new Date(fabricData.updatedAt).toLocaleString('vi-VN') : 'Unknown'}</div>
+              </div>
+            </div>
           </div>
         </div>
       )}

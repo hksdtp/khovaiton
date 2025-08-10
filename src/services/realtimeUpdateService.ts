@@ -98,11 +98,53 @@ class RealtimeUpdateService {
   }
 
   /**
+   * Update stats when price is updated
+   */
+  async onPriceUpdated(fabricId: number, price: number | null) {
+    console.log(`💰 Price updated for fabric ${fabricId}:`, price ? `${price.toLocaleString('vi-VN')} VND` : 'Removed')
+
+    if (!this.queryClient) {
+      console.warn('QueryClient not set, skipping cache update')
+      return
+    }
+
+    // Invalidate fabric queries to refresh data
+    await this.queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+    await this.queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+
+    // Dispatch custom event for UI updates
+    this.dispatchUpdateEvent('price-updated', { fabricId, price })
+
+    console.log(`✅ Stats updated after price change for fabric ${fabricId}`)
+  }
+
+  /**
+   * Update stats when visibility is toggled
+   */
+  async onVisibilityToggled(fabricId: number, isHidden: boolean) {
+    console.log(`👁️ Visibility toggled for fabric ${fabricId}:`, isHidden ? 'Hidden' : 'Visible')
+
+    if (!this.queryClient) {
+      console.warn('QueryClient not set, skipping cache update')
+      return
+    }
+
+    // Invalidate fabric queries to refresh data
+    await this.queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+    await this.queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+
+    // Dispatch custom event for UI updates
+    this.dispatchUpdateEvent('visibility-toggled', { fabricId, isHidden })
+
+    console.log(`✅ Stats updated after visibility change for fabric ${fabricId}`)
+  }
+
+  /**
    * Force refresh all data
    */
   async forceRefresh() {
     console.log('🔄 Force refreshing all fabric data...')
-    
+
     if (!this.queryClient) {
       console.warn('QueryClient not set, skipping cache update')
       return
@@ -114,7 +156,7 @@ class RealtimeUpdateService {
 
     // Dispatch custom event for UI updates
     this.dispatchUpdateEvent('force-refresh', {})
-    
+
     console.log('✅ Force refresh completed')
   }
 
