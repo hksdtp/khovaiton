@@ -9,7 +9,7 @@ import { Fabric } from '../types'
 export interface FabricUpdateResult {
   success: boolean
   error?: string
-  fabric?: Fabric
+  fabric?: Fabric | undefined
 }
 
 // Helper function to convert database format to app format
@@ -73,7 +73,6 @@ class FabricUpdateService {
         .update(updateData)
         .eq('id', fabricId)
         .select()
-        .single()
 
       if (error) {
         console.error('❌ Supabase error updating price:', error)
@@ -123,9 +122,18 @@ class FabricUpdateService {
 
       console.log('✅ Price updated successfully:', data)
 
-      return {
-        success: true,
-        fabric: convertDatabaseToApp(data)
+      // Handle array response from update query
+      if (data && data.length > 0) {
+        return {
+          success: true,
+          fabric: convertDatabaseToApp(data[0])
+        }
+      } else {
+        console.warn('⚠️ Update successful but no data returned')
+        return {
+          success: true,
+          fabric: undefined
+        }
       }
     } catch (error) {
       console.error('❌ Exception updating price:', error)
@@ -174,7 +182,6 @@ class FabricUpdateService {
         .update(updateData)
         .eq('id', fabricId)
         .select()
-        .single()
 
       if (error) {
         console.error('❌ Supabase error updating visibility:', error)
@@ -186,20 +193,18 @@ class FabricUpdateService {
 
       console.log('✅ Visibility updated successfully:', data)
 
-      // Convert database format to app format
-      const updatedFabric: Fabric = {
-        ...data,
-        price: data.price,
-        priceNote: data.price_note,
-        priceUpdatedAt: data.price_updated_at ? new Date(data.price_updated_at) : undefined,
-        isHidden: data.is_hidden || false,
-        createdAt: new Date(data.created_at),
-        updatedAt: new Date(data.updated_at)
-      }
-
-      return {
-        success: true,
-        fabric: updatedFabric
+      // Handle array response from update query
+      if (data && data.length > 0) {
+        return {
+          success: true,
+          fabric: convertDatabaseToApp(data[0])
+        }
+      } else {
+        console.warn('⚠️ Visibility update successful but no data returned')
+        return {
+          success: true,
+          fabric: undefined
+        }
       }
     } catch (error) {
       console.error('❌ Exception updating visibility:', error)
@@ -292,7 +297,6 @@ class FabricUpdateService {
         .update(updateData)
         .eq('id', fabricId)
         .select()
-        .single()
 
       if (error) {
         console.error('❌ Supabase error updating custom image URL:', error)
@@ -304,22 +308,18 @@ class FabricUpdateService {
 
       console.log('✅ Custom image URL updated successfully:', data)
 
-      // Convert database format to app format
-      const updatedFabric: Fabric = {
-        ...data,
-        price: data.price,
-        priceNote: data.price_note,
-        priceUpdatedAt: data.price_updated_at ? new Date(data.price_updated_at) : undefined,
-        isHidden: data.is_hidden || false,
-        customImageUrl: data.custom_image_url,
-        customImageUpdatedAt: data.custom_image_updated_at ? new Date(data.custom_image_updated_at) : undefined,
-        createdAt: new Date(data.created_at),
-        updatedAt: new Date(data.updated_at)
-      }
-
-      return {
-        success: true,
-        fabric: updatedFabric
+      // Handle array response from update query
+      if (data && data.length > 0) {
+        return {
+          success: true,
+          fabric: convertDatabaseToApp(data[0])
+        }
+      } else {
+        console.warn('⚠️ Custom image update successful but no data returned')
+        return {
+          success: true,
+          fabric: undefined
+        }
       }
     } catch (error) {
       console.error('❌ Exception updating custom image URL:', error)
