@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Supabase API Key</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #1976D2; }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 Verify Supabase API Key</h1>
+        
+        <div>
+            <label>Supabase URL:</label>
+            <input type="text" id="supabaseUrl" value="https://zgrfqkytbmahxcbgpkxx.supabase.co">
+        </div>
+        
+        <div>
+            <label>API Key:</label>
+            <input type="text" id="apiKey" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs">
+        </div>
+        
+        <div>
+            <button onclick="testWithFetch()">Test with Fetch API</button>
+            <button onclick="testWithSupabaseJS()">Test with Supabase JS</button>
+            <button onclick="testUpdate()">Test Update</button>
+            <button onclick="clearLogs()">Clear Logs</button>
+        </div>
+        
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('logs');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            logDiv.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+        }
+
+        async function testWithFetch() {
+            const url = document.getElementById('supabaseUrl').value;
+            const key = document.getElementById('apiKey').value;
+            
+            log('🔍 Testing with Fetch API...');
+            log(`URL: ${url}`);
+            log(`Key: ${key.substring(0, 20)}...`);
+            
+            try {
+                const response = await fetch(`${url}/rest/v1/fabrics?select=id,code,name&limit=1`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': key,
+                        'Authorization': `Bearer ${key}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                log(`Response status: ${response.status}`);
+                log(`Response headers: ${JSON.stringify(Object.fromEntries(response.headers))}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Fetch API success: ${JSON.stringify(data)}`, 'success');
+                } else {
+                    const errorText = await response.text();
+                    log(`❌ Fetch API failed: ${errorText}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Fetch API exception: ${error.message}`, 'error');
+            }
+        }
+
+        async function testWithSupabaseJS() {
+            const url = document.getElementById('supabaseUrl').value;
+            const key = document.getElementById('apiKey').value;
+            
+            log('🔍 Testing with Supabase JS...');
+            
+            try {
+                const client = window.supabase.createClient(url, key, {
+                    auth: {
+                        persistSession: false
+                    }
+                });
+                
+                const { data, error } = await client
+                    .from('fabrics')
+                    .select('id,code,name')
+                    .limit(1);
+                
+                if (error) {
+                    log(`❌ Supabase JS error: ${error.message}`, 'error');
+                    log(`❌ Error code: ${error.code}`, 'error');
+                    log(`❌ Error details: ${error.details}`, 'error');
+                    log(`❌ Error hint: ${error.hint}`, 'error');
+                } else {
+                    log(`✅ Supabase JS success: ${JSON.stringify(data)}`, 'success');
+                }
+            } catch (error) {
+                log(`❌ Supabase JS exception: ${error.message}`, 'error');
+            }
+        }
+
+        async function testUpdate() {
+            const url = document.getElementById('supabaseUrl').value;
+            const key = document.getElementById('apiKey').value;
+            
+            log('💰 Testing price update...');
+            
+            try {
+                const client = window.supabase.createClient(url, key, {
+                    auth: {
+                        persistSession: false
+                    }
+                });
+                
+                const testPrice = Math.floor(Math.random() * 1000000) + 100000;
+                const testNote = `API key test at ${new Date().toLocaleTimeString()}`;
+                
+                log(`🔄 Updating COTTON001 price to ${testPrice.toLocaleString('vi-VN')} VND`);
+                
+                const { data, error } = await client
+                    .from('fabrics')
+                    .update({
+                        price: testPrice,
+                        price_note: testNote,
+                        price_updated_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('code', 'COTTON001')
+                    .select()
+                    .single();
+                
+                if (error) {
+                    log(`❌ Update failed: ${error.message}`, 'error');
+                    log(`❌ Error code: ${error.code}`, 'error');
+                    log(`❌ Error details: ${error.details}`, 'error');
+                    log(`❌ Error hint: ${error.hint}`, 'error');
+                    
+                    // Try with different approach
+                    log('🔄 Trying with fetch API...');
+                    const fetchResponse = await fetch(`${url}/rest/v1/fabrics?code=eq.COTTON001`, {
+                        method: 'PATCH',
+                        headers: {
+                            'apikey': key,
+                            'Authorization': `Bearer ${key}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=representation'
+                        },
+                        body: JSON.stringify({
+                            price: testPrice,
+                            price_note: testNote,
+                            price_updated_at: new Date().toISOString(),
+                            updated_at: new Date().toISOString()
+                        })
+                    });
+                    
+                    if (fetchResponse.ok) {
+                        const fetchData = await fetchResponse.json();
+                        log(`✅ Fetch update success: ${JSON.stringify(fetchData)}`, 'success');
+                    } else {
+                        const fetchError = await fetchResponse.text();
+                        log(`❌ Fetch update failed: ${fetchError}`, 'error');
+                    }
+                } else {
+                    log(`✅ Update success: ${JSON.stringify(data)}`, 'success');
+                }
+            } catch (error) {
+                log(`❌ Update exception: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-run tests
+        log('🚀 API Key verification tool loaded');
+        log('Click buttons to test different approaches');
+    </script>
+</body>
+</html>
