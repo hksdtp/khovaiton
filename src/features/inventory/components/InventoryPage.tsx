@@ -206,7 +206,7 @@ export function InventoryPage() {
 
       for (const [queryKey, data] of allCacheData) {
         console.log(`🔍 Checking cache entry:`, queryKey, data)
-        if (data?.data) {
+        if (data && typeof data === 'object' && 'data' in data && data.data && Array.isArray(data.data)) {
           const fabricIds = data.data.map((f: any) => f.id)
           allFabricIds.push(...fabricIds)
           if (data.data.some((fabric: any) => fabric.id === fabricId)) {

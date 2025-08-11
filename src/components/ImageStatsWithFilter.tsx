@@ -68,8 +68,8 @@ export function ImageStatsWithFilter({ className = '' }: ImageStatsWithFilterPro
   }
 
   // Calculate image stats from available data
-  const totalFabrics = statsData.totalFabrics || 0
-  const fabricsWithImages = statsData.fabricsWithImages || 0
+  const totalFabrics = statsData.totalItems || 0
+  const fabricsWithImages = allFabricsQuery.data?.data?.filter(f => f.image).length || 0
   const fabricsWithoutImages = totalFabrics - fabricsWithImages
 
   const imagePercentage = totalFabrics > 0 ? Math.round((fabricsWithImages / totalFabrics) * 100) : 0
@@ -77,7 +77,7 @@ export function ImageStatsWithFilter({ className = '' }: ImageStatsWithFilterPro
   const handleFilterChange = (imageStatus: string | null) => {
     setFilters({
       ...filters,
-      imageStatus: imageStatus as 'with_images' | 'without_images' | null
+      imageStatus: imageStatus as 'all' | 'with_images' | 'without_images'
     })
   }
 
