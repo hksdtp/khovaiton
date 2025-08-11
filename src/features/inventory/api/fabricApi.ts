@@ -75,6 +75,12 @@ async function loadFabricsFromSupabase(): Promise<Fabric[]> {
     }))
 
     console.log(`✅ Loaded ${fabrics.length} fabrics from Supabase`)
+
+    // Debug: Count fabrics with images
+    const withImages = fabrics.filter(f => f.image && f.image.trim() !== '').length
+    const withoutImages = fabrics.length - withImages
+    console.log(`📊 Image stats: ${withImages} with images, ${withoutImages} without images`)
+
     return fabrics
   } catch (error) {
     console.error('❌ Error loading from Supabase:', error)
@@ -229,19 +235,23 @@ export const fabricApi = {
       }
     }
 
-    // Apply image status filter with real image checking
+    // Apply image status filter - check actual image field from database
     if (filters.imageStatus && filters.imageStatus !== 'all') {
+      const beforeCount = filteredFabrics.length
+
       if (filters.imageStatus === 'with_images') {
         filteredFabrics = filteredFabrics.filter(fabric => {
-          // Check if fabric actually has an image (not just a generated URL)
-          return hasRealImage(fabric.code)
+          // Check if fabric has image URL (fabric.image already includes custom_image_url priority)
+          return !!(fabric.image && fabric.image.trim() !== '')
         })
       } else if (filters.imageStatus === 'without_images') {
         filteredFabrics = filteredFabrics.filter(fabric => {
-          // Check if fabric doesn't have a real image
-          return !hasRealImage(fabric.code)
+          // Check if fabric doesn't have any image
+          return !(fabric.image && fabric.image.trim() !== '')
         })
       }
+
+      console.log(`🔍 Image filter "${filters.imageStatus}": ${beforeCount} → ${filteredFabrics.length} fabrics`)
     }
 
     // Apply sorting with status priority

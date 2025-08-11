@@ -10,19 +10,24 @@ import { useFabricStats } from '@/features/inventory/hooks/useFabrics'
 import { useInventoryStore } from '@/features/inventory/store/inventoryStore'
 import { useFabrics } from '@/features/inventory/hooks/useFabrics'
 import { useQueryClient } from '@tanstack/react-query'
+import { FabricFilters } from '@/features/inventory/types'
 
 interface ImageStatsWithFilterProps {
   className?: string
+  overrideFilters?: FabricFilters // Optional override filters from parent
 }
 
-export function ImageStatsWithFilter({ className = '' }: ImageStatsWithFilterProps) {
+export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageStatsWithFilterProps) {
   const { data: statsData, isLoading } = useFabricStats()
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const { filters, setFilters } = useInventoryStore()
   const queryClient = useQueryClient()
 
+  // Use override filters if provided, otherwise use store filters
+  const activeFilters = overrideFilters || filters
+
   // Get fabric counts for each image status - THEO CONTEXT HIỆN TẠI
-  const baseFilters = { ...filters }
+  const baseFilters = { ...activeFilters }
   delete baseFilters.imageStatus
 
   const allFabricsQuery = useFabrics(baseFilters, { page: 1, limit: 1000 })
@@ -68,16 +73,16 @@ export function ImageStatsWithFilter({ className = '' }: ImageStatsWithFilterPro
   }
 
   // Calculate image stats from available data
-  const totalFabrics = statsData.totalItems || 0
-  const fabricsWithImages = allFabricsQuery.data?.data?.filter(f => f.image).length || 0
-  const fabricsWithoutImages = totalFabrics - fabricsWithImages
+  const totalFabrics = allCount || statsData.totalItems || 0
+  const fabricsWithImages = withImagesCount || 0
+  const fabricsWithoutImages = withoutImagesCount || 0
 
   const imagePercentage = totalFabrics > 0 ? Math.round((fabricsWithImages / totalFabrics) * 100) : 0
 
   const handleFilterChange = (imageStatus: string | null) => {
     setFilters({
-      ...filters,
-      imageStatus: imageStatus as 'all' | 'with_images' | 'without_images'
+      ...activeFilters,
+      imageStatus: imageStatus === null ? 'all' : imageStatus as 'with_images' | 'without_images'
     })
   }
 
@@ -127,29 +132,29 @@ export function ImageStatsWithFilter({ className = '' }: ImageStatsWithFilterPro
         <button
           onClick={() => handleFilterChange(null)}
           className={`px-3 py-1 text-xs rounded-full border transition-colors ${
-            !filters.imageStatus
+            !activeFilters.imageStatus || activeFilters.imageStatus === 'all'
               ? 'bg-blue-100 text-blue-700 border-blue-300'
               : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
           }`}
         >
           Tất cả ({allCount})
         </button>
-        
+
         <button
           onClick={() => handleFilterChange('with_images')}
           className={`px-3 py-1 text-xs rounded-full border transition-colors ${
-            filters.imageStatus === 'with_images'
+            activeFilters.imageStatus === 'with_images'
               ? 'bg-green-100 text-green-700 border-green-300'
               : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
           }`}
         >
           Có ảnh ({withImagesCount})
         </button>
-        
+
         <button
           onClick={() => handleFilterChange('without_images')}
           className={`px-3 py-1 text-xs rounded-full border transition-colors ${
-            filters.imageStatus === 'without_images'
+            activeFilters.imageStatus === 'without_images'
               ? 'bg-orange-100 text-orange-700 border-orange-300'
               : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
           }`}

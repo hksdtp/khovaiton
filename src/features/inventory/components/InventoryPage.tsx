@@ -26,6 +26,7 @@ import { ImageViewerModal } from '@/components/ImageViewerModal'
 import { ImageEditor } from '@/components/ImageEditor'
 import { ImageStatsWithFilter } from '@/components/ImageStatsWithFilter'
 import { useQueryClient } from '@tanstack/react-query'
+import { FilterDebug } from '@/debug/FilterDebug'
 
 
 export function InventoryPage() {
@@ -579,7 +580,10 @@ export function InventoryPage() {
       <div className="relative z-30 max-w-7xl mx-auto px-6 py-8">
         {/* Image Stats + Filter - Kết hợp hiển thị số liệu và filter */}
         {!isMarketingVersion && (
-          <ImageStatsWithFilter className="mb-6" />
+          <ImageStatsWithFilter
+            className="mb-6"
+            overrideFilters={contextualFilters}
+          />
         )}
 
 
@@ -654,6 +658,11 @@ export function InventoryPage() {
         fabricCode={imageEditorState.fabricCode}
         onSave={handleSaveEditedImage}
       />
+
+      {/* Debug Component - Hidden */}
+      {/* {process.env.NODE_ENV === 'development' && !isMarketingVersion && (
+        <FilterDebug />
+      )} */}
 
     </MainLayout>
   )
