@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Test Đồng Bộ Hoàn Chỉnh - Ảnh & Giá</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button.success {
+            background: #28a745;
+        }
+        button.danger {
+            background: #dc3545;
+        }
+        .log {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        .fabric-preview {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            background: white;
+        }
+        .fabric-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .fabric-info {
+            font-size: 14px;
+        }
+        .price-display {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #2d5a2d;
+        }
+        .sync-status {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .status-card {
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Test Đồng Bộ Hoàn Chỉnh - Ảnh & Giá</h1>
+        
+        <div class="test-grid">
+            <!-- Left Panel: Controls -->
+            <div>
+                <div class="test-section">
+                    <h3>🎛️ Điều Khiển Test</h3>
+                    
+                    <div class="input-group">
+                        <label>Chọn Fabric:</label>
+                        <select id="fabricSelect">
+                            <option value="">-- Chọn fabric để test --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Link Ảnh Mới:</label>
+                        <input type="url" id="newImageUrl" placeholder="https://example.com/image.jpg">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Giá Mới (VND):</label>
+                        <input type="number" id="newPrice" placeholder="150000" min="0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Ghi Chú Giá:</label>
+                        <input type="text" id="priceNote" placeholder="Giá sỉ, Giá lẻ...">
+                    </div>
+                    
+                    <button onclick="loadFabrics()">📋 Load Fabrics</button>
+                    <button onclick="updateImage()" class="success">🖼️ Cập Nhật Ảnh</button>
+                    <button onclick="updatePrice()" class="success">💰 Cập Nhật Giá</button>
+                    <button onclick="updateBoth()" style="background: #6f42c1;">🚀 Cập Nhật Cả Hai</button>
+                    <button onclick="checkSync()">🔍 Kiểm Tra Đồng Bộ</button>
+                    <button onclick="clearLog()" class="danger">🧹 Xóa Log</button>
+                </div>
+                
+                <div class="test-section">
+                    <h3>📊 Trạng Thái Đồng Bộ</h3>
+                    <div class="sync-status">
+                        <div id="imageStatus" class="status-card status-pending">
+                            🖼️ Ảnh: Chưa test
+                        </div>
+                        <div id="priceStatus" class="status-card status-pending">
+                            💰 Giá: Chưa test
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Test URL (Mở tab mới):</label>
+                        <input type="text" id="testUrl" value="http://localhost:3010" readonly>
+                        <button onclick="openTestTab()">🔗 Mở Tab Test</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel: Preview -->
+            <div>
+                <div class="test-section">
+                    <h3>👁️ Preview Fabric</h3>
+                    <div id="fabricPreview" class="fabric-preview">
+                        <p style="text-align: center; color: #666;">Chọn fabric để xem preview</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 Log Test</h3>
+            <div id="log" class="log">
+                🚀 Sẵn sàng test đồng bộ ảnh và giá...<br>
+                💡 Hướng dẫn:<br>
+                1. Click "Load Fabrics" để tải danh sách<br>
+                2. Chọn fabric từ dropdown<br>
+                3. Nhập link ảnh mới và/hoặc giá mới<br>
+                4. Click "Cập Nhật Cả Hai" để test<br>
+                5. Mở tab mới và kiểm tra đồng bộ<br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co'
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs'
+        
+        let allFabrics = []
+        let selectedFabric = null
+        
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log')
+            const timestamp = new Date().toLocaleTimeString()
+            const color = type === 'error' ? '#ff6b6b' : type === 'success' ? '#51cf66' : '#00ff00'
+            logElement.innerHTML += `<br><span style="color: ${color}">[${timestamp}] ${message}</span>`
+            logElement.scrollTop = logElement.scrollHeight
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '🧹 Log đã được xóa...'
+        }
+        
+        function updateStatus(type, status, message) {
+            const element = document.getElementById(`${type}Status`)
+            element.className = `status-card status-${status}`
+            element.textContent = message
+        }
+        
+        async function loadFabrics() {
+            log('📋 Đang tải danh sách fabrics từ Supabase...')
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?select=id,code,name,image,custom_image_url,price,price_note&limit=50`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                })
+                
+                if (response.ok) {
+                    allFabrics = await response.json()
+                    log(`✅ Đã tải ${allFabrics.length} fabrics`, 'success')
+                    
+                    // Populate dropdown
+                    const select = document.getElementById('fabricSelect')
+                    select.innerHTML = '<option value="">-- Chọn fabric để test --</option>'
+                    
+                    allFabrics.forEach(fabric => {
+                        const option = document.createElement('option')
+                        option.value = fabric.id
+                        option.textContent = `${fabric.code} - ${fabric.name.substring(0, 40)}...`
+                        select.appendChild(option)
+                    })
+                    
+                    log('📝 Dropdown đã được cập nhật', 'success')
+                } else {
+                    log(`❌ Lỗi tải dữ liệu: ${response.status}`, 'error')
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`, 'error')
+            }
+        }
+        
+        function selectFabric() {
+            const fabricId = document.getElementById('fabricSelect').value
+            if (!fabricId) {
+                selectedFabric = null
+                updatePreview()
+                return
+            }
+            
+            selectedFabric = allFabrics.find(f => f.id == fabricId)
+            if (selectedFabric) {
+                log(`👆 Đã chọn fabric: ${selectedFabric.code}`)
+                updatePreview()
+                
+                // Pre-fill current values
+                document.getElementById('newImageUrl').value = selectedFabric.custom_image_url || selectedFabric.image || ''
+                document.getElementById('newPrice').value = selectedFabric.price || ''
+                document.getElementById('priceNote').value = selectedFabric.price_note || ''
+            }
+        }
+        
+        function updatePreview() {
+            const preview = document.getElementById('fabricPreview')
+            
+            if (!selectedFabric) {
+                preview.innerHTML = '<p style="text-align: center; color: #666;">Chọn fabric để xem preview</p>'
+                return
+            }
+            
+            const imageUrl = selectedFabric.custom_image_url || selectedFabric.image
+            const price = selectedFabric.price
+            
+            preview.innerHTML = `
+                <div class="fabric-info">
+                    <strong>Mã:</strong> ${selectedFabric.code}<br>
+                    <strong>Tên:</strong> ${selectedFabric.name}<br>
+                    <strong>ID:</strong> ${selectedFabric.id}
+                </div>
+                ${imageUrl ? 
+                    `<img src="${imageUrl}" alt="${selectedFabric.code}" class="fabric-image" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                     <div style="display:none; text-align:center; color:#999; padding:20px;">❌ Lỗi tải ảnh</div>` :
+                    `<div style="text-align:center; color:#999; padding:20px; border:2px dashed #ddd;">📷 Không có ảnh</div>`
+                }
+                ${price ? 
+                    `<div class="price-display">💰 ${price.toLocaleString('vi-VN')} VND${selectedFabric.price_note ? ` (${selectedFabric.price_note})` : ''}</div>` :
+                    `<div style="text-align:center; color:#999; padding:10px;">💰 Chưa có giá</div>`
+                }
+            `
+        }
+        
+        async function updateImage() {
+            if (!selectedFabric) {
+                log('❌ Vui lòng chọn fabric trước', 'error')
+                return
+            }
+            
+            const newUrl = document.getElementById('newImageUrl').value
+            if (!newUrl) {
+                log('❌ Vui lòng nhập URL ảnh', 'error')
+                return
+            }
+            
+            log(`🖼️ Đang cập nhật ảnh cho ${selectedFabric.code}...`)
+            updateStatus('image', 'pending', '🖼️ Ảnh: Đang cập nhật...')
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${selectedFabric.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        custom_image_url: newUrl,
+                        custom_image_updated_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                })
+                
+                if (response.ok) {
+                    log(`✅ Cập nhật ảnh thành công!`, 'success')
+                    updateStatus('image', 'success', '🖼️ Ảnh: Đã cập nhật')
+                    
+                    // Update local data
+                    selectedFabric.custom_image_url = newUrl
+                    updatePreview()
+                } else {
+                    log(`❌ Lỗi cập nhật ảnh: ${response.status}`, 'error')
+                    updateStatus('image', 'error', '🖼️ Ảnh: Lỗi cập nhật')
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`, 'error')
+                updateStatus('image', 'error', '🖼️ Ảnh: Lỗi cập nhật')
+            }
+        }
+        
+        async function updatePrice() {
+            if (!selectedFabric) {
+                log('❌ Vui lòng chọn fabric trước', 'error')
+                return
+            }
+            
+            const newPrice = parseFloat(document.getElementById('newPrice').value)
+            const note = document.getElementById('priceNote').value
+            
+            if (!newPrice || newPrice <= 0) {
+                log('❌ Vui lòng nhập giá hợp lệ', 'error')
+                return
+            }
+            
+            log(`💰 Đang cập nhật giá cho ${selectedFabric.code}: ${newPrice.toLocaleString('vi-VN')} VND`)
+            updateStatus('price', 'pending', '💰 Giá: Đang cập nhật...')
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${selectedFabric.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        price: newPrice,
+                        price_note: note || null,
+                        price_updated_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                })
+                
+                if (response.ok) {
+                    log(`✅ Cập nhật giá thành công!`, 'success')
+                    updateStatus('price', 'success', '💰 Giá: Đã cập nhật')
+                    
+                    // Update local data
+                    selectedFabric.price = newPrice
+                    selectedFabric.price_note = note
+                    updatePreview()
+                } else {
+                    log(`❌ Lỗi cập nhật giá: ${response.status}`, 'error')
+                    updateStatus('price', 'error', '💰 Giá: Lỗi cập nhật')
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`, 'error')
+                updateStatus('price', 'error', '💰 Giá: Lỗi cập nhật')
+            }
+        }
+        
+        async function updateBoth() {
+            if (!selectedFabric) {
+                log('❌ Vui lòng chọn fabric trước', 'error')
+                return
+            }
+            
+            log(`🚀 Bắt đầu cập nhật cả ảnh và giá cho ${selectedFabric.code}...`)
+            
+            // Update image first
+            await updateImage()
+            
+            // Wait a bit
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Update price
+            await updatePrice()
+            
+            log(`🎉 Hoàn thành cập nhật cả ảnh và giá!`, 'success')
+            log(`🔄 Bây giờ hãy mở tab mới để kiểm tra đồng bộ!`)
+        }
+        
+        async function checkSync() {
+            if (!selectedFabric) {
+                log('❌ Vui lòng chọn fabric trước', 'error')
+                return
+            }
+            
+            log(`🔍 Đang kiểm tra đồng bộ cho ${selectedFabric.code}...`)
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${selectedFabric.id}&select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                })
+                
+                if (response.ok) {
+                    const fabrics = await response.json()
+                    if (fabrics.length > 0) {
+                        const fabric = fabrics[0]
+                        log(`✅ Dữ liệu hiện tại trong database:`)
+                        log(`   🖼️ Ảnh: ${fabric.custom_image_url || fabric.image || 'Không có'}`)
+                        log(`   💰 Giá: ${fabric.price ? fabric.price.toLocaleString('vi-VN') + ' VND' : 'Chưa có giá'}`)
+                        log(`   📝 Ghi chú: ${fabric.price_note || 'Không có'}`)
+                        log(`   🕒 Cập nhật ảnh: ${fabric.custom_image_updated_at ? new Date(fabric.custom_image_updated_at).toLocaleString('vi-VN') : 'Chưa có'}`)
+                        log(`   🕒 Cập nhật giá: ${fabric.price_updated_at ? new Date(fabric.price_updated_at).toLocaleString('vi-VN') : 'Chưa có'}`)
+                        
+                        // Update local data and preview
+                        selectedFabric = fabric
+                        updatePreview()
+                    }
+                } else {
+                    log(`❌ Lỗi kiểm tra: ${response.status}`, 'error')
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`, 'error')
+            }
+        }
+        
+        function openTestTab() {
+            const url = document.getElementById('testUrl').value
+            window.open(url, '_blank')
+            log(`🔗 Đã mở tab mới: ${url}`)
+            log(`💡 Hãy tìm fabric "${selectedFabric?.code || 'đã chọn'}" và kiểm tra ảnh + giá đã đồng bộ chưa`)
+        }
+        
+        // Event listeners
+        document.getElementById('fabricSelect').addEventListener('change', selectFabric)
+        
+        // Auto-load on page load
+        window.addEventListener('load', loadFabrics)
+    </script>
+</body>
+</html>
