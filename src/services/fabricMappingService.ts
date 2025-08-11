@@ -122,6 +122,12 @@ class FabricMappingService {
     cloudToLocal: number
     error?: string
   }> {
+    // Skip sync in development mode
+    if (!this.shouldUseCloud) {
+      console.log('🚧 Local mode: Skipping cloud sync')
+      return { success: true, localToCloud: 0, cloudToLocal: 0 }
+    }
+
     try {
       console.log('🔄 Starting cloud sync...')
       

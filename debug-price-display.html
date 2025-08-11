@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Debug Price Display - Kho Vải Tôn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            width: 200px;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .test-section {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .fabric-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .price-display {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .no-price {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            color: #e65100;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Price Display</h1>
+        <p>Kiểm tra vấn đề hiển thị giá tiền</p>
+        
+        <div class="status info">
+            <strong>Mục đích:</strong> 
+            1. Kiểm tra dữ liệu giá từ Supabase
+            2. Test logic hiển thị giá
+            3. Debug vấn đề không hiển thị giá sau khi nhập
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test 1: Kiểm tra dữ liệu từ Supabase</h3>
+            <button onclick="checkSupabaseData()">Kiểm tra dữ liệu Supabase</button>
+            <button onclick="checkSpecificFabric()">Kiểm tra fabric cụ thể</button>
+            <input type="text" id="fabricCode" placeholder="Mã vải (VD: COTTON001)" value="COTTON001">
+        </div>
+        
+        <div class="test-section">
+            <h3>💰 Test 2: Test cập nhật giá</h3>
+            <input type="text" id="testFabricCode" placeholder="Mã vải" value="COTTON001">
+            <input type="number" id="testPrice" placeholder="Giá (VND)" value="150000">
+            <input type="text" id="testNote" placeholder="Ghi chú" value="Test price">
+            <button onclick="updatePrice()">Cập nhật giá</button>
+            <button onclick="deletePrice()">Xóa giá</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎨 Test 3: Test hiển thị giá</h3>
+            <button onclick="testPriceDisplay()">Test hiển thị giá</button>
+            <div id="priceDisplayTest"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔄 Test 4: Test localStorage vs Supabase</h3>
+            <button onclick="testLocalStorage()">Test localStorage</button>
+            <button onclick="testSupabaseUpdate()">Test Supabase update</button>
+            <button onclick="compareData()">So sánh dữ liệu</button>
+        </div>
+        
+        <button onclick="clearResults()">Clear Results</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            resultsDiv.textContent += `[${timestamp}] ${message}\n`;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearResults() {
+            resultsDiv.textContent = '';
+        }
+        
+        // Supabase config
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs';
+        
+        async function checkSupabaseData() {
+            log('🔍 Checking Supabase data...');
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?select=id,code,name,price,price_note,price_updated_at&limit=10`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    log(`✅ Found ${fabrics.length} fabrics`);
+                    
+                    fabrics.forEach((fabric, index) => {
+                        log(`${index + 1}. ${fabric.code} (ID: ${fabric.id})`);
+                        if (fabric.price) {
+                            log(`   💰 Price: ${fabric.price.toLocaleString('vi-VN')} VND`);
+                            if (fabric.price_note) {
+                                log(`   📝 Note: ${fabric.price_note}`);
+                            }
+                            if (fabric.price_updated_at) {
+                                log(`   🕒 Updated: ${new Date(fabric.price_updated_at).toLocaleString('vi-VN')}`);
+                            }
+                        } else {
+                            log(`   ❌ No price set`);
+                        }
+                    });
+                } else {
+                    log(`❌ Error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        async function checkSpecificFabric() {
+            const fabricCode = document.getElementById('fabricCode').value;
+            if (!fabricCode) {
+                log('❌ Please enter fabric code');
+                return;
+            }
+            
+            log(`🔍 Checking fabric: ${fabricCode}`);
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    if (fabrics.length > 0) {
+                        const fabric = fabrics[0];
+                        log(`✅ Found fabric: ${fabric.code}`);
+                        log(`📊 Full data: ${JSON.stringify(fabric, null, 2)}`);
+                        
+                        // Test price display logic
+                        testPriceDisplayLogic(fabric);
+                    } else {
+                        log(`❌ Fabric not found: ${fabricCode}`);
+                    }
+                } else {
+                    log(`❌ Error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        function testPriceDisplayLogic(fabric) {
+            log(`\n🎨 Testing price display logic for ${fabric.code}:`);
+            
+            // Test condition: fabric.price
+            log(`   fabric.price = ${fabric.price} (type: ${typeof fabric.price})`);
+            log(`   Boolean(fabric.price) = ${Boolean(fabric.price)}`);
+            log(`   fabric.price ? true : false = ${fabric.price ? true : false}`);
+            
+            if (fabric.price) {
+                // Test price formatting
+                const formatted = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(fabric.price);
+                
+                log(`   ✅ Should show price: ${formatted}`);
+                
+                // Create visual test
+                const testDiv = document.getElementById('priceDisplayTest');
+                testDiv.innerHTML = `
+                    <div class="fabric-card">
+                        <h4>${fabric.code} - ${fabric.name}</h4>
+                        <div class="price-display">
+                            💰 ${formatted}
+                            ${fabric.price_note ? `<br><small>📝 ${fabric.price_note}</small>` : ''}
+                        </div>
+                    </div>
+                `;
+            } else {
+                log(`   ❌ Should show "Add Price" button`);
+                
+                const testDiv = document.getElementById('priceDisplayTest');
+                testDiv.innerHTML = `
+                    <div class="fabric-card">
+                        <h4>${fabric.code} - ${fabric.name}</h4>
+                        <div class="no-price">
+                            💰 Chưa có giá - Click để thêm giá
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        async function updatePrice() {
+            const fabricCode = document.getElementById('testFabricCode').value;
+            const price = parseFloat(document.getElementById('testPrice').value);
+            const note = document.getElementById('testNote').value;
+            
+            if (!fabricCode || !price) {
+                log('❌ Please enter fabric code and price');
+                return;
+            }
+            
+            log(`💰 Updating price for ${fabricCode}: ${price.toLocaleString('vi-VN')} VND`);
+            
+            try {
+                // First get the fabric ID
+                const getFabricResponse = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=id`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (!getFabricResponse.ok) {
+                    log(`❌ Error getting fabric: ${getFabricResponse.status}`);
+                    return;
+                }
+                
+                const fabrics = await getFabricResponse.json();
+                if (fabrics.length === 0) {
+                    log(`❌ Fabric not found: ${fabricCode}`);
+                    return;
+                }
+                
+                const fabricId = fabrics[0].id;
+                log(`📋 Found fabric ID: ${fabricId}`);
+                
+                // Update price
+                const updateResponse = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${fabricId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        price: price,
+                        price_note: note || null,
+                        price_updated_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                });
+                
+                if (updateResponse.ok) {
+                    log(`✅ Price updated successfully!`);
+                    log(`💰 New price: ${price.toLocaleString('vi-VN')} VND`);
+                    if (note) log(`📝 Note: ${note}`);
+                    
+                    // Verify the update
+                    setTimeout(() => {
+                        log(`🔄 Verifying update...`);
+                        checkSpecificFabric();
+                    }, 1000);
+                } else {
+                    log(`❌ Error updating price: ${updateResponse.status} ${updateResponse.statusText}`);
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        async function deletePrice() {
+            const fabricCode = document.getElementById('testFabricCode').value;
+            
+            if (!fabricCode) {
+                log('❌ Please enter fabric code');
+                return;
+            }
+            
+            log(`🗑️ Deleting price for ${fabricCode}`);
+            
+            try {
+                // Get fabric ID
+                const getFabricResponse = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=id`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                const fabrics = await getFabricResponse.json();
+                if (fabrics.length === 0) {
+                    log(`❌ Fabric not found: ${fabricCode}`);
+                    return;
+                }
+                
+                const fabricId = fabrics[0].id;
+                
+                // Delete price
+                const updateResponse = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${fabricId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        price: null,
+                        price_note: null,
+                        price_updated_at: null,
+                        updated_at: new Date().toISOString()
+                    })
+                });
+                
+                if (updateResponse.ok) {
+                    log(`✅ Price deleted successfully!`);
+                    
+                    // Verify the deletion
+                    setTimeout(() => {
+                        log(`🔄 Verifying deletion...`);
+                        checkSpecificFabric();
+                    }, 1000);
+                } else {
+                    log(`❌ Error deleting price: ${updateResponse.status}`);
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        function testPriceDisplay() {
+            log('🎨 Testing price display with sample data...');
+            
+            const sampleFabrics = [
+                { code: 'TEST001', name: 'Test Fabric 1', price: 150000, price_note: 'Giá sỉ' },
+                { code: 'TEST002', name: 'Test Fabric 2', price: null, price_note: null },
+                { code: 'TEST003', name: 'Test Fabric 3', price: 0, price_note: 'Free sample' },
+                { code: 'TEST004', name: 'Test Fabric 4', price: 250000, price_note: null }
+            ];
+            
+            const testDiv = document.getElementById('priceDisplayTest');
+            testDiv.innerHTML = '';
+            
+            sampleFabrics.forEach(fabric => {
+                testPriceDisplayLogic(fabric);
+            });
+        }
+        
+        function testLocalStorage() {
+            log('💾 Testing localStorage...');
+            
+            const testData = {
+                1: { id: 1, price: 150000, priceNote: 'Test localStorage', updatedAt: new Date().toISOString() }
+            };
+            
+            try {
+                localStorage.setItem('fabric-updates', JSON.stringify(testData));
+                const stored = localStorage.getItem('fabric-updates');
+                const parsed = JSON.parse(stored);
+                
+                log(`✅ localStorage test successful`);
+                log(`📊 Stored data: ${JSON.stringify(parsed, null, 2)}`);
+            } catch (error) {
+                log(`❌ localStorage error: ${error.message}`);
+            }
+        }
+        
+        async function testSupabaseUpdate() {
+            log('🌐 Testing Supabase update...');
+            await updatePrice();
+        }
+        
+        async function compareData() {
+            log('🔄 Comparing localStorage vs Supabase data...');
+            
+            // Check localStorage
+            try {
+                const localData = localStorage.getItem('fabric-updates');
+                if (localData) {
+                    const parsed = JSON.parse(localData);
+                    log(`💾 localStorage data: ${JSON.stringify(parsed, null, 2)}`);
+                } else {
+                    log(`💾 No localStorage data found`);
+                }
+            } catch (error) {
+                log(`❌ localStorage error: ${error.message}`);
+            }
+            
+            // Check Supabase
+            await checkSupabaseData();
+        }
+        
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            log('🚀 Price display debug tool loaded');
+            log('📋 Available tests:');
+            log('1. Check Supabase data');
+            log('2. Test price update/delete');
+            log('3. Test price display logic');
+            log('4. Compare localStorage vs Supabase');
+            log('');
+            
+            // Auto-check data
+            setTimeout(checkSupabaseData, 1000);
+        });
+    </script>
+</body>
+</html>

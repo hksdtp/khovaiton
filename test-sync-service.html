@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sync Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test Sync Service</h1>
+        <p>Kiểm tra xem lỗi <code>url.startsWith</code> đã được sửa chưa</p>
+        
+        <div class="status info">
+            <strong>Trạng thái:</strong> Đang kiểm tra...
+        </div>
+        
+        <button onclick="testSyncService()">Test Sync Service</button>
+        <button onclick="testFabricMappingService()">Test Fabric Mapping Service</button>
+        <button onclick="clearResults()">Clear Results</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            resultsDiv.textContent += `[${timestamp}] ${message}\n`;
+            console.log(message);
+        }
+        
+        function clearResults() {
+            resultsDiv.textContent = '';
+        }
+        
+        async function testSyncService() {
+            log('🔧 Testing Sync Service...');
+            
+            try {
+                // Test API endpoint
+                const response = await fetch('http://localhost:3001/api/fabric-mappings');
+                const data = await response.json();
+                
+                log(`✅ API Response: ${JSON.stringify(data, null, 2)}`);
+                
+                // Test if response has proper structure
+                if (data.success && data.mappings) {
+                    log(`📊 Found ${Object.keys(data.mappings).length} mappings`);
+                    
+                    // Test each mapping value
+                    let validMappings = 0;
+                    let invalidMappings = 0;
+                    
+                    for (const [fabricCode, url] of Object.entries(data.mappings)) {
+                        if (typeof url === 'string' && url.trim()) {
+                            validMappings++;
+                            log(`✅ Valid mapping: ${fabricCode} -> ${url}`);
+                        } else {
+                            invalidMappings++;
+                            log(`❌ Invalid mapping: ${fabricCode} -> ${typeof url} (${url})`);
+                        }
+                    }
+                    
+                    log(`📈 Summary: ${validMappings} valid, ${invalidMappings} invalid mappings`);
+                } else {
+                    log('⚠️ No mappings found or API error');
+                }
+                
+            } catch (error) {
+                log(`❌ Error testing sync service: ${error.message}`);
+            }
+        }
+        
+        async function testFabricMappingService() {
+            log('🔧 Testing Fabric Mapping Service...');
+            
+            try {
+                // Test static file
+                const response = await fetch('/image_mapping.json');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Static mapping file loaded: ${Object.keys(data).length} entries`);
+                    
+                    // Test first few entries
+                    const entries = Object.entries(data).slice(0, 5);
+                    for (const [fabricCode, url] of entries) {
+                        log(`📋 ${fabricCode}: ${typeof url} -> ${url}`);
+                    }
+                } else {
+                    log(`⚠️ Static mapping file not found: ${response.status}`);
+                }
+                
+            } catch (error) {
+                log(`❌ Error testing fabric mapping service: ${error.message}`);
+            }
+        }
+        
+        // Auto-run tests when page loads
+        window.addEventListener('load', () => {
+            log('🚀 Page loaded, starting tests...');
+            testSyncService();
+            setTimeout(() => testFabricMappingService(), 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Debug Fabric Data - Kho Vải Tôn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .fabric-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .price-display {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .no-price {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            color: #e65100;
+        }
+        .data-debug {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Fabric Data</h1>
+        <p>Kiểm tra dữ liệu fabric và logic hiển thị giá</p>
+        
+        <button onclick="fetchAndAnalyzeFabrics()">Fetch & Analyze Fabrics</button>
+        <button onclick="testPriceLogic()">Test Price Logic</button>
+        <button onclick="clearResults()">Clear Results</button>
+        
+        <div id="fabricList"></div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        const fabricListDiv = document.getElementById('fabricList');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            resultsDiv.textContent += `[${timestamp}] ${message}\n`;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearResults() {
+            resultsDiv.textContent = '';
+            fabricListDiv.innerHTML = '';
+        }
+        
+        // Supabase config
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs';
+        
+        async function fetchAndAnalyzeFabrics() {
+            log('🔍 Fetching fabrics from Supabase...');
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?select=*&limit=20&order=updated_at.desc`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    log(`✅ Found ${fabrics.length} fabrics`);
+                    
+                    // Analyze each fabric
+                    fabricListDiv.innerHTML = '';
+                    
+                    fabrics.forEach((fabric, index) => {
+                        analyzeFabric(fabric, index + 1);
+                    });
+                    
+                    // Summary
+                    const withPrice = fabrics.filter(f => f.price !== null && f.price !== undefined);
+                    const withoutPrice = fabrics.filter(f => f.price === null || f.price === undefined);
+                    
+                    log(`\n📊 Summary:`);
+                    log(`   ✅ With price: ${withPrice.length}`);
+                    log(`   ❌ Without price: ${withoutPrice.length}`);
+                    log(`   📊 Total: ${fabrics.length}`);
+                    
+                } else {
+                    log(`❌ Error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        function analyzeFabric(fabric, index) {
+            log(`\n${index}. Analyzing ${fabric.code}:`);
+            log(`   price: ${fabric.price} (type: ${typeof fabric.price})`);
+            log(`   price_note: ${fabric.price_note}`);
+            log(`   Boolean(fabric.price): ${Boolean(fabric.price)}`);
+            log(`   fabric.price ? true : false: ${fabric.price ? true : false}`);
+            
+            // Create visual representation
+            const fabricDiv = document.createElement('div');
+            fabricDiv.className = 'fabric-item';
+            
+            // Test the exact logic from FabricCard.tsx
+            const shouldShowPrice = fabric.price ? true : false;
+            
+            fabricDiv.innerHTML = `
+                <h4>${fabric.code} - ${fabric.name || 'No name'}</h4>
+                
+                <div class="data-debug">
+                    <strong>Raw Data:</strong><br>
+                    price: ${JSON.stringify(fabric.price)} (${typeof fabric.price})<br>
+                    price_note: ${JSON.stringify(fabric.price_note)}<br>
+                    price_updated_at: ${JSON.stringify(fabric.price_updated_at)}<br>
+                    <br>
+                    <strong>Logic Test:</strong><br>
+                    Boolean(fabric.price): ${Boolean(fabric.price)}<br>
+                    fabric.price ? true : false: ${fabric.price ? true : false}<br>
+                    shouldShowPrice: ${shouldShowPrice}
+                </div>
+                
+                ${shouldShowPrice ? `
+                    <div class="price-display">
+                        💰 ${formatPrice(fabric.price)}
+                        ${fabric.price_note ? `<br><small>📝 ${fabric.price_note}</small>` : ''}
+                    </div>
+                ` : `
+                    <div class="no-price">
+                        💰 Chưa có giá - Click để thêm giá
+                    </div>
+                `}
+            `;
+            
+            fabricListDiv.appendChild(fabricDiv);
+        }
+        
+        function formatPrice(price) {
+            if (price === null || price === undefined) return 'N/A';
+            
+            try {
+                return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(price);
+            } catch (error) {
+                return `${price} VND (format error)`;
+            }
+        }
+        
+        function testPriceLogic() {
+            log('🧪 Testing price logic with sample data...');
+            
+            const testCases = [
+                { code: 'TEST1', price: 150000, price_note: 'Normal price' },
+                { code: 'TEST2', price: null, price_note: null },
+                { code: 'TEST3', price: undefined, price_note: undefined },
+                { code: 'TEST4', price: 0, price_note: 'Free sample' },
+                { code: 'TEST5', price: '250000', price_note: 'String price' },
+                { code: 'TEST6', price: '', price_note: 'Empty string' },
+                { code: 'TEST7', price: false, price_note: 'Boolean false' },
+                { code: 'TEST8', price: true, price_note: 'Boolean true' },
+            ];
+            
+            fabricListDiv.innerHTML = '<h3>🧪 Test Cases:</h3>';
+            
+            testCases.forEach((testCase, index) => {
+                analyzeFabric(testCase, index + 1);
+            });
+        }
+        
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            log('🚀 Fabric data debug tool loaded');
+            log('📋 This tool will help debug price display issues');
+            log('');
+            
+            // Auto-fetch data
+            setTimeout(fetchAndAnalyzeFabrics, 1000);
+        });
+    </script>
+</body>
+</html>

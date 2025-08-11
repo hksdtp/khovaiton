@@ -15,7 +15,7 @@ export const queryClient = new QueryClient({
       // Retry delay with exponential backoff
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
       // Refetch on window focus in production
-      refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+      refetchOnWindowFocus: false, // Disabled to prevent cache conflicts
       // Don't refetch on reconnect by default
       refetchOnReconnect: false,
     },

@@ -32,6 +32,10 @@ export function FabricCard({
   const location = useLocation()
   const isMarketingVersion = location.pathname === '/marketing'
 
+  // Debug: Log fabric price changes
+  console.log(`🎯 FabricCard ${fabric.code} render - price: ${fabric.price} (${typeof fabric.price}), priceNote: ${fabric.priceNote}`)
+  console.log(`🎯 Boolean check: Boolean(fabric.price) = ${Boolean(fabric.price)}, fabric.price ? true : false = ${fabric.price ? true : false}`)
+
   // Handle card click differently for marketing vs sales
   const handleCardClick = () => {
     if (isMarketingMode && !fabric.price && onPriceUpdate) {

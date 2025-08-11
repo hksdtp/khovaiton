@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Debug Price Display Issue</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .status.success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .status.error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .status.warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .status.info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        
+        input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        .fabric-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+        }
+        
+        .price-display {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 10px;
+            color: #155724;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .no-price {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 10px;
+            color: #856404;
+            text-align: center;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Price Display Issue</h1>
+        <p>Kiểm tra vấn đề giá hiển thị rồi biến mất</p>
+        
+        <div class="status info">
+            <strong>Vấn đề:</strong> Giá hiển thị sau khi update, nhưng sau đó biến mất
+            <br><strong>Nguyên nhân có thể:</strong>
+            <ul>
+                <li>React Query cache bị invalidate và refetch data cũ</li>
+                <li>fabric.price type không đúng (string vs number)</li>
+                <li>Component state không sync với cache</li>
+                <li>Supabase RLS chặn SELECT sau UPDATE</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test 1: Kiểm tra dữ liệu thực tế từ Supabase</h3>
+            <button onclick="checkRecentUpdates()">Kiểm tra updates gần đây</button>
+            <button onclick="checkSpecificFabric()">Kiểm tra fabric cụ thể</button>
+            <input type="text" id="fabricId" placeholder="Fabric ID (VD: 45)" value="45">
+        </div>
+        
+        <div class="test-section">
+            <h3>🎨 Test 2: Test logic hiển thị giá</h3>
+            <button onclick="testPriceLogic()">Test price display logic</button>
+            <div id="priceLogicTest"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Test 3: Simulate cache update</h3>
+            <button onclick="simulateCacheUpdate()">Simulate cache update</button>
+            <div id="cacheUpdateTest"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 Logs</h3>
+            <button onclick="clearLogs()">Clear Logs</button>
+            <div id="logs" class="log"></div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs';
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString('vi-VN');
+            const logDiv = document.getElementById('logs');
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLogs() {
+            document.getElementById('logs').textContent = '';
+        }
+        
+        async function checkRecentUpdates() {
+            log('🔍 Checking recent price updates...');
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?select=*&price=not.is.null&order=price_updated_at.desc&limit=10`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    log(`✅ Found ${fabrics.length} fabrics with prices`);
+                    
+                    fabrics.forEach((fabric, index) => {
+                        log(`${index + 1}. ${fabric.code} (ID: ${fabric.id})`);
+                        log(`   💰 Price: ${fabric.price} (${typeof fabric.price})`);
+                        if (fabric.price_note) {
+                            log(`   📝 Note: ${fabric.price_note}`);
+                        }
+                        if (fabric.price_updated_at) {
+                            log(`   🕒 Updated: ${new Date(fabric.price_updated_at).toLocaleString('vi-VN')}`);
+                        }
+                        log(`   🔧 Updated at: ${new Date(fabric.updated_at).toLocaleString('vi-VN')}`);
+                        log('');
+                    });
+                } else {
+                    log(`❌ Error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        async function checkSpecificFabric() {
+            const fabricId = document.getElementById('fabricId').value;
+            if (!fabricId) {
+                log('❌ Please enter fabric ID');
+                return;
+            }
+            
+            log(`🔍 Checking fabric ID: ${fabricId}`);
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${fabricId}&select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    if (fabrics.length > 0) {
+                        const fabric = fabrics[0];
+                        log(`✅ Found fabric: ${fabric.code}`);
+                        log(`📊 Full data: ${JSON.stringify(fabric, null, 2)}`);
+                        
+                        // Test price display logic
+                        testPriceDisplayLogic(fabric);
+                    } else {
+                        log(`❌ Fabric not found: ${fabricId}`);
+                    }
+                } else {
+                    log(`❌ Error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        function testPriceDisplayLogic(fabric) {
+            log(`\n🎨 Testing price display logic for ${fabric.code}:`);
+            
+            // Test condition: fabric.price
+            log(`   fabric.price = ${fabric.price} (type: ${typeof fabric.price})`);
+            log(`   Boolean(fabric.price) = ${Boolean(fabric.price)}`);
+            log(`   fabric.price ? true : false = ${fabric.price ? true : false}`);
+            log(`   fabric.price === null = ${fabric.price === null}`);
+            log(`   fabric.price === undefined = ${fabric.price === undefined}`);
+            log(`   fabric.price === 0 = ${fabric.price === 0}`);
+            log(`   fabric.price === "" = ${fabric.price === ""}`);
+            
+            const testDiv = document.getElementById('priceLogicTest');
+            
+            if (fabric.price) {
+                // Test price formatting
+                try {
+                    const formatted = new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(fabric.price);
+                    
+                    log(`   ✅ Should show price: ${formatted}`);
+                    
+                    testDiv.innerHTML = `
+                        <div class="fabric-card">
+                            <h4>${fabric.code} - ${fabric.name}</h4>
+                            <div class="price-display">
+                                💰 ${formatted}
+                                ${fabric.price_note ? `<br><small>📝 ${fabric.price_note}</small>` : ''}
+                            </div>
+                            <div class="debug-info">
+                                Debug: price=${fabric.price} (${typeof fabric.price})
+                                Boolean check: ${Boolean(fabric.price)}
+                            </div>
+                        </div>
+                    `;
+                } catch (error) {
+                    log(`   ❌ Error formatting price: ${error.message}`);
+                    testDiv.innerHTML = `
+                        <div class="fabric-card">
+                            <h4>${fabric.code} - ${fabric.name}</h4>
+                            <div class="status error">
+                                ❌ Error formatting price: ${error.message}
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                log(`   ❌ Should show "Add Price" button`);
+                
+                testDiv.innerHTML = `
+                    <div class="fabric-card">
+                        <h4>${fabric.code} - ${fabric.name}</h4>
+                        <div class="no-price">
+                            💰 Chưa có giá - Click để thêm giá
+                        </div>
+                        <div class="debug-info">
+                            Debug: price=${fabric.price} (${typeof fabric.price})
+                            Boolean check: ${Boolean(fabric.price)}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        function testPriceLogic() {
+            log('🎨 Testing price display with various data types...');
+            
+            const testCases = [
+                { code: 'TEST001', name: 'Number Price', price: 150000, price_note: 'Giá sỉ' },
+                { code: 'TEST002', name: 'String Price', price: "150000", price_note: 'String price' },
+                { code: 'TEST003', name: 'Null Price', price: null, price_note: null },
+                { code: 'TEST004', name: 'Undefined Price', price: undefined, price_note: null },
+                { code: 'TEST005', name: 'Zero Price', price: 0, price_note: 'Free' },
+                { code: 'TEST006', name: 'Empty String', price: "", price_note: null },
+                { code: 'TEST007', name: 'Float Price', price: 150000.50, price_note: 'Float' }
+            ];
+            
+            const testDiv = document.getElementById('priceLogicTest');
+            testDiv.innerHTML = '<h4>Price Logic Test Results:</h4>';
+            
+            testCases.forEach(fabric => {
+                log(`\nTesting ${fabric.code}:`);
+                log(`  price: ${fabric.price} (${typeof fabric.price})`);
+                log(`  Boolean(price): ${Boolean(fabric.price)}`);
+                log(`  price ? true : false: ${fabric.price ? true : false}`);
+                
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'fabric-card';
+                
+                if (fabric.price) {
+                    try {
+                        const formatted = new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(Number(fabric.price));
+                        
+                        cardDiv.innerHTML = `
+                            <h5>${fabric.code} - ${fabric.name}</h5>
+                            <div class="price-display">
+                                💰 ${formatted}
+                                ${fabric.price_note ? `<br><small>📝 ${fabric.price_note}</small>` : ''}
+                            </div>
+                            <div class="debug-info">
+                                Raw: ${fabric.price} (${typeof fabric.price})
+                                Boolean: ${Boolean(fabric.price)}
+                                Condition: fabric.price ? TRUE : FALSE
+                            </div>
+                        `;
+                        log(`  ✅ Shows price: ${formatted}`);
+                    } catch (error) {
+                        cardDiv.innerHTML = `
+                            <h5>${fabric.code} - ${fabric.name}</h5>
+                            <div class="status error">❌ Format error: ${error.message}</div>
+                        `;
+                        log(`  ❌ Format error: ${error.message}`);
+                    }
+                } else {
+                    cardDiv.innerHTML = `
+                        <h5>${fabric.code} - ${fabric.name}</h5>
+                        <div class="no-price">💰 Chưa có giá - Click để thêm giá</div>
+                        <div class="debug-info">
+                            Raw: ${fabric.price} (${typeof fabric.price})
+                            Boolean: ${Boolean(fabric.price)}
+                            Condition: fabric.price ? FALSE : TRUE
+                        </div>
+                    `;
+                    log(`  ❌ Shows add price button`);
+                }
+                
+                testDiv.appendChild(cardDiv);
+            });
+        }
+        
+        function simulateCacheUpdate() {
+            log('📊 Simulating cache update scenario...');
+            
+            // Simulate the cache update process
+            const originalFabric = {
+                id: 45,
+                code: "10-780-5",
+                name: "10-780-5 W140cm",
+                price: null,
+                price_note: null
+            };
+            
+            const updatedFabric = {
+                ...originalFabric,
+                price: 123,
+                price_note: "123",
+                price_updated_at: new Date().toISOString()
+            };
+            
+            log('Original fabric:');
+            log(JSON.stringify(originalFabric, null, 2));
+            log('\nAfter cache update:');
+            log(JSON.stringify(updatedFabric, null, 2));
+            
+            const testDiv = document.getElementById('cacheUpdateTest');
+            testDiv.innerHTML = `
+                <h4>Cache Update Simulation</h4>
+                <div style="display: flex; gap: 20px;">
+                    <div class="fabric-card" style="flex: 1;">
+                        <h5>Before Update</h5>
+                        <div class="no-price">💰 Chưa có giá - Click để thêm giá</div>
+                        <div class="debug-info">
+                            price: ${originalFabric.price} (${typeof originalFabric.price})
+                            Boolean: ${Boolean(originalFabric.price)}
+                        </div>
+                    </div>
+                    <div class="fabric-card" style="flex: 1;">
+                        <h5>After Update</h5>
+                        <div class="price-display">
+                            💰 ${new Intl.NumberFormat('vi-VN', {
+                                style: 'currency',
+                                currency: 'VND',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }).format(updatedFabric.price)}
+                            <br><small>📝 ${updatedFabric.price_note}</small>
+                        </div>
+                        <div class="debug-info">
+                            price: ${updatedFabric.price} (${typeof updatedFabric.price})
+                            Boolean: ${Boolean(updatedFabric.price)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            log('\n🔍 Testing type conversion:');
+            log(`Number(123): ${Number(123)} (${typeof Number(123)})`);
+            log(`Number("123"): ${Number("123")} (${typeof Number("123")})`);
+            log(`Number(null): ${Number(null)} (${typeof Number(null)})`);
+            log(`Number(undefined): ${Number(undefined)} (${typeof Number(undefined)})`);
+        }
+        
+        // Auto-run initial checks
+        window.onload = function() {
+            log('🚀 Debug tool loaded');
+            log('Click buttons above to run tests');
+        };
+    </script>
+</body>
+</html>

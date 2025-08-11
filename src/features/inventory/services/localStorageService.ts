@@ -119,17 +119,30 @@ class LocalStorageService {
 
   /**
    * Apply updates to fabric data
+   * Fixed: Only override price if localStorage has a valid price value
    */
   applyUpdatesToFabric(fabric: any): any {
     const update = this.getFabricUpdate(fabric.id)
     if (!update) return fabric
 
+    // Debug logging for price issues
+    if (update.price !== undefined) {
+      console.log(`🔍 LocalStorage override for fabric ${fabric.id}:`, {
+        originalPrice: fabric.price,
+        updatePrice: update.price,
+        willOverride: update.price !== null,
+        fabricCode: fabric.code
+      })
+    }
+
     const updatedFabric = {
       ...fabric,
-      price: update.price !== undefined ? update.price : fabric.price,
+      // Only override price if localStorage has a non-null price
+      price: (update.price !== undefined && update.price !== null) ? update.price : fabric.price,
       priceNote: update.priceNote !== undefined ? update.priceNote : fabric.priceNote,
       isHidden: update.isHidden !== undefined ? update.isHidden : fabric.isHidden,
-      priceUpdatedAt: update.price !== undefined ? new Date(update.updatedAt) : fabric.priceUpdatedAt,
+      // Only update priceUpdatedAt if we actually have a price update
+      priceUpdatedAt: (update.price !== undefined && update.price !== null) ? new Date(update.updatedAt) : fabric.priceUpdatedAt,
       customImageUrl: update.customImageUrl !== undefined ? update.customImageUrl : fabric.customImageUrl,
       customImageUpdatedAt: update.customImageUpdatedAt ? new Date(update.customImageUpdatedAt) : fabric.customImageUpdatedAt
     }

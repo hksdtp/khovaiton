@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Debug localStorage - Kho Vải Tôn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .data-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .override-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            color: #856404;
+        }
+        .clean-data {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            color: #155724;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:hover {
+            background-color: #c82333;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug localStorage</h1>
+        <p>Kiểm tra localStorage có đang override giá tiền không</p>
+        
+        <button onclick="checkLocalStorage()">Kiểm tra localStorage</button>
+        <button onclick="analyzeOverrides()">Phân tích overrides</button>
+        <button onclick="clearLocalStorage()" class="danger">Xóa localStorage</button>
+        <button onclick="clearResults()">Clear Results</button>
+        
+        <div id="localStorageData"></div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        const localStorageDataDiv = document.getElementById('localStorageData');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            resultsDiv.textContent += `[${timestamp}] ${message}\n`;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearResults() {
+            resultsDiv.textContent = '';
+            localStorageDataDiv.innerHTML = '';
+        }
+        
+        function checkLocalStorage() {
+            log('🔍 Checking localStorage for fabric updates...');
+            
+            const fabricUpdates = localStorage.getItem('fabric-updates');
+            
+            if (!fabricUpdates) {
+                log('✅ No fabric-updates found in localStorage');
+                localStorageDataDiv.innerHTML = '<div class="clean-data">✅ localStorage is clean - no fabric updates found</div>';
+                return;
+            }
+            
+            try {
+                const updates = JSON.parse(fabricUpdates);
+                const updateCount = Object.keys(updates).length;
+                
+                log(`📊 Found ${updateCount} fabric updates in localStorage`);
+                
+                localStorageDataDiv.innerHTML = `
+                    <h3>📊 localStorage Data (${updateCount} updates)</h3>
+                    <div class="code-block">${JSON.stringify(updates, null, 2)}</div>
+                `;
+                
+                // Analyze each update
+                Object.entries(updates).forEach(([fabricId, update]) => {
+                    analyzeUpdate(fabricId, update);
+                });
+                
+            } catch (error) {
+                log(`❌ Error parsing localStorage data: ${error.message}`);
+                localStorageDataDiv.innerHTML = '<div class="override-warning">❌ Error parsing localStorage data</div>';
+            }
+        }
+        
+        function analyzeUpdate(fabricId, update) {
+            log(`\n🔍 Analyzing update for fabric ${fabricId}:`);
+            log(`   price: ${update.price} (type: ${typeof update.price})`);
+            log(`   priceNote: ${update.priceNote}`);
+            log(`   isHidden: ${update.isHidden}`);
+            log(`   customImageUrl: ${update.customImageUrl}`);
+            log(`   updatedAt: ${update.updatedAt}`);
+            
+            // Check for problematic overrides
+            const issues = [];
+            
+            if (update.price === null) {
+                issues.push('⚠️ Price is null - will override any Supabase price');
+            }
+            
+            if (update.price === undefined) {
+                issues.push('ℹ️ Price is undefined - will not override Supabase price');
+            }
+            
+            if (typeof update.price === 'string') {
+                issues.push('⚠️ Price is string - should be number');
+            }
+            
+            if (update.price === 0) {
+                issues.push('⚠️ Price is 0 - might be intentional or error');
+            }
+            
+            // Create visual representation
+            const updateDiv = document.createElement('div');
+            updateDiv.className = 'data-item';
+            
+            const hasIssues = issues.length > 0;
+            const statusClass = hasIssues ? 'override-warning' : 'clean-data';
+            const statusIcon = hasIssues ? '⚠️' : '✅';
+            
+            updateDiv.innerHTML = `
+                <h4>Fabric ${fabricId}</h4>
+                <div class="${statusClass}">
+                    ${statusIcon} ${hasIssues ? 'Has potential issues' : 'Looks good'}
+                </div>
+                <div class="code-block">
+                    price: ${JSON.stringify(update.price)} (${typeof update.price})<br>
+                    priceNote: ${JSON.stringify(update.priceNote)}<br>
+                    isHidden: ${JSON.stringify(update.isHidden)}<br>
+                    customImageUrl: ${JSON.stringify(update.customImageUrl)}<br>
+                    updatedAt: ${update.updatedAt}
+                </div>
+                ${issues.length > 0 ? `
+                    <div class="override-warning">
+                        <strong>Issues:</strong><br>
+                        ${issues.map(issue => `• ${issue}`).join('<br>')}
+                    </div>
+                ` : ''}
+                <button onclick="removeUpdate(${fabricId})" class="danger">Remove this update</button>
+            `;
+            
+            localStorageDataDiv.appendChild(updateDiv);
+        }
+        
+        function analyzeOverrides() {
+            log('🔍 Analyzing localStorage overrides...');
+            
+            const fabricUpdates = localStorage.getItem('fabric-updates');
+            
+            if (!fabricUpdates) {
+                log('✅ No overrides to analyze');
+                return;
+            }
+            
+            try {
+                const updates = JSON.parse(fabricUpdates);
+                const priceOverrides = [];
+                const hiddenOverrides = [];
+                const imageOverrides = [];
+                
+                Object.entries(updates).forEach(([fabricId, update]) => {
+                    if (update.price !== undefined) {
+                        priceOverrides.push({ fabricId, price: update.price, note: update.priceNote });
+                    }
+                    if (update.isHidden !== undefined) {
+                        hiddenOverrides.push({ fabricId, isHidden: update.isHidden });
+                    }
+                    if (update.customImageUrl !== undefined) {
+                        imageOverrides.push({ fabricId, url: update.customImageUrl });
+                    }
+                });
+                
+                log(`\n📊 Override Summary:`);
+                log(`   💰 Price overrides: ${priceOverrides.length}`);
+                log(`   👁️ Visibility overrides: ${hiddenOverrides.length}`);
+                log(`   🖼️ Image overrides: ${imageOverrides.length}`);
+                
+                if (priceOverrides.length > 0) {
+                    log(`\n💰 Price Overrides:`);
+                    priceOverrides.forEach(({ fabricId, price, note }) => {
+                        log(`   Fabric ${fabricId}: ${price} VND ${note ? `(${note})` : ''}`);
+                    });
+                }
+                
+                if (hiddenOverrides.length > 0) {
+                    log(`\n👁️ Visibility Overrides:`);
+                    hiddenOverrides.forEach(({ fabricId, isHidden }) => {
+                        log(`   Fabric ${fabricId}: ${isHidden ? 'Hidden' : 'Visible'}`);
+                    });
+                }
+                
+                if (imageOverrides.length > 0) {
+                    log(`\n🖼️ Image Overrides:`);
+                    imageOverrides.forEach(({ fabricId, url }) => {
+                        log(`   Fabric ${fabricId}: ${url}`);
+                    });
+                }
+                
+            } catch (error) {
+                log(`❌ Error analyzing overrides: ${error.message}`);
+            }
+        }
+        
+        function removeUpdate(fabricId) {
+            if (!confirm(`Bạn có chắc muốn xóa update cho fabric ${fabricId}?`)) {
+                return;
+            }
+            
+            try {
+                const fabricUpdates = localStorage.getItem('fabric-updates');
+                if (fabricUpdates) {
+                    const updates = JSON.parse(fabricUpdates);
+                    delete updates[fabricId];
+                    localStorage.setItem('fabric-updates', JSON.stringify(updates));
+                    log(`✅ Removed update for fabric ${fabricId}`);
+                    
+                    // Refresh display
+                    checkLocalStorage();
+                }
+            } catch (error) {
+                log(`❌ Error removing update: ${error.message}`);
+            }
+        }
+        
+        function clearLocalStorage() {
+            if (!confirm('Bạn có chắc muốn xóa TẤT CẢ dữ liệu localStorage? Điều này sẽ xóa tất cả các thay đổi giá, ẩn/hiện, và URL ảnh tùy chỉnh.')) {
+                return;
+            }
+            
+            try {
+                localStorage.removeItem('fabric-updates');
+                log('✅ Cleared all localStorage data');
+                localStorageDataDiv.innerHTML = '<div class="clean-data">✅ localStorage cleared successfully</div>';
+                
+                // Also clear other related localStorage items
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key.includes('fabric') || key.includes('image') || key.includes('price'))) {
+                        keysToRemove.push(key);
+                    }
+                }
+                
+                keysToRemove.forEach(key => {
+                    localStorage.removeItem(key);
+                    log(`🗑️ Removed ${key}`);
+                });
+                
+                log(`\n🎉 localStorage cleanup complete!`);
+                log(`💡 Refresh the sale page to see if prices now display correctly`);
+                
+            } catch (error) {
+                log(`❌ Error clearing localStorage: ${error.message}`);
+            }
+        }
+        
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            log('🚀 localStorage debug tool loaded');
+            log('📋 This tool helps debug localStorage overrides that might hide prices');
+            log('');
+            
+            // Auto-check localStorage
+            setTimeout(checkLocalStorage, 500);
+        });
+    </script>
+</body>
+</html>

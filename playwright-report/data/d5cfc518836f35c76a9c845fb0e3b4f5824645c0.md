@@ -1,0 +1,354 @@
+# Page snapshot
+
+```yaml
+- button "Sale":
+  - img
+  - text: Sale
+  - img
+- img
+- heading "Vải Tồn Kho" [level=1]
+- text: 335 sản phẩm
+- img
+- text: 335 tổng
+- img
+- text: 31 sắp hết • Cập nhật realtime
+- button:
+  - img
+- img
+- textbox "Tìm kiếm vải, mã sản phẩm, vị trí kho..."
+- heading "🖼️ Trạng thái ảnh" [level=3]
+- text: "Tổng: 335 vải"
+- button "📋 Tất cả 335"
+- button "✅ Có ảnh 210"
+- button "❌ Chưa có ảnh 125"
+- text: "📊 Tỷ lệ có ảnh: 62.7% ✅ 210 có ảnh ❌ 125 chưa có"
+- heading "Trạng thái ảnh" [level=3]:
+  - img
+  - text: Trạng thái ảnh
+- img
+- text: 117 Có ảnh
+- img
+- text: 218 Chưa có ảnh
+- img
+- text: "335 Tổng cộng Tiến độ có ảnh 35% Tỷ lệ hoàn thành: 35%"
+- img "10-780-5 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 10-780-5 ✅ Có sẵn
+- heading "10-780-5 W140cm" [level=3]
+- text: "Số lượng: 20 m W140cm"
+- img
+- text: T4 G3.1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "10-780-41 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 10-780-41 ✅ Có sẵn Vải bọc
+- heading "10-780-41 W140cm" [level=3]
+- text: "Số lượng: 78,2 m W140cm"
+- img
+- text: T4 F1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "10-780-1402 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 10-780-1402 ✅ Có sẵn
+- heading "10-780-1402 W140cm" [level=3]
+- text: "Số lượng: 165,7 m W140cm"
+- img
+- text: T4 G3.1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "22A-990-5 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 22A-990-5 ✅ Có sẵn
+- heading "22A-990-5 W140cm" [level=3]
+- text: "Số lượng: 47,9 m W140cm"
+- img
+- text: T4.H1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "22D-990-8 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 22D-990-8 ✅ Có sẵn Vải bọc
+- heading "22D-990-8 W140cm" [level=3]
+- text: "Số lượng: 90 m W140cm"
+- img
+- text: T4 F1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "22E-990-2 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 22E-990-2 ✅ Có sẵn
+- heading "22E-990-2 W140cm" [level=3]
+- text: "Số lượng: 30,8 m W140cm"
+- img
+- text: T4 F3
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "22E-990-10 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 22E-990-10 ✅ Có sẵn
+- heading "22E-990-10 W140cm" [level=3]
+- text: "Số lượng: 15,3 m W140cm"
+- img
+- text: T4 G3.1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "88-539-9 W280cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 88-539-9 ✅ Có sẵn
+- heading "88-539-9 W280cm" [level=3]
+- text: "Số lượng: 81,4 m W280cm"
+- img
+- text: T4 B1.2
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "88-539-10"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 88-539-10 ✅ Có sẵn
+- heading "88-539-10" [level=3]
+- text: "Số lượng: 105,5 m"
+- img
+- text: T4 B1.2
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "88-539-23 W280cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 88-539-23 ✅ Có sẵn
+- heading "88-539-23 W280cm" [level=3]
+- text: "Số lượng: 95,5 m W280cm"
+- img
+- text: T4 B1.2
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "089C-1 W150cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 089C-1 ✅ Có sẵn
+- heading "089C-1 W150cm" [level=3]
+- text: "Số lượng: 17 m W150cm"
+- img
+- text: T4 F3
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "99-129-11 W280cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 99-129-11 ✅ Có sẵn
+- heading "99-129-11 W280cm" [level=3]
+- text: "Số lượng: 16 m W280cm"
+- img
+- text: T4 B1.2
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "99-129-44 W280cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 99-129-44 ✅ Có sẵn
+- heading "99-129-44 W280cm" [level=3]
+- text: "Số lượng: 41 m W280cm"
+- img
+- text: T4 D1 + E1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "8000 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 8000 ✅ Có sẵn Vải bọc
+- heading "8000 W140cm" [level=3]
+- text: "Số lượng: 170 m W140cm"
+- img
+- text: T4 F1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "8525-26 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 8525-26 ✅ Có sẵn
+- heading "8525-26 W140cm" [level=3]
+- text: "Số lượng: 15 m W140cm"
+- img
+- text: T4.K3
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "8525-46 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 8525-46 ✅ Có sẵn
+- heading "8525-46 W140cm" [level=3]
+- text: "Số lượng: 13,3 m W140cm"
+- img
+- text: T4 G3.1
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "8542-11 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 8542-11 ✅ Có sẵn
+- heading "8542-11 W140cm" [level=3]
+- text: "Số lượng: 11 m W140cm"
+- img
+- text: T4.K3
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "8611-44 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 8611-44 ✅ Có sẵn
+- heading "8611-44 W140cm" [level=3]
+- text: "Số lượng: 22 m W140cm"
+- img
+- text: T4.K3
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "8615-14 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 8615-14 ✅ Có sẵn
+- heading "8615-14 W140cm" [level=3]
+- text: "Số lượng: 16,5 m W140cm"
+- img
+- text: T4.K3
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- img "8628-17 W140cm"
+- text: 👁️ Xem ảnh
+- button:
+  - img
+- text: 8628-17 ✅ Có sẵn
+- heading "8628-17 W140cm" [level=3]
+- text: "Số lượng: 19,5 m W140cm"
+- img
+- text: T4 F3
+- button "Thêm giá":
+  - img
+  - text: Thêm giá
+- button "Ẩn sản phẩm":
+  - img
+- group: ▶ ⚙️ Đổi URL ảnh thủ công
+- text: "Hiển thị 1 đến 20 trong 335 kết quả Hiển thị:"
+- combobox:
+  - option "20" [selected]
+  - option "50"
+  - option "100"
+- button [disabled]:
+  - img
+- button [disabled]:
+  - img
+- button "1"
+- button "2"
+- button "3"
+- text: ...
+- button "17"
+- button:
+  - img
+- button:
+  - img
+- button "Open Tanstack query devtools":
+  - img
+```

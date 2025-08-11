@@ -75,28 +75,18 @@ export function PriceManager({ fabric, onPriceUpdate, compact = false }: PriceMa
       <>
         <div className="flex items-center gap-2">
           {fabric.price ? (
-            <>
-              <div className="text-right">
-                <div className="text-lg font-bold text-green-600">
-                  {formatPrice(fabric.price)}
-                </div>
-                {fabric.priceNote && (
-                  <div className="text-xs text-gray-500">{fabric.priceNote}</div>
-                )}
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setIsEditing(true)
-                }}
-                className="p-1 h-6 w-6 text-blue-600 hover:text-blue-700"
-                title="Sửa giá"
-              >
-                <Edit3 className="w-3 h-3" />
-              </Button>
-            </>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsEditing(true)
+              }}
+              className="p-1 h-6 w-6 text-blue-600 hover:text-blue-700"
+              title="Sửa giá"
+            >
+              <Edit3 className="w-3 h-3" />
+            </Button>
           ) : (
             <Button
               variant="ghost"

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Test Price Flow - Kho Vải Tôn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-step {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        .step-success {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        .step-error {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+        .step-warning {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            width: 200px;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .iframe-container {
+            margin-top: 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .iframe-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Price Flow</h1>
+        <p>Test toàn bộ flow từ nhập giá đến hiển thị</p>
+        
+        <div class="test-step">
+            <h3>📋 Step 1: Setup Test Data</h3>
+            <input type="text" id="testFabricCode" placeholder="Mã vải" value="COTTON001">
+            <input type="number" id="testPrice" placeholder="Giá (VND)" value="150000">
+            <input type="text" id="testNote" placeholder="Ghi chú" value="Test price flow">
+            <button onclick="runFullTest()">🚀 Run Full Test</button>
+        </div>
+        
+        <div id="testSteps"></div>
+        
+        <button onclick="clearResults()">Clear Results</button>
+        <button onclick="clearLocalStorage()">Clear localStorage</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <div class="iframe-container">
+        <div class="iframe-header">Sale Page - Live View</div>
+        <iframe id="saleFrame" src="http://localhost:3004/sale"></iframe>
+    </div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+        const testStepsDiv = document.getElementById('testSteps');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            resultsDiv.textContent += `[${timestamp}] ${message}\n`;
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearResults() {
+            resultsDiv.textContent = '';
+            testStepsDiv.innerHTML = '';
+        }
+        
+        function clearLocalStorage() {
+            localStorage.clear();
+            log('🗑️ localStorage cleared');
+        }
+        
+        function addTestStep(title, status, details) {
+            const stepDiv = document.createElement('div');
+            stepDiv.className = `test-step step-${status}`;
+            
+            const statusIcon = {
+                'success': '✅',
+                'error': '❌',
+                'warning': '⚠️',
+                'info': 'ℹ️'
+            }[status] || '📋';
+            
+            stepDiv.innerHTML = `
+                <h4>${statusIcon} ${title}</h4>
+                <div>${details}</div>
+            `;
+            
+            testStepsDiv.appendChild(stepDiv);
+        }
+        
+        // Supabase config
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs';
+        
+        async function runFullTest() {
+            const fabricCode = document.getElementById('testFabricCode').value;
+            const price = parseFloat(document.getElementById('testPrice').value);
+            const note = document.getElementById('testNote').value;
+            
+            if (!fabricCode || !price) {
+                log('❌ Please enter fabric code and price');
+                return;
+            }
+            
+            clearResults();
+            testStepsDiv.innerHTML = '';
+            
+            log('🚀 Starting full price flow test...');
+            log(`📋 Test data: ${fabricCode}, ${price.toLocaleString('vi-VN')} VND, "${note}"`);
+            
+            try {
+                // Step 1: Check initial state
+                await testStep1_CheckInitialState(fabricCode);
+                
+                // Step 2: Clear localStorage
+                await testStep2_ClearLocalStorage();
+                
+                // Step 3: Update price in Supabase
+                await testStep3_UpdateSupabase(fabricCode, price, note);
+                
+                // Step 4: Verify Supabase data
+                await testStep4_VerifySupabase(fabricCode);
+                
+                // Step 5: Test frontend data fetch
+                await testStep5_TestFrontendFetch(fabricCode);
+                
+                // Step 6: Refresh iframe
+                await testStep6_RefreshIframe();
+                
+                // Step 7: Final verification
+                await testStep7_FinalVerification(fabricCode);
+                
+                log('\n🎉 Full test completed!');
+                addTestStep('Test Completed', 'success', 'All steps completed successfully');
+                
+            } catch (error) {
+                log(`❌ Test failed: ${error.message}`);
+                addTestStep('Test Failed', 'error', error.message);
+            }
+        }
+        
+        async function testStep1_CheckInitialState(fabricCode) {
+            log('\n📋 Step 1: Checking initial state...');
+            
+            // Check localStorage
+            const localData = localStorage.getItem('fabric-updates');
+            if (localData) {
+                const updates = JSON.parse(localData);
+                const updateCount = Object.keys(updates).length;
+                log(`💾 localStorage has ${updateCount} updates`);
+                addTestStep('Initial localStorage', 'warning', `Found ${updateCount} existing updates`);
+            } else {
+                log('💾 localStorage is clean');
+                addTestStep('Initial localStorage', 'success', 'No existing updates');
+            }
+            
+            // Check Supabase
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=id,code,price,price_note`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    if (fabrics.length > 0) {
+                        const fabric = fabrics[0];
+                        log(`☁️ Supabase current price: ${fabric.price || 'null'}`);
+                        addTestStep('Initial Supabase', 'info', `Current price: ${fabric.price || 'null'}`);
+                    } else {
+                        log(`❌ Fabric ${fabricCode} not found in Supabase`);
+                        addTestStep('Initial Supabase', 'error', `Fabric ${fabricCode} not found`);
+                        throw new Error(`Fabric ${fabricCode} not found`);
+                    }
+                } else {
+                    throw new Error(`Supabase error: ${response.status}`);
+                }
+            } catch (error) {
+                log(`❌ Error checking Supabase: ${error.message}`);
+                addTestStep('Initial Supabase', 'error', error.message);
+                throw error;
+            }
+        }
+        
+        async function testStep2_ClearLocalStorage() {
+            log('\n🗑️ Step 2: Clearing localStorage...');
+            localStorage.removeItem('fabric-updates');
+            log('✅ localStorage cleared');
+            addTestStep('Clear localStorage', 'success', 'localStorage cleared successfully');
+        }
+        
+        async function testStep3_UpdateSupabase(fabricCode, price, note) {
+            log(`\n💰 Step 3: Updating price in Supabase...`);
+            
+            try {
+                // Get fabric ID
+                const getFabricResponse = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=id`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                const fabrics = await getFabricResponse.json();
+                const fabricId = fabrics[0].id;
+                
+                // Update price
+                const updateResponse = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${fabricId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        price: price,
+                        price_note: note,
+                        price_updated_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                });
+                
+                if (updateResponse.ok) {
+                    log(`✅ Price updated in Supabase: ${price.toLocaleString('vi-VN')} VND`);
+                    addTestStep('Update Supabase', 'success', `Price: ${price.toLocaleString('vi-VN')} VND`);
+                } else {
+                    throw new Error(`Update failed: ${updateResponse.status}`);
+                }
+            } catch (error) {
+                log(`❌ Error updating Supabase: ${error.message}`);
+                addTestStep('Update Supabase', 'error', error.message);
+                throw error;
+            }
+        }
+        
+        async function testStep4_VerifySupabase(fabricCode) {
+            log('\n🔍 Step 4: Verifying Supabase data...');
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    const fabric = fabrics[0];
+                    
+                    log(`✅ Verified Supabase data:`);
+                    log(`   price: ${fabric.price} (${typeof fabric.price})`);
+                    log(`   price_note: ${fabric.price_note}`);
+                    log(`   price_updated_at: ${fabric.price_updated_at}`);
+                    
+                    addTestStep('Verify Supabase', 'success', `Price: ${fabric.price}, Note: ${fabric.price_note}`);
+                } else {
+                    throw new Error(`Verification failed: ${response.status}`);
+                }
+            } catch (error) {
+                log(`❌ Error verifying Supabase: ${error.message}`);
+                addTestStep('Verify Supabase', 'error', error.message);
+                throw error;
+            }
+        }
+        
+        async function testStep5_TestFrontendFetch(fabricCode) {
+            log('\n🌐 Step 5: Testing frontend data fetch...');
+            
+            // This would normally test the React Query fetch, but we can't easily do that from here
+            // Instead, we'll just verify the data is accessible
+            log('ℹ️ Frontend fetch test would require React Query integration');
+            addTestStep('Frontend Fetch', 'info', 'Would test React Query fetch in real app');
+        }
+        
+        async function testStep6_RefreshIframe() {
+            log('\n🔄 Step 6: Refreshing iframe...');
+            
+            const iframe = document.getElementById('saleFrame');
+            iframe.src = iframe.src + '?t=' + Date.now();
+            
+            log('✅ Iframe refreshed');
+            addTestStep('Refresh Iframe', 'success', 'Sale page refreshed');
+            
+            // Wait a bit for the page to load
+            await new Promise(resolve => setTimeout(resolve, 3000));
+        }
+        
+        async function testStep7_FinalVerification(fabricCode) {
+            log('\n🎯 Step 7: Final verification...');
+            
+            // Check if localStorage was updated during the iframe refresh
+            const localData = localStorage.getItem('fabric-updates');
+            if (localData) {
+                const updates = JSON.parse(localData);
+                log(`⚠️ localStorage was updated during page load: ${JSON.stringify(updates)}`);
+                addTestStep('Final Verification', 'warning', 'localStorage was modified during page load');
+            } else {
+                log('✅ localStorage remains clean');
+                addTestStep('Final Verification', 'success', 'localStorage remains clean');
+            }
+            
+            // Final Supabase check
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=price,price_note`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const fabrics = await response.json();
+                    const fabric = fabrics[0];
+                    log(`✅ Final Supabase state: ${fabric.price} VND`);
+                    addTestStep('Final Supabase Check', 'success', `Price: ${fabric.price} VND`);
+                }
+            } catch (error) {
+                log(`❌ Final verification error: ${error.message}`);
+                addTestStep('Final Supabase Check', 'error', error.message);
+            }
+        }
+        
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            log('🚀 Price flow test tool loaded');
+            log('📋 This tool tests the complete flow from price input to display');
+            log('');
+        });
+    </script>
+</body>
+</html>

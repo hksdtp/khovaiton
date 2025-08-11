@@ -108,14 +108,26 @@ class RealtimeUpdateService {
       return
     }
 
-    // Invalidate fabric queries to refresh data
-    await this.queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+    // Only invalidate fabric-stats, NOT fabric data (to avoid cache conflict)
     await this.queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
 
     // Dispatch custom event for UI updates
     this.dispatchUpdateEvent('price-updated', { fabricId, price })
 
     console.log(`✅ Stats updated after price change for fabric ${fabricId}`)
+  }
+
+  /**
+   * Update stats when price is updated (without cache invalidation)
+   * Use this when cache is already updated manually
+   */
+  async onPriceUpdatedWithoutCacheInvalidation(fabricId: number, price: number | null) {
+    console.log(`💰 Price updated for fabric ${fabricId}:`, price ? `${price.toLocaleString('vi-VN')} VND` : 'Removed')
+
+    // Only dispatch event, no cache operations
+    this.dispatchUpdateEvent('price-updated', { fabricId, price })
+
+    console.log(`✅ Price update event dispatched for fabric ${fabricId}`)
   }
 
   /**

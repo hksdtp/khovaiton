@@ -16,7 +16,7 @@ import { SearchBar } from './SearchBar'
 {/* Tạm comment các import không sử dụng */}
 {/* import { FilterPanel } from './FilterPanel' */}
 {/* import { SortPanel } from './SortPanel' */}
-import { ImageStatusFilter } from './ImageStatusFilter'
+{/* import { ImageStatusFilter } from './ImageStatusFilter' */}
 import { Pagination } from './Pagination'
 import { FabricDetailModal } from './FabricDetailModal'
 import { ImageUploadModal } from './ImageUploadModal'
@@ -24,7 +24,7 @@ import { ImageUploadModal } from './ImageUploadModal'
 
 import { ImageViewerModal } from '@/components/ImageViewerModal'
 import { ImageEditor } from '@/components/ImageEditor'
-import { ImageStatsDisplay } from '@/components/ImageStatsDisplay'
+import { ImageStatsWithFilter } from '@/components/ImageStatsWithFilter'
 import { useQueryClient } from '@tanstack/react-query'
 
 
@@ -196,6 +196,45 @@ export function InventoryPage() {
   // Handle price update
   const handlePriceUpdate = async (fabricId: number, price: number | null, note?: string) => {
     try {
+      // Validate fabric exists in current data - check all fabric cache entries
+      const allCacheData = queryClient.getQueriesData({ queryKey: ['fabrics'] })
+      console.log(`🔍 All cache entries:`, allCacheData)
+
+      // Find fabric in any cache entry
+      let fabricExists = false
+      let allFabricIds: number[] = []
+
+      for (const [queryKey, data] of allCacheData) {
+        console.log(`🔍 Checking cache entry:`, queryKey, data)
+        if (data?.data) {
+          const fabricIds = data.data.map((f: any) => f.id)
+          allFabricIds.push(...fabricIds)
+          if (data.data.some((fabric: any) => fabric.id === fabricId)) {
+            fabricExists = true
+            break
+          }
+        } else if (Array.isArray(data)) {
+          // Handle direct array format
+          const fabricIds = data.map((f: any) => f.id)
+          allFabricIds.push(...fabricIds)
+          if (data.some((fabric: any) => fabric.id === fabricId)) {
+            fabricExists = true
+            break
+          }
+        }
+      }
+
+      console.log(`🔍 All available fabric IDs:`, [...new Set(allFabricIds)])
+
+      if (!fabricExists) {
+        console.error(`❌ Fabric ID ${fabricId} not found in any cache`)
+        console.error(`❌ Available IDs: ${[...new Set(allFabricIds)].join(', ') || 'none'}`)
+        console.error(`❌ Total cache entries: ${allCacheData.length}`)
+        alert(`❌ Lỗi: Sản phẩm ID ${fabricId} không tồn tại trong cache.\nAvailable IDs: ${[...new Set(allFabricIds)].slice(0, 10).join(', ')}\nVui lòng refresh trang.`)
+        return
+      }
+
+      console.log(`💰 Updating price for fabric ${fabricId}: ${price}`)
       const result = await fabricUpdateService.updatePrice(fabricId, price, note)
       if (result.success) {
         console.log('✅ Price updated successfully')
@@ -209,38 +248,67 @@ export function InventoryPage() {
           alert('✅ Giá đã được cập nhật thành công!')
         }
 
-        // Invalidate React Query cache for smooth updates (no page reload)
-        queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+        // Only invalidate stats, not the main fabric list (to preserve manual cache update)
         queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
 
-        // Update specific fabric in cache if we have the updated data
-        if (result.fabric) {
-          queryClient.setQueriesData(
-            { queryKey: ['fabrics'] },
-            (oldData: any) => {
-              if (!oldData?.data) return oldData
+        // Update specific fabric in cache - Force update even if no data returned
+        // Vì Supabase update có thể thành công nhưng không return data
+        console.log('🔧 Attempting to update cache...')
 
-              const updatedData = oldData.data.map((fabric: any) => {
-                if (fabric.id === fabricId) {
-                  return {
-                    ...fabric,
-                    price: result.fabric!.price,
-                    priceNote: result.fabric!.priceNote,
-                    priceUpdatedAt: result.fabric!.priceUpdatedAt,
-                    updatedAt: result.fabric!.updatedAt
-                  }
-                }
-                return fabric
-              })
+        // Update all fabric list queries (match pattern ['fabrics', 'list', ...])
+        const cacheUpdateResult = queryClient.setQueriesData(
+          { queryKey: ['fabrics', 'list'] }, // Match fabric list queries
+          (oldData: any) => {
+            console.log('📦 Old cache data:', oldData)
 
-              return { ...oldData, data: updatedData }
+            if (!oldData?.data) {
+              console.log('❌ No data in cache to update')
+              return oldData
             }
-          )
-          console.log(`📝 Updated fabric ${fabricId} in cache with new price data`)
-        }
 
-        // Trigger real-time update event
-        await realtimeUpdateService.onPriceUpdated(fabricId, price)
+            const updatedData = oldData.data.map((fabric: any) => {
+              if (fabric.id === fabricId) {
+                const updatedFabric = {
+                  ...fabric,
+                  price: price ? Number(price) : null, // Ensure price is number or null
+                  priceNote: note, // Sử dụng note từ input
+                  priceUpdatedAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString()
+                }
+                console.log(`✅ Updated fabric ${fabricId}:`, updatedFabric)
+                console.log(`💰 Price type: ${typeof updatedFabric.price}, value: ${updatedFabric.price}`)
+                return updatedFabric
+              }
+              return fabric
+            })
+
+            const newData = { ...oldData, data: updatedData }
+            console.log('📦 New cache data:', newData)
+            return newData
+          }
+        )
+
+        console.log('🔧 Cache update result:', cacheUpdateResult)
+        console.log(`📝 Force updated fabric ${fabricId} in cache with price: ${price}`)
+
+        // Debug: Check if fabric data is updated in cache
+        const currentCacheData = queryClient.getQueriesData({ queryKey: ['fabrics'] })
+        console.log('🔍 Current cache data after update:', currentCacheData)
+
+        // Find the updated fabric in cache
+        const updatedFabric = currentCacheData
+          .flatMap(([_, data]: any) => data?.data || [])
+          .find((f: any) => f.id === fabricId)
+        console.log(`🎯 Updated fabric ${fabricId} in cache:`, updatedFabric)
+
+        // Cũng update cache cho fabric-stats
+        queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+
+        // Skip realtime update to avoid cache conflicts
+        console.log('✅ Skipping realtime update to preserve cache')
+
+        // Skip force invalidation to preserve manual cache update
+        console.log('✅ Skipping force invalidation to preserve cache update')
 
         console.log('🔄 Price update completed without page reload')
       } else {
@@ -509,14 +577,9 @@ export function InventoryPage() {
 
       {/* Main Content */}
       <div className="relative z-30 max-w-7xl mx-auto px-6 py-8">
-        {/* Image Status Filter - Ẩn trong phiên bản Marketing */}
+        {/* Image Stats + Filter - Kết hợp hiển thị số liệu và filter */}
         {!isMarketingVersion && (
-          <ImageStatusFilter className="mb-6" />
-        )}
-
-        {/* Image Stats Display - Hiển thị số liệu realtime */}
-        {!isMarketingVersion && (
-          <ImageStatsDisplay className="mb-6" />
+          <ImageStatsWithFilter className="mb-6" />
         )}
 
 

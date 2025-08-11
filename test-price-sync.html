@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Đồng Bộ Giá Sản Phẩm</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+        .test-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button.success {
+            background: #28a745;
+        }
+        button.danger {
+            background: #dc3545;
+        }
+        .log {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .fabric-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Đồng Bộ Giá Sản Phẩm</h1>
+        
+        <div class="test-section">
+            <h3>🔧 Cấu Hình Test</h3>
+            <div class="test-controls">
+                <div>
+                    <div class="input-group">
+                        <label>Mã Vải Test:</label>
+                        <select id="fabricCode">
+                            <option value="">-- Chọn mã vải --</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Giá Mới (VND):</label>
+                        <input type="number" id="newPrice" placeholder="VD: 150000" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Ghi Chú:</label>
+                        <input type="text" id="priceNote" placeholder="VD: Giá sỉ, Khuyến mãi...">
+                    </div>
+                </div>
+                <div>
+                    <div class="input-group">
+                        <label>Supabase URL:</label>
+                        <input type="text" id="supabaseUrl" value="https://zgrfqkytbmahxcbgpkxx.supabase.co" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>API Key:</label>
+                        <input type="password" id="apiKey" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs" readonly>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button onclick="loadFabrics()">📋 Load Danh Sách Vải</button>
+                <button onclick="updatePrice()" class="success">💰 Cập Nhật Giá</button>
+                <button onclick="checkPrice()">🔍 Kiểm Tra Giá</button>
+                <button onclick="deletePrice()" class="danger">🗑️ Xóa Giá</button>
+                <button onclick="clearLog()">🧹 Xóa Log</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Thông Tin Vải Được Chọn</h3>
+            <div id="fabricInfo" class="fabric-info">
+                Chưa chọn vải nào
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📝 Log Test</h3>
+            <div id="log" class="log">
+                🚀 Sẵn sàng test đồng bộ giá...<br>
+                💡 Hướng dẫn:<br>
+                1. Click "Load Danh Sách Vải" để tải dữ liệu<br>
+                2. Chọn một mã vải từ dropdown<br>
+                3. Nhập giá mới và ghi chú<br>
+                4. Click "Cập Nhật Giá"<br>
+                5. Mở tab mới và kiểm tra đồng bộ<br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co'
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs'
+        
+        let allFabrics = []
+        
+        function log(message) {
+            const logElement = document.getElementById('log')
+            const timestamp = new Date().toLocaleTimeString()
+            logElement.innerHTML += `<br>[${timestamp}] ${message}`
+            logElement.scrollTop = logElement.scrollHeight
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '🧹 Log đã được xóa...'
+        }
+        
+        async function loadFabrics() {
+            log('📋 Đang tải danh sách vải từ Supabase...')
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?select=id,code,name,price,price_note&limit=50`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                })
+                
+                if (response.ok) {
+                    allFabrics = await response.json()
+                    log(`✅ Đã tải ${allFabrics.length} vải`)
+                    
+                    // Populate dropdown
+                    const select = document.getElementById('fabricCode')
+                    select.innerHTML = '<option value="">-- Chọn mã vải --</option>'
+                    
+                    allFabrics.forEach(fabric => {
+                        const option = document.createElement('option')
+                        option.value = fabric.code
+                        option.textContent = `${fabric.code} - ${fabric.name.substring(0, 50)}...`
+                        select.appendChild(option)
+                    })
+                    
+                    log('📝 Dropdown đã được cập nhật')
+                } else {
+                    log(`❌ Lỗi tải dữ liệu: ${response.status}`)
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`)
+            }
+        }
+        
+        async function updatePrice() {
+            const fabricCode = document.getElementById('fabricCode').value
+            const price = parseFloat(document.getElementById('newPrice').value)
+            const note = document.getElementById('priceNote').value
+            
+            if (!fabricCode || !price) {
+                log('❌ Vui lòng chọn vải và nhập giá')
+                return
+            }
+            
+            log(`💰 Đang cập nhật giá cho ${fabricCode}: ${price.toLocaleString('vi-VN')} VND`)
+            
+            try {
+                // Get fabric ID
+                const fabric = allFabrics.find(f => f.code === fabricCode)
+                if (!fabric) {
+                    log('❌ Không tìm thấy vải')
+                    return
+                }
+                
+                // Update price
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${fabric.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        price: price,
+                        price_note: note || null,
+                        price_updated_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                })
+                
+                if (response.ok) {
+                    log(`✅ Cập nhật giá thành công!`)
+                    log(`💰 Giá mới: ${price.toLocaleString('vi-VN')} VND`)
+                    if (note) log(`📝 Ghi chú: ${note}`)
+                    
+                    // Update local data
+                    fabric.price = price
+                    fabric.price_note = note
+                    updateFabricInfo()
+                    
+                    log(`🔄 Bây giờ hãy mở tab mới và kiểm tra đồng bộ!`)
+                } else {
+                    log(`❌ Lỗi cập nhật: ${response.status}`)
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`)
+            }
+        }
+        
+        async function checkPrice() {
+            const fabricCode = document.getElementById('fabricCode').value
+            
+            if (!fabricCode) {
+                log('❌ Vui lòng chọn vải')
+                return
+            }
+            
+            log(`🔍 Đang kiểm tra giá cho ${fabricCode}...`)
+            
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?code=eq.${fabricCode}&select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                })
+                
+                if (response.ok) {
+                    const fabrics = await response.json()
+                    if (fabrics.length > 0) {
+                        const fabric = fabrics[0]
+                        log(`✅ Thông tin giá hiện tại:`)
+                        log(`   💰 Giá: ${fabric.price ? fabric.price.toLocaleString('vi-VN') + ' VND' : 'Chưa có giá'}`)
+                        log(`   📝 Ghi chú: ${fabric.price_note || 'Không có'}`)
+                        log(`   🕒 Cập nhật: ${fabric.price_updated_at ? new Date(fabric.price_updated_at).toLocaleString('vi-VN') : 'Chưa có'}`)
+                        
+                        // Update fabric info
+                        updateFabricInfo(fabric)
+                    } else {
+                        log('❌ Không tìm thấy vải')
+                    }
+                } else {
+                    log(`❌ Lỗi kiểm tra: ${response.status}`)
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`)
+            }
+        }
+        
+        async function deletePrice() {
+            const fabricCode = document.getElementById('fabricCode').value
+            
+            if (!fabricCode) {
+                log('❌ Vui lòng chọn vải')
+                return
+            }
+            
+            if (!confirm(`Bạn có chắc muốn xóa giá của ${fabricCode}?`)) {
+                return
+            }
+            
+            log(`🗑️ Đang xóa giá cho ${fabricCode}...`)
+            
+            try {
+                const fabric = allFabrics.find(f => f.code === fabricCode)
+                if (!fabric) {
+                    log('❌ Không tìm thấy vải')
+                    return
+                }
+                
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?id=eq.${fabric.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        price: null,
+                        price_note: null,
+                        price_updated_at: null,
+                        updated_at: new Date().toISOString()
+                    })
+                })
+                
+                if (response.ok) {
+                    log(`✅ Đã xóa giá thành công!`)
+                    
+                    // Update local data
+                    fabric.price = null
+                    fabric.price_note = null
+                    updateFabricInfo()
+                } else {
+                    log(`❌ Lỗi xóa giá: ${response.status}`)
+                }
+            } catch (error) {
+                log(`❌ Lỗi: ${error.message}`)
+            }
+        }
+        
+        function updateFabricInfo(fabric = null) {
+            const fabricCode = document.getElementById('fabricCode').value
+            const infoDiv = document.getElementById('fabricInfo')
+            
+            if (!fabricCode) {
+                infoDiv.innerHTML = 'Chưa chọn vải nào'
+                return
+            }
+            
+            const selectedFabric = fabric || allFabrics.find(f => f.code === fabricCode)
+            if (!selectedFabric) {
+                infoDiv.innerHTML = 'Không tìm thấy thông tin vải'
+                return
+            }
+            
+            infoDiv.innerHTML = `
+                <strong>Mã:</strong> ${selectedFabric.code}<br>
+                <strong>Tên:</strong> ${selectedFabric.name}<br>
+                <strong>Giá:</strong> ${selectedFabric.price ? selectedFabric.price.toLocaleString('vi-VN') + ' VND' : 'Chưa có giá'}<br>
+                <strong>Ghi chú:</strong> ${selectedFabric.price_note || 'Không có'}<br>
+                <strong>ID:</strong> ${selectedFabric.id}
+            `
+        }
+        
+        // Event listener for fabric selection
+        document.getElementById('fabricCode').addEventListener('change', updateFabricInfo)
+        
+        // Auto-load fabrics on page load
+        window.addEventListener('load', loadFabrics)
+    </script>
+</body>
+</html>

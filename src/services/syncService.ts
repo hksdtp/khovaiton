@@ -60,14 +60,19 @@ class SyncService {
       if (response.success && response.mappings) {
         // Load mappings into direct URL mapping (these are custom URLs)
         for (const [fabricCode, url] of Object.entries(response.mappings)) {
-          if (url.startsWith('http')) {
-            // This is a direct URL (custom image)
-            this.fabricToDirectUrlMapping.set(fabricCode, url)
-            console.log(`☁️ Loaded custom URL for ${fabricCode}: ${url}`)
+          // Ensure url is a string and not null/undefined
+          if (typeof url === 'string' && url.trim()) {
+            if (url.startsWith('http')) {
+              // This is a direct URL (custom image)
+              this.fabricToDirectUrlMapping.set(fabricCode, url)
+              console.log(`☁️ Loaded custom URL for ${fabricCode}: ${url}`)
+            } else {
+              // This is a publicId (uploaded image)
+              this.fabricToPublicIdMapping.set(fabricCode, url)
+              console.log(`☁️ Loaded publicId for ${fabricCode}: ${url}`)
+            }
           } else {
-            // This is a publicId (uploaded image)
-            this.fabricToPublicIdMapping.set(fabricCode, url)
-            console.log(`☁️ Loaded publicId for ${fabricCode}: ${url}`)
+            console.warn(`⚠️ Invalid URL for ${fabricCode}:`, url)
           }
         }
 
@@ -420,8 +425,8 @@ class SyncService {
       // Load mappings from cloud immediately (for fresh devices)
       await this.loadFromCloud()
       // Start auto-sync for cross-device consistency
-      fabricMappingService.startAutoSync()
-      console.log('☁️ Cloud sync initialized')
+      // fabricMappingService.startAutoSync() // DISABLED: Causes cache conflicts with price updates
+      console.log('☁️ Cloud sync initialized (auto-sync disabled)')
     } catch (error) {
       console.warn('⚠️ Failed to initialize cloud sync:', error)
     }

@@ -157,7 +157,7 @@ export const fabricApi = {
     if (realFabrics.length <= 10) {
       try {
         console.log('🔄 Refreshing fabric data...')
-        realFabrics = await getMockFabrics()
+        realFabrics = await loadFabricsFromSupabase()
         console.log(`✅ Loaded ${realFabrics.length} fabrics`)
       } catch (error) {
         console.warn('Could not refresh fabric data:', error)
