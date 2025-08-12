@@ -231,20 +231,22 @@ export function FabricCard({
           </div>
         )}
 
-        {/* Manual Image URL override */}
-        <div className="mt-4 border-t border-gray-100 pt-3">
-          <details className="group">
-            <summary className="text-xs text-gray-500 cursor-pointer select-none hover:text-blue-600 transition-colors list-none">
-              <div className="flex items-center gap-1">
-                <span className="group-open:rotate-90 transition-transform">▶</span>
-                <span>⚙️ Đổi URL ảnh thủ công</span>
+        {/* Manual Image URL override - Ẩn trong phiên bản marketing */}
+        {!isMarketingMode && (
+          <div className="mt-4 border-t border-gray-100 pt-3">
+            <details className="group">
+              <summary className="text-xs text-gray-500 cursor-pointer select-none hover:text-blue-600 transition-colors list-none">
+                <div className="flex items-center gap-1">
+                  <span className="group-open:rotate-90 transition-transform">▶</span>
+                  <span>⚙️ Đổi URL ảnh thủ công</span>
+                </div>
+              </summary>
+              <div className="mt-2">
+                <ManualUrlForm fabricCode={fabric.code} />
               </div>
-            </summary>
-            <div className="mt-2">
-              <ManualUrlForm fabricCode={fabric.code} />
-            </div>
-          </details>
-        </div>
+            </details>
+          </div>
+        )}
       </div>
     </Card>
   )

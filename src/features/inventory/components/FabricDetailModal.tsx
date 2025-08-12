@@ -251,15 +251,17 @@ export function FabricDetailModal({
             {fabric.image ? 'Đổi ảnh' : 'Thêm ảnh'}
           </Button>
 
-          {/* Nút/ô đổi URL ảnh thủ công */}
-          <div className="border-t border-gray-200 pt-4">
-            <div className="text-sm text-gray-600 mb-3 font-medium">
-              🔧 Đổi URL ảnh thủ công
+          {/* Nút/ô đổi URL ảnh thủ công - Ẩn trong phiên bản marketing */}
+          {!isMarketingVersion && (
+            <div className="border-t border-gray-200 pt-4">
+              <div className="text-sm text-gray-600 mb-3 font-medium">
+                🔧 Đổi URL ảnh thủ công
+              </div>
+              <div className="bg-gray-50 rounded-lg p-3">
+                <ManualUrlForm fabricCode={fabric.code} compact={false} />
+              </div>
             </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <ManualUrlForm fabricCode={fabric.code} compact={false} />
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </Modal>
