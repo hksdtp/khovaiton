@@ -27,6 +27,7 @@ import { ImageEditor } from '@/components/ImageEditor'
 import { ImageStatsWithFilter } from '@/components/ImageStatsWithFilter'
 import { useQueryClient } from '@tanstack/react-query'
 import { FilterDebug } from '@/debug/FilterDebug'
+import { HiddenProductsAnalyzer } from '@/tools/HiddenProductsAnalyzer'
 
 
 export function InventoryPage() {
@@ -66,6 +67,8 @@ export function InventoryPage() {
     imageUrl: '',
     fabricCode: ''
   })
+
+  const [showHiddenAnalyzer, setShowHiddenAnalyzer] = useState(false)
 
   // Initialize services with query client
   imageUpdateService.setQueryClient(queryClient)
@@ -663,6 +666,22 @@ export function InventoryPage() {
       {/* {process.env.NODE_ENV === 'development' && !isMarketingVersion && (
         <FilterDebug />
       )} */}
+
+      {/* Hidden Products Analyzer - Development only */}
+      {process.env.NODE_ENV === 'development' && (
+        <button
+          onClick={() => setShowHiddenAnalyzer(true)}
+          className="fixed bottom-4 left-4 bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors shadow-lg z-30 flex items-center gap-2"
+          title="Phân tích sản phẩm đã ẩn"
+        >
+          📊 Phân tích sản phẩm ẩn
+        </button>
+      )}
+
+      {/* Hidden Products Analyzer Modal */}
+      {showHiddenAnalyzer && (
+        <HiddenProductsAnalyzer onClose={() => setShowHiddenAnalyzer(false)} />
+      )}
 
     </MainLayout>
   )
