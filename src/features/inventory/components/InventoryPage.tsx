@@ -535,9 +535,12 @@ export function InventoryPage() {
                   <RefreshCw className="w-4 h-4" />
                   Sync Manager
                 </Button> */}
-                <Button variant="ghost" size="sm">
-                  <MoreHorizontal className="w-4 h-4" />
-                </Button>
+                {/* Button More - HIDDEN */}
+                {false && (
+                  <Button variant="ghost" size="sm">
+                    <MoreHorizontal className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -667,8 +670,8 @@ export function InventoryPage() {
         <FilterDebug />
       )} */}
 
-      {/* Hidden Products Analyzer - Development only */}
-      {process.env.NODE_ENV === 'development' && (
+      {/* Hidden Products Analyzer - Development only - HIDDEN */}
+      {false && process.env.NODE_ENV === 'development' && (
         <button
           onClick={() => setShowHiddenAnalyzer(true)}
           className="fixed bottom-4 left-4 bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors shadow-lg z-30 flex items-center gap-2"
