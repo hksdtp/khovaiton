@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-08-13T11:26:39.246704",
+  "total_mapped": 2,
+  "results": [
+    {
+      "fabric_code": "TP01623-224",
+      "fabric_name": "Vải chính TP01623-224 khổ 140cm",
+      "image_url": "https://res.cloudinary.com/dgaktc3fb/image/upload/v1753955024/fabrics/TP01623-224.jpg",
+      "image_display_name": "TP01623-224_edited",
+      "type": "edited_image"
+    },
+    {
+      "fabric_code": "HA 1754-10",
+      "fabric_name": "Vải chính HA 1754-10 khổ 145cm",
+      "image_url": "https://res.cloudinary.com/dgaktc3fb/image/upload/v1754387515/HA_1754-10_v1l3xp.jpg",
+      "image_display_name": "HA_1754-10_v1l3xp",
+      "type": "similar_match",
+      "confidence": 0.9473684210526315
+    }
+  ]
+}
