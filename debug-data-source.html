@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Data Source - Kho Vải Tồn</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+        .log-section {
+            background: #1f2937;
+            color: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+        .button:hover {
+            background: #1d4ed8;
+        }
+        .button.secondary {
+            background: #6b7280;
+        }
+        .button.secondary:hover {
+            background: #4b5563;
+        }
+        .error {
+            color: #ef4444;
+        }
+        .success {
+            color: #10b981;
+        }
+        .warning {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Debug Data Source - Kho Vải Tồn</h1>
+            <p>Kiểm tra nguồn dữ liệu và tìm hiểu tại sao có sự khác biệt giữa số liệu</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="supabaseCount">-</div>
+                <div class="stat-label">Supabase Database</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="mockCount">-</div>
+                <div class="stat-label">Mock Data (CSV)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="apiCount">-</div>
+                <div class="stat-label">API Response</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="statsCount">-</div>
+                <div class="stat-label">Stats API</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <button class="button" onclick="checkSupabase()">🔍 Kiểm tra Supabase</button>
+            <button class="button" onclick="checkMockData()">📄 Kiểm tra Mock Data</button>
+            <button class="button" onclick="checkAPI()">🌐 Kiểm tra API</button>
+            <button class="button" onclick="checkStats()">📊 Kiểm tra Stats</button>
+            <button class="button secondary" onclick="clearLog()">🧹 Xóa Log</button>
+        </div>
+
+        <div class="log-section" id="log">
+            📋 Nhấn các button trên để bắt đầu kiểm tra...
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs'
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log')
+            const timestamp = new Date().toLocaleTimeString()
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : ''
+            logElement.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`
+            logElement.scrollTop = logElement.scrollHeight
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '📋 Log đã được xóa...'
+        }
+        
+        async function checkSupabase() {
+            log('🔍 Kiểm tra Supabase database...', 'info')
+            
+            try {
+                // Test connection
+                const { data: testData, error: testError } = await supabase
+                    .from('fabrics')
+                    .select('count')
+                    .limit(1)
+                
+                if (testError) {
+                    log(`❌ Lỗi kết nối Supabase: ${testError.message}`, 'error')
+                    return
+                }
+                
+                log('✅ Kết nối Supabase thành công!', 'success')
+                
+                // Count total records
+                const { count, error: countError } = await supabase
+                    .from('fabrics')
+                    .select('*', { count: 'exact', head: true })
+                
+                if (countError) {
+                    log(`❌ Lỗi đếm records: ${countError.message}`, 'error')
+                    return
+                }
+                
+                document.getElementById('supabaseCount').textContent = count || 0
+                log(`📊 Tổng số records trong Supabase: ${count}`, 'success')
+                
+                // Get sample data
+                const { data: sampleData, error: sampleError } = await supabase
+                    .from('fabrics')
+                    .select('id, code, name, quantity, location')
+                    .limit(5)
+                
+                if (sampleError) {
+                    log(`❌ Lỗi lấy sample data: ${sampleError.message}`, 'error')
+                    return
+                }
+                
+                log('📋 Sample data từ Supabase:', 'info')
+                sampleData.forEach((item, index) => {
+                    log(`   ${index + 1}. ${item.code} - ${item.name} (${item.quantity} tại ${item.location})`, 'info')
+                })
+                
+            } catch (error) {
+                log(`❌ Exception khi kiểm tra Supabase: ${error.message}`, 'error')
+            }
+        }
+        
+        async function checkMockData() {
+            log('📄 Kiểm tra Mock Data...', 'info')
+            
+            try {
+                // Load CSV data
+                const response = await fetch('/fabric_inventory_updated.csv')
+                if (!response.ok) {
+                    log(`❌ Không thể load CSV: ${response.status}`, 'error')
+                    return
+                }
+                
+                const csvText = await response.text()
+                const lines = csvText.split('\n').filter(line => line.trim())
+                const dataLines = lines.slice(1) // Bỏ header
+                
+                document.getElementById('mockCount').textContent = dataLines.length
+                log(`📊 Tổng số dòng trong CSV: ${dataLines.length}`, 'success')
+                
+                // Parse first few lines
+                const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''))
+                log(`📋 Headers CSV: ${headers.join(', ')}`, 'info')
+                
+                log('📋 Sample data từ CSV:', 'info')
+                dataLines.slice(0, 5).forEach((line, index) => {
+                    const values = line.split(',').map(v => v.trim().replace(/"/g, ''))
+                    const code = values[0] || 'N/A'
+                    const name = values[1] || 'N/A'
+                    log(`   ${index + 1}. ${code} - ${name}`, 'info')
+                })
+                
+            } catch (error) {
+                log(`❌ Exception khi kiểm tra Mock Data: ${error.message}`, 'error')
+            }
+        }
+        
+        async function checkAPI() {
+            log('🌐 Kiểm tra API Response...', 'info')
+            
+            try {
+                // Simulate API call to get fabrics
+                const response = await fetch('/api/fabrics?page=1&limit=1000')
+                
+                if (!response.ok) {
+                    log(`❌ API call failed: ${response.status}`, 'error')
+                    log('ℹ️ Đây là expected vì chúng ta không có real API endpoint', 'warning')
+                    
+                    // Fallback: check if we can access the app's data
+                    if (window.location.hostname === 'localhost') {
+                        log('🔄 Thử kiểm tra data từ app hiện tại...', 'info')
+                        
+                        // Try to access React app data if available
+                        setTimeout(() => {
+                            const reactRoot = document.querySelector('#root')
+                            if (reactRoot) {
+                                log('✅ Tìm thấy React app, nhưng không thể truy cập data trực tiếp', 'warning')
+                                log('💡 Hãy mở Developer Console trong app chính để kiểm tra', 'info')
+                            }
+                        }, 1000)
+                    }
+                    return
+                }
+                
+                const data = await response.json()
+                document.getElementById('apiCount').textContent = data.total || data.length || 0
+                log(`📊 API Response: ${data.total || data.length || 0} items`, 'success')
+                
+            } catch (error) {
+                log(`❌ Exception khi kiểm tra API: ${error.message}`, 'error')
+                log('ℹ️ Đây có thể là expected vì chúng ta đang test từ file HTML riêng', 'warning')
+            }
+        }
+        
+        async function checkStats() {
+            log('📊 Kiểm tra Stats API...', 'info')
+            
+            try {
+                // Direct Supabase query for stats
+                const { data, error } = await supabase
+                    .from('fabrics')
+                    .select('id, is_hidden, price, status')
+                
+                if (error) {
+                    log(`❌ Lỗi lấy stats: ${error.message}`, 'error')
+                    return
+                }
+                
+                const total = data.length
+                const hidden = data.filter(f => f.is_hidden).length
+                const visible = total - hidden
+                const withPrice = data.filter(f => f.price !== null && f.price !== undefined).length
+                const lowStock = data.filter(f => f.status === 'low_stock').length
+                
+                document.getElementById('statsCount').textContent = total
+                
+                log(`📊 Stats từ Supabase:`, 'success')
+                log(`   📦 Tổng: ${total}`, 'info')
+                log(`   👁️ Hiện: ${visible}`, 'info')
+                log(`   🔒 Ẩn: ${hidden}`, 'info')
+                log(`   💰 Có giá: ${withPrice}`, 'info')
+                log(`   ⚠️ Sắp hết: ${lowStock}`, 'info')
+                
+            } catch (error) {
+                log(`❌ Exception khi kiểm tra Stats: ${error.message}`, 'error')
+            }
+        }
+        
+        // Auto-run initial checks
+        window.addEventListener('load', () => {
+            log('🚀 Bắt đầu kiểm tra tự động...', 'info')
+            setTimeout(checkSupabase, 500)
+            setTimeout(checkMockData, 1500)
+        })
+    </script>
+</body>
+</html>

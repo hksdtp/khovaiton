@@ -12,7 +12,7 @@ import { localStorageService } from '../services/localStorageService'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
 // Cache for real fabric data
-let realFabrics: Fabric[] = mockFabrics
+let realFabrics: Fabric[] = []
 
 // Ninh ơi, đã chuyển sang sử dụng hasRealImage từ fabricImageMapping.ts để đồng bộ
 
@@ -94,9 +94,13 @@ async function loadFabricsFromSupabase(): Promise<Fabric[]> {
  */
 async function initializeRealData() {
   try {
+    console.log('🔄 Initializing real fabric data from Supabase...')
     realFabrics = await loadFabricsFromSupabase()
+    console.log(`✅ Initialized with ${realFabrics.length} fabrics from Supabase`)
   } catch (error) {
-    console.warn('Using fallback fabric data:', error)
+    console.warn('❌ Failed to load from Supabase, using fallback fabric data:', error)
+    realFabrics = getMockFabrics()
+    console.log(`📦 Using ${realFabrics.length} mock fabrics as fallback`)
   }
 }
 
@@ -160,13 +164,15 @@ export const fabricApi = {
     }
 
     // Ensure we have the latest real data
-    if (realFabrics.length <= 10) {
+    if (realFabrics.length === 0) {
       try {
-        console.log('🔄 Refreshing fabric data...')
+        console.log('🔄 No fabric data in cache, loading from Supabase...')
         realFabrics = await loadFabricsFromSupabase()
-        console.log(`✅ Loaded ${realFabrics.length} fabrics`)
+        console.log(`✅ Loaded ${realFabrics.length} fabrics from Supabase`)
       } catch (error) {
-        console.warn('Could not refresh fabric data:', error)
+        console.warn('❌ Could not load from Supabase, using mock data:', error)
+        realFabrics = getMockFabrics()
+        console.log(`📦 Using ${realFabrics.length} mock fabrics as fallback`)
       }
     }
 
