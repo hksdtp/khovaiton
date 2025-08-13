@@ -39,6 +39,7 @@ export default defineConfig({
   },
   server: {
     port: 3004,
+    host: '0.0.0.0', // Bind to all interfaces for Docker
     open: true,
   },
   test: {

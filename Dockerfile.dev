@@ -1,0 +1,27 @@
+# Development Dockerfile for React frontend
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies for development
+RUN apk add --no-cache git
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
+
+# Copy configuration files
+COPY tsconfig*.json ./
+COPY vite.config.ts ./
+COPY tailwind.config.js ./
+COPY postcss.config.js ./
+COPY index.html ./
+
+# Expose port
+EXPOSE 3004
+
+# Start development server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3004"]
