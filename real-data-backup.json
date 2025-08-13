@@ -1,0 +1,3311 @@
+{
+  "metadata": {
+    "source": "giavonmoi.xlsx",
+    "sheet": "GV",
+    "total_records": 330,
+    "created_at": "2025-08-13T10:15:59.868893",
+    "description": "Dữ liệu thật từ file Excel giavonmoi.xlsx"
+  },
+  "fabrics": [
+    {
+      "code": "3 PASS BO - WHITE - COL 15",
+      "name": "Vải 3 PASS BO - WHITE - COL 15 Khổ 280cm",
+      "unit": "m",
+      "quantity": 45.97,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "lót",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "33139-2-270",
+      "name": "Vải 33139-2-270 Khổ 280cm",
+      "unit": "m",
+      "quantity": 45.9,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "71022-10",
+      "name": "Vải lá màu trắng W280 cm",
+      "unit": "m",
+      "quantity": 29.0,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "71022-7",
+      "name": "Vải 71022-7 Khổ 280cm",
+      "unit": "m",
+      "quantity": 54.0,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "8015-1",
+      "name": "Vải 8015-1 Khổ 290cm",
+      "unit": "m",
+      "quantity": 12.49,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "99-129-39",
+      "name": "Vải 99-129-39 khổ 280cm",
+      "unit": "m",
+      "quantity": 85.8,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "A9003-5",
+      "name": "Vải A9003-5 Khổ 280cm",
+      "unit": "m",
+      "quantity": 45.1,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "AS22541-5",
+      "name": "AS22541-5 - 100% Polyeste W285cm, color: 5",
+      "unit": "m",
+      "quantity": 16.1,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "AS22878-7",
+      "name": "AS22878-7 - 100% Polyeste, W280cm, color: 7",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "DCR-71022-8",
+      "name": "Vải Lá Màu Xanh W280cm",
+      "unit": "m",
+      "quantity": 387.0,
+      "location": "T4 B2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "DCR-MELIA-NHẠT",
+      "name": "DCR-MELIA NHẠT W280cm",
+      "unit": "m",
+      "quantity": 28.0,
+      "location": "T4.B3.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB15141A21",
+      "name": "Vải FB15141A21 Khổ 300cm",
+      "unit": "m",
+      "quantity": 10.8,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FB15144A3",
+      "name": "Vải chính FB15144A3# khổ 290cm",
+      "unit": "m",
+      "quantity": 63.2,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB15148A21",
+      "name": "Vải FB15148A21 Khổ 300cm",
+      "unit": "m",
+      "quantity": 18.4,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FB15157A1",
+      "name": "Vải FB15157A1 Khổ 300cm",
+      "unit": "m",
+      "quantity": 18.6,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FB15169A4",
+      "name": "Vải FB15169A4 Khổ 300cm",
+      "unit": "m",
+      "quantity": 13.0,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FB15198A5",
+      "name": "Vải FB15198A5 Khổ 300cm",
+      "unit": "m",
+      "quantity": 15.4,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FB15198A6",
+      "name": "Vải FB15198A6 Khổ 300cm",
+      "unit": "Cuộn",
+      "quantity": 76.0,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FS-PURPLE",
+      "name": "Vải FS-PURPLE Khổ 280cm",
+      "unit": "m",
+      "quantity": 64.5,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FS-Ruby",
+      "name": "Vải FS-Ruby Khổ 280cm",
+      "unit": "m",
+      "quantity": 58.85,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "FS-TEAL",
+      "name": "Vải FS-TEAL Khổ 280cm",
+      "unit": "m",
+      "quantity": 157.0,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "HB/BST/DY",
+      "name": "Vải HB/BST/DY Khổ 290cm",
+      "unit": "m",
+      "quantity": 12.3,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "HY FAGEL-SILVER",
+      "name": "Vải HY FAGEL-SILVER Khổ 280cm",
+      "unit": "m",
+      "quantity": 45.97,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "JK090E-01",
+      "name": "Vải JK090E-01 Khổ 280cm",
+      "unit": "m",
+      "quantity": 27.0,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "JNF/19",
+      "name": "Vải JNF/19 Khổ 280cm",
+      "unit": "m",
+      "quantity": 16.2,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "Lót bông nhăn",
+      "name": "Vải Lót bông nhăn Khổ 235cm",
+      "unit": "m",
+      "quantity": 38.83,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "N208BOFR",
+      "name": "Vải N208BOFR Khổ cm",
+      "unit": "m",
+      "quantity": 50.0,
+      "location": "T4 Palet giữa F-G",
+      "type": "Roller",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "SG21-19-4007",
+      "name": "Vải SG21-19-4007 Khổ 280cm",
+      "unit": "m",
+      "quantity": 44.0,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "W5601-20",
+      "name": "Vải W5601-20 khổ 140cm",
+      "unit": "m",
+      "quantity": 7.0,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "YB0320-7",
+      "name": "Vải YB0320-7 Khổ cm",
+      "unit": "m",
+      "quantity": 12.0,
+      "location": "T4 D2",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "YB093",
+      "name": "Vải YB093 khổ 230cm",
+      "unit": "m",
+      "quantity": 136.0,
+      "location": "T4 giữa A-B (phía ngoài)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "YB096",
+      "name": "Vải YB096 Khổ 280cm",
+      "unit": "m",
+      "quantity": 6.9,
+      "location": "T4 giữa A-B (phía trong)",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "0248243680103",
+      "name": "Vải Panama Pro Of 1% BJ01A white- pearl khổ 250 cm",
+      "unit": "m",
+      "quantity": 4.2,
+      "location": "T4.G2.1",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "0248243802071-TUISS",
+      "name": "BD03A TRAVERTINE FABRIC khổ 310cm",
+      "unit": "m",
+      "quantity": 22.0,
+      "location": "T4.G2.1",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "07013D-88",
+      "name": "Vải chính 07013D-88 khổ 145cm",
+      "unit": "m",
+      "quantity": 19.5,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "089C-1",
+      "name": "089C-1 W150cm",
+      "unit": "m",
+      "quantity": 17.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "09-730-17",
+      "name": "Vải chính 09-730-17 khổ 140cm",
+      "unit": "m",
+      "quantity": 95.5,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "100054-0081",
+      "name": "Vải Roller 100054-0081",
+      "unit": "m",
+      "quantity": 12.85,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "10-780-14",
+      "name": "Vải chính 10-780-14 khổ 140cm",
+      "unit": "m",
+      "quantity": 64.6,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "10-780-1402",
+      "name": "10-780-1402 W140cm",
+      "unit": "m",
+      "quantity": 165.7,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "10-780-17",
+      "name": "Vải chính 10-780-17 khổ 140cm",
+      "unit": "m",
+      "quantity": 154.9,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "10-780-316",
+      "name": "Vải 10-780-316 W140cm",
+      "unit": "m",
+      "quantity": 263.7,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "10-780-41",
+      "name": "10-780-41 W140cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "10-780-5",
+      "name": "10-780-5 W140cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "131-254",
+      "name": "Vải 131-254 W140cm",
+      "unit": "m",
+      "quantity": 13.2,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "142421-DCR",
+      "name": "Vải chính 142421-DCR khổ 293cm",
+      "unit": "m",
+      "quantity": 8.7,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "1803 BLACKOUT",
+      "name": "Vải 1803 BLACKOUT khổ 280cm",
+      "unit": "m",
+      "quantity": 57.0,
+      "location": "T4.A1.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "22A-990-5",
+      "name": "22A-990-5 W140cm",
+      "unit": "m",
+      "quantity": 47.9,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "22D-990-8",
+      "name": "22D-990-8 W140cm",
+      "unit": "m",
+      "quantity": 90.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "22E-990-10",
+      "name": "22E-990-10 W140cm",
+      "unit": "m",
+      "quantity": 15.3,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "22E-990-2",
+      "name": "22E-990-2 W140cm",
+      "unit": "m",
+      "quantity": 30.8,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "22E-990-4",
+      "name": "Vải Chính 22E-990-4 W140cm",
+      "unit": "m",
+      "quantity": 81.2,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "316-2",
+      "name": "Vải chính 316-2 khổ 145cm",
+      "unit": "m",
+      "quantity": 34.0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "3c-40-11",
+      "name": "Vải 3c-40-11 W280cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "50-008 dcr-T203 SB-12",
+      "name": "Vải Roller 100050-008 dcr-T203 SB-12 W200cm",
+      "unit": "m",
+      "quantity": 23.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "71022-10",
+      "name": "Vải lá màu trắng W280 cm",
+      "unit": "m",
+      "quantity": 29.0,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "71022-2",
+      "name": "Vải chính 71022-2 khổ 280cm",
+      "unit": "m",
+      "quantity": 29.5,
+      "location": "T4 D2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "71022-9",
+      "name": "Vải lá màu kem W280 cm",
+      "unit": "m",
+      "quantity": 52.3,
+      "location": "T4 B2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "8136-2",
+      "name": "Vải 8136-2 W280cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "83082-11",
+      "name": "Vải chính 83082-11 khổ 145cm",
+      "unit": "m",
+      "quantity": 110.6,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83082-32",
+      "name": "Vải 83082-32 khổ 145cm",
+      "unit": "m",
+      "quantity": 41.5,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83086-06",
+      "name": "83086-06 W145cm",
+      "unit": "m",
+      "quantity": 37.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83086-08",
+      "name": "Vải 83086-08 khổ 145cm",
+      "unit": "m",
+      "quantity": 14.5,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83086-11",
+      "name": "83086-11 W145cm",
+      "unit": "m",
+      "quantity": 29.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83086-13",
+      "name": "Vải 83086-13 W145cm",
+      "unit": "m",
+      "quantity": 93.8,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83086-20",
+      "name": "Vải chính 83086-20 khổ 145cm",
+      "unit": "m",
+      "quantity": 35.5,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83100-13",
+      "name": "Vải chính 83100-13 khổ 145cm",
+      "unit": "m",
+      "quantity": 27.5,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "83102-19",
+      "name": "Vải Chính 83102-19 W140cm",
+      "unit": "m",
+      "quantity": 85.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "83813-7",
+      "name": "83813-7 W140cm",
+      "unit": "m",
+      "quantity": 14.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "8525-26",
+      "name": "8525-26 W140cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8525-42",
+      "name": "Vải chính 8525-42 khổ 145cm",
+      "unit": "m",
+      "quantity": 23.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8525-43",
+      "name": "Vải 8525-43 khổ 145cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8525-46",
+      "name": "8525-46 W140cm",
+      "unit": "m",
+      "quantity": 13.3,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8542-11",
+      "name": "8542-11 W140cm",
+      "unit": "m",
+      "quantity": 11.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8557-06",
+      "name": "Vải chính 8557-06 khổ 145cm",
+      "unit": "m",
+      "quantity": 36.5,
+      "location": "T4.K2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8568-05",
+      "name": "Vải Chính 8568-05 W140cm",
+      "unit": "m",
+      "quantity": 37.8,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8598-02",
+      "name": "Vải 8598-02 W140cm",
+      "unit": "m",
+      "quantity": 28.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "8600-06",
+      "name": "Vải Roller 8600-06 W140cm",
+      "unit": "m",
+      "quantity": 17.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8600-07",
+      "name": "Vải Chính 8600-07 W140cm",
+      "unit": "m",
+      "quantity": 26.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8611-44",
+      "name": "8611-44 W140cm",
+      "unit": "m",
+      "quantity": 22.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8611-46",
+      "name": "Vải 8611-46 W140cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8612-25",
+      "name": "Vải 8612-25 W140cm",
+      "unit": "m",
+      "quantity": 14.3,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8613-04",
+      "name": "Vải chính 8613-04 khổ 145cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8613-13",
+      "name": "Vải 8613-13 khổ 145cm",
+      "unit": "m",
+      "quantity": 25.8,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8614-09",
+      "name": "Vải chính 8614-09 khổ 145cm",
+      "unit": "m",
+      "quantity": 9.5,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "8615-14",
+      "name": "8615-14 W140cm",
+      "unit": "m",
+      "quantity": 16.5,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "8628-17",
+      "name": "8628-17 W140cm",
+      "unit": "m",
+      "quantity": 19.5,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "8631-05",
+      "name": "Vải chính 8631-05 khổ 145cm",
+      "unit": "m",
+      "quantity": 64.5,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "88-539-10",
+      "name": "88-539-10",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "88-539-12",
+      "name": "Vải chính 88-539-12 khổ 280cm",
+      "unit": "m",
+      "quantity": 70.8,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "88-539-21",
+      "name": "Vải chính 88-539-21 khổ 280cm",
+      "unit": "m",
+      "quantity": 72.3,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "88-539-23",
+      "name": "88-539-23 W280cm",
+      "unit": "m",
+      "quantity": 95.5,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "88-539-9",
+      "name": "88-539-9 W280cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "91200201S0103",
+      "name": "91200201S0103 W300cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "99-129-11",
+      "name": "99-129-11 W280cm",
+      "unit": "m",
+      "quantity": 16.0,
+      "location": "T4 B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "99-129-44",
+      "name": "99-129-44 W280cm",
+      "unit": "m",
+      "quantity": 41.0,
+      "location": "T4 D1 + E1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "A6120A195",
+      "name": "A6 BON SOIR FABRIC, 150ft per carton, 3m width",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "A65-2",
+      "name": "Vải Voan  A65-2 W280cm",
+      "unit": "m",
+      "quantity": 94.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "AL200-21",
+      "name": "Vải Chính AL200-21 W140cm",
+      "unit": "m",
+      "quantity": 34.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "AL200-30",
+      "name": "AL200-30 W280cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "Ar070-02B",
+      "name": "Vải Ar070-02B W140cm",
+      "unit": "m",
+      "quantity": 11.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "AR-071-02B",
+      "name": "VẢI HÌNH CÁ HEO NÂU W140cm",
+      "unit": "m",
+      "quantity": 9.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "AR074-02B",
+      "name": "AR074-02B W140cm",
+      "unit": "m",
+      "quantity": 18.5,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "AR-076-02B",
+      "name": "Vải chính AR-076-02B khổ 150cm",
+      "unit": "m",
+      "quantity": 47.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "AR-079-02B",
+      "name": "Vải chính AR-079-02B khổ 150cm",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ASPERO 19",
+      "name": "Vải chính ASPERO 19 khổ 141cm",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BD095-298",
+      "name": "Vải chính BD095-298 khổ 145cm",
+      "unit": "m",
+      "quantity": 17.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BD095-85",
+      "name": "Vải chính BD095-85 khổ 145cm",
+      "unit": "m",
+      "quantity": 163.0,
+      "location": "T4.K2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BERTONE-30",
+      "name": "Vải chính BERTONE-30 khổ 295cm",
+      "unit": "m",
+      "quantity": 81.5,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BERTONE-31",
+      "name": "Vải chính BERTONE-31 khổ 295cm",
+      "unit": "m",
+      "quantity": 60.0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BJ01A",
+      "name": "BJ01A W310cm",
+      "unit": "m2",
+      "quantity": 77.0,
+      "location": "T4.G2.2",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "Bloom R/B Amellie",
+      "name": "Vải Roller Bloom R/B Amellie",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "BO300102",
+      "name": "Vải Coated Fabric Linen 300cm",
+      "unit": "m",
+      "quantity": 45.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "Bonaza mufin-28",
+      "name": "Vải Bonaza mufin-28 W140cm",
+      "unit": "m",
+      "quantity": 83.5,
+      "location": "T4 F3",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BWB8136-4",
+      "name": "Vải chính BWB8136-4 W280cm",
+      "unit": "m",
+      "quantity": 110.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BWB-8539",
+      "name": "Vải Voan BWB-8539 (Chiffon Cream) khổ 295cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 D2 + T4 dưới sàn",
+      "type": "voan",
+      "status": "damaged",
+      "note": ""
+    },
+    {
+      "code": "carnival  r/b purple",
+      "name": "Vải Roller dcr-carnival  r/b purple-Kg W200cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "CARNIVAL R/B HESSIAN 210",
+      "name": "Vải Roller CARNIVAL R/B HESSIAN 210 W200cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "carnival r/b hot pink 210",
+      "name": "Vải Roller dcr- carnival r/b hot pink 210 W200cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "Carnival r/b mauve 210",
+      "name": "Vải Roller Dcr Carnival r/b mauve 210 W200cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "CARNIVAL R/B MULBERRY 210",
+      "name": "Vải Roller DCR CARNIVAL R/B MULBERRY W200cm",
+      "unit": "m",
+      "quantity": 33.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "carnival r/b slate 210",
+      "name": "Vải Roller dcr- carnival r/b slate 210 W200cm",
+      "unit": "m",
+      "quantity": 13.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "CARNIVAL R/B TEAL 210",
+      "name": "Vải Roller CARNIVAL R/B TEAL 210 W200cm",
+      "unit": "m",
+      "quantity": 11.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "CRUSHED VELVET-15",
+      "name": "Vải chính CRUSHED VELVET-15 khổ 280cm",
+      "unit": "m",
+      "quantity": 27.0,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "D-3195",
+      "name": "Vải chính D-3195 khổ 150cm",
+      "unit": "m",
+      "quantity": 7.5,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "D3385",
+      "name": "Vải chính D3385 khổ 145cm",
+      "unit": "m",
+      "quantity": 11.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "Datender 24sil",
+      "name": "Datender 24sil W140cm",
+      "unit": "m",
+      "quantity": 21.8,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DBY80434-3",
+      "name": "Vải DBY80434-3 W140cm",
+      "unit": "m",
+      "quantity": 8.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DBY80434-51",
+      "name": "Vải DBY80434-51 W140cm",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCLR -EC-4022",
+      "name": "Vải Roller DCLR -EC-4022 W200cm",
+      "unit": "m",
+      "quantity": 9.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR - chats word white",
+      "name": "Vải Roller DCR - chats word white W200cm",
+      "unit": "m",
+      "quantity": 26.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "dcr- chats word cream",
+      "name": "Vải Roller dcr- chats word cream W200cm",
+      "unit": "m",
+      "quantity": 53.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR HL-814F",
+      "name": "Vải Roller DCR HL-814F W200cm",
+      "unit": "m",
+      "quantity": 7.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "Dcr -Lauva r/b walnut",
+      "name": "Vải Roller Dcr -Lauva r/b walnut W200cm",
+      "unit": "m",
+      "quantity": 8.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "dcr- nouveaux r/b teal",
+      "name": "Vải Roller dcr- nouveaux r/b teal W200cm",
+      "unit": "m",
+      "quantity": 26.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-1000-2300-9000",
+      "name": "Vải Roller DCR-1000-2300-9000 W200cm",
+      "unit": "m",
+      "quantity": 19.5,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR-1000-2300-9124",
+      "name": "DCR-1000-2300-9124 W200cm",
+      "unit": "m",
+      "quantity": 6.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR-1000-2300-9162",
+      "name": "Vải Roller DCR-1000-2300-9162 W200cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-1000-2300-9163",
+      "name": "Vải Roller DCR-1000-2300-9163 W200cm",
+      "unit": "m",
+      "quantity": 16.8,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR20018",
+      "name": "Vải Roller DCR20018 W200cm",
+      "unit": "m",
+      "quantity": 22.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-71022-8",
+      "name": "Vải Lá Màu Xanh W280cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 B2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "DCR-BRERA-33",
+      "name": "Vải chính  DCR-BRERA-33 khổ 140cm",
+      "unit": "m",
+      "quantity": 45.8,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "Dcr-carnival R/B mocha",
+      "name": "Vải Roller Dcr-carnival R/B mocha W200cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-EC-4037F",
+      "name": "Vải Roller DCR-EC-4037F W200cm",
+      "unit": "m",
+      "quantity": 6.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-ES-48",
+      "name": "Vải Roller DCR-ES-48 W200cm",
+      "unit": "m",
+      "quantity": 5.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-HA 1754-16",
+      "name": "Vải chính DCR-HA 1754-16 khổ 145cm",
+      "unit": "m",
+      "quantity": 53.0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-HA 1754-7 BLACKCURRAN",
+      "name": "Vải chính DCR-HA 1754-7 BLACKCURRANT W 145cm",
+      "unit": "m",
+      "quantity": 28.5,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-HA 1754-9",
+      "name": "Vải chính DCR-HA 1754-9 khổ 145cm",
+      "unit": "m",
+      "quantity": 65.0,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR-MELIA-COFFEE",
+      "name": "DCR-MELIA-COFFEE W280cm",
+      "unit": "m",
+      "quantity": 1366.37,
+      "location": "T4.B3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR-MELIA-NHẠT",
+      "name": "DCR-MELIA NHẠT W280cm",
+      "unit": "m",
+      "quantity": 28.0,
+      "location": "T4.B3.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR-N2087-Bo w280cm",
+      "name": "Vải DCR-N2087-Bo w280cm",
+      "unit": "m",
+      "quantity": 570.0,
+      "location": "T4.G1.2",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-OZONE-16",
+      "name": "DCR-OZONE-16 W280cm",
+      "unit": "m",
+      "quantity": 75.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR-RP1113",
+      "name": "Vải Roller DCR-RP1113 W200cm",
+      "unit": "m",
+      "quantity": 17.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP1120",
+      "name": "Vải Roller DCR-RP1120 W200cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP1145",
+      "name": "Vải Roller DCR  - R1145 W200cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP1148",
+      "name": "Vải Roller DCR-RP1148 W200cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP1151",
+      "name": "Vải Roller DCR-RP1151 W200cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP1153",
+      "name": "Vải Roller DCR-RP1153 W200cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP1163",
+      "name": "Vải Roller DCR-RP1163 W200cm",
+      "unit": "m",
+      "quantity": 11.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP1193",
+      "name": "Vải Roller DCR-RP1193 W200cm",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP2000",
+      "name": "Vải Roller DCR-RP2000 W200cm",
+      "unit": "m",
+      "quantity": 25.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP2007",
+      "name": "Vải Roller DCR-RP2007 W200cm",
+      "unit": "m",
+      "quantity": 8.6,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP2010",
+      "name": "Vải Roller DCR-RP2010 W200cm",
+      "unit": "m",
+      "quantity": 25.25,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP2328",
+      "name": "Vải DCR-RP2328 W200cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DCR-RP2365",
+      "name": "Vải Roller DCR-RP2365 W200cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-RP770",
+      "name": "Vải Roller DCR-RP770 W200cm",
+      "unit": "m",
+      "quantity": 17.9,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "dcr-snong bird beyl",
+      "name": "Vải Roller dcr-snong bird beyl-Kg W200cm",
+      "unit": "m",
+      "quantity": 7.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCR-ST6026",
+      "name": "Vải Roller DCR-ST6026 W200cm",
+      "unit": "m",
+      "quantity": 17.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DH25-A4-120",
+      "name": "Vải chính  DH25-A4-120 khổ 145cm",
+      "unit": "m",
+      "quantity": 9.9,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "DH25-B2-120",
+      "name": "Vải chính  DH25-B2-120 khổ 145cm",
+      "unit": "m",
+      "quantity": 20.9,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "Dusk Slate - 3M",
+      "name": "Vải 4915161-Dcr - Dusk Slate - W300cm",
+      "unit": "m2",
+      "quantity": 0,
+      "location": "T4 D3+E3 + T4 dưới sàn",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "EB 36360688T",
+      "name": "Vải Roller EB 36360688T W200cm",
+      "unit": "m",
+      "quantity": 14.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "EB48410186",
+      "name": "EB48410486 W300cm",
+      "unit": "m2",
+      "quantity": 186.0,
+      "location": "T4.G1.1",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "EB5448 ALA PASTER",
+      "name": "Vải mành EB5448 ALA PASTER khổ 250",
+      "unit": "m2",
+      "quantity": 65.1,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "EF214-04",
+      "name": "EF214-04 W140cm",
+      "unit": "m",
+      "quantity": 127.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "EF216-05",
+      "name": "EF216-05 W140cm",
+      "unit": "m",
+      "quantity": 75.0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "EF218-02",
+      "name": "Vải Chính EF218-02 W140cm",
+      "unit": "m",
+      "quantity": 48.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "EF218-5",
+      "name": "EF218-5 W140cm",
+      "unit": "m",
+      "quantity": 63.95,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "EF51150133-dcr",
+      "name": "Vải EB51150133 white/mushroom - 2.5M",
+      "unit": "m2",
+      "quantity": 192.0,
+      "location": "T4.G1.1",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "EF-BOD7543-TUISS",
+      "name": "EF-BOD7543-TUISS W300cm",
+      "unit": "m2",
+      "quantity": 84.0,
+      "location": "T4 Palet G-F",
+      "type": "Silhouette",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "EF-BON7531-TUISS",
+      "name": "EF-BON7531-TUISS W300cm",
+      "unit": "m2",
+      "quantity": 134.4,
+      "location": "T4 Palet G-F",
+      "type": "Silhouette",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "ELITEX EB5115 WHITE/MUSHR",
+      "name": "ELITEX EB5115 WHITE/MUSHROOM khổ 300cm",
+      "unit": "m2",
+      "quantity": 521.0,
+      "location": "T4.G1.1",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ET66470183",
+      "name": "Vải Elitex - ET66470183 Pale Grey - khổ 250",
+      "unit": "m2",
+      "quantity": 138.5,
+      "location": "T4.G1.1",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "F00614-20",
+      "name": "Vải F00614-20 khổ 140cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "F02-Front-28022023",
+      "name": "Vải B Fabric Sample With FR (F02-Front-28022023) Thổ khổ 280cm",
+      "unit": "m",
+      "quantity": 747.0,
+      "location": "T4.A3.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "F13-NB03300105",
+      "name": "Vải F13-NB03300105 W300cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "F14-DUSK MARTINI",
+      "name": "F14-DUSK MARTINI (MARIAH) - TUISS khổ 300cm",
+      "unit": "m2",
+      "quantity": 270.0,
+      "location": "T4.G2.2",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB15092A8",
+      "name": "Vải FB15092A8 khổ 290cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB15144A3",
+      "name": "Vải chính FB15144A3# khổ 290cm",
+      "unit": "m",
+      "quantity": 97.97,
+      "location": "T4.A3.1 và T4F2 + giữa kệ A và B",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB15151A2",
+      "name": "FB15151A2# FR-NFPA - vải mềm khổ 290cm",
+      "unit": "m",
+      "quantity": 35.0,
+      "location": "T4 D2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB15168A4",
+      "name": "Vải chính FB15168A4 khổ 290cm",
+      "unit": "m",
+      "quantity": 17.4,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB17118A7-4",
+      "name": "Vải chính FB17118A7-4 khổ 280cm",
+      "unit": "m",
+      "quantity": 413.4,
+      "location": "T4.A1.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB17118A-BWB-28",
+      "name": "Vải chính FB17118A-BWB-28 khổ 280cm",
+      "unit": "m",
+      "quantity": 13.0,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB17118A-BWB-30",
+      "name": "Vải chính FB17118A-BWB-30 khổ 280cm",
+      "unit": "m",
+      "quantity": 10.7,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB17141A-1",
+      "name": "Vải chính FB17141A-1 khổ 280cm",
+      "unit": "m",
+      "quantity": 8.2,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FB17195A-3",
+      "name": "Vải chính FB17195A-3 khổ 280cm",
+      "unit": "m",
+      "quantity": 22.4,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FS-GUNMETAL",
+      "name": "Vải chính FS-GUNMETAL khổ 280cm",
+      "unit": "m",
+      "quantity": 31.0,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FWP12157-16",
+      "name": "Vải chính  FWP12157-16 khổ 280cm",
+      "unit": "m",
+      "quantity": 70.2,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "G8002-01",
+      "name": "Vải G8002-01 Thổ khổ 140cm",
+      "unit": "m",
+      "quantity": 12.0,
+      "location": "T4.A3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "H01",
+      "name": "Vải chính H-01 khổ 280cm",
+      "unit": "m",
+      "quantity": 75.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "HA 1754-10",
+      "name": "Vải chính HA 1754-10 khổ 145cm",
+      "unit": "m",
+      "quantity": 60.5,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HA 1754-11",
+      "name": "HA 1754-11 khổ 145cm",
+      "unit": "m",
+      "quantity": 335.0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "HA 1754-4",
+      "name": "Vải chính HA 1754-4 khổ 145cm",
+      "unit": "m",
+      "quantity": 120.0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "HA1754-0701D-28",
+      "name": "Vải Chính HA1754-0701D-28 khổ 145cm",
+      "unit": "m",
+      "quantity": 45.7,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "HBM BLACKOUT HUESO",
+      "name": "Vải HBM BLACKOUT HUESO khổ 280cm",
+      "unit": "m",
+      "quantity": 37.0,
+      "location": "T4 B2.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "HENILY R/B RUN BN",
+      "name": "Vải Roller DCR-HENILY R/B RUN BN  RAI SIN W 200cm",
+      "unit": "m",
+      "quantity": 17.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HLR-17",
+      "name": "Vải chính HLR-17 khổ 140cm",
+      "unit": "m",
+      "quantity": 9.5,
+      "location": "T4 F2",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HLR-25",
+      "name": "Vải chính HLR-25 khổ 140cm",
+      "unit": "m",
+      "quantity": 8.6,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HLR-5",
+      "name": "Vải chính HLR-5 khổ 140cm",
+      "unit": "m",
+      "quantity": 9.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HOLIWOD-04",
+      "name": "Vải HOLIWOD-04 khổ 280cm",
+      "unit": "m",
+      "quantity": 9.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HTK 20189-11",
+      "name": "Vải HTK 20189-11 khổ 280cm",
+      "unit": "m",
+      "quantity": 570.0,
+      "location": "T4.A2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "HTK-20125",
+      "name": "Vải chính HTK-20125 khổ 280cm",
+      "unit": "m",
+      "quantity": 13.0,
+      "location": "T4 Thùng đất 5",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "IBI-2",
+      "name": "Vải chính IBI-2 khổ 280cm",
+      "unit": "m",
+      "quantity": 7.2,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ICON WAR WICK - COLOR",
+      "name": "Vải ICON WAR WICK - COLOR - AQUA khổ 300cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ICT-01",
+      "name": "ICT-01 khổ 140cm",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ICT-02",
+      "name": "ICT-02 khổ 140cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "JBL54452-39",
+      "name": "Vải JBL54452-39 khổ 140cm",
+      "unit": "m",
+      "quantity": 20.1,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "JBL54452-53",
+      "name": "Vải TBL54452-53 khổ 140cm",
+      "unit": "m",
+      "quantity": 8.7,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "LIBERTY-05",
+      "name": "LIBERTY-05 khổ 140cm",
+      "unit": "m",
+      "quantity": 6.8,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "LỤA ÉP HỌA TIẾT",
+      "name": "Vải lụa ép họa tiết (8600-07) khổ 280cm",
+      "unit": "m",
+      "quantity": 7.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "M-149",
+      "name": "M-149 khổ 140cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "M61",
+      "name": "M61 khổ 140cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "m907-12",
+      "name": "Vải m907-12 khổ 140cm",
+      "unit": "m",
+      "quantity": 53.0,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "M907-9",
+      "name": "M907-9 khổ 140cm",
+      "unit": "m",
+      "quantity": 19.0,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "M908-26",
+      "name": "Vải chính M908-26 khổ 145cm",
+      "unit": "m",
+      "quantity": 32.4,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "madrid canaval 210",
+      "name": "Vải Roller DCR-madrid spc R/B canaval 210 W 200cm",
+      "unit": "m",
+      "quantity": 38.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "MARINO-43",
+      "name": "Vải chính MARINO-43 khổ 142cm",
+      "unit": "m",
+      "quantity": 9.7,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "MJ304-03",
+      "name": "MJ304-03 W 140cm",
+      "unit": "m",
+      "quantity": 100.5,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "MJ428-06",
+      "name": "MJ428-06 W 200cm",
+      "unit": "m",
+      "quantity": 102.8,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "MJ428-14",
+      "name": "MJ428-14 W 200cm",
+      "unit": "m",
+      "quantity": 129.9,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "moir",
+      "name": "Vải MOIR W 140cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "MUNNAR SILK-23283",
+      "name": "Vải chính MUNNAR SILK-23283 khổ 300cm",
+      "unit": "m",
+      "quantity": 10.9,
+      "location": "T4.A3.1 tấm lẻ 7,7+3,2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "NB01300103",
+      "name": "Vải Roller NB01300103 khổ 300cm",
+      "unit": "m",
+      "quantity": 136.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "NB150629D-2",
+      "name": "Vải Chính NB150629D-2 W 140cm",
+      "unit": "m",
+      "quantity": 37.5,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "PRJ-EB4834",
+      "name": "Vải Roller PRJ-EB4834 linen 10% opening W 200cm",
+      "unit": "m",
+      "quantity": 52.5,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "PRJ-HATCH CHENILLE - D",
+      "name": "Vải chính PRJ-HATCH CHENILLE - D khổ 145cm",
+      "unit": "m",
+      "quantity": 45.5,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "PRJ-honey Bo",
+      "name": "Vải Roller PRJ-honey Bo W 280cm",
+      "unit": "kg",
+      "quantity": 13.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "PRJ-OXC B008-DCR",
+      "name": "PRJ-OXC B008-DCR khổ 280cm",
+      "unit": "m",
+      "quantity": 5.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "damaged",
+      "note": ""
+    },
+    {
+      "code": "PRT-40273 FR",
+      "name": "PRT-40273 FR W 280cm",
+      "unit": "m",
+      "quantity": 25.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "R700-05",
+      "name": "R700-05 W 140cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4 F2",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "R700-1",
+      "name": "R700-1 W 140cm",
+      "unit": "m",
+      "quantity": 59.1,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "R700-15",
+      "name": "R700-15 W 140cm",
+      "unit": "m",
+      "quantity": 32.4,
+      "location": "T4.K3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "R700-19",
+      "name": "Vải R700-19 W 140cm",
+      "unit": "m",
+      "quantity": 22.5,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "Satin Apex SA 9196 Chintz",
+      "name": "Vải chính Satin Apex SA 9196 Chintz Vũ Huỳnh W 140cm",
+      "unit": "m",
+      "quantity": 24.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "SDWY0035-21-7542-HF-NG",
+      "name": "SDWY0035-21-7542-HF-NG W 280cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 B2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "SG21-YH56-1",
+      "name": "Vải SG Màu kem W280",
+      "unit": "m",
+      "quantity": 31.0,
+      "location": "T4 B2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ST 5049 CjNcc",
+      "name": "Vải Roller ST 5049 CjNcc W 280cm",
+      "unit": "m",
+      "quantity": 120.0,
+      "location": "T4 Palet G-F",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ST-5031F",
+      "name": "Vải Roller ST-5031F W 200cm",
+      "unit": "m",
+      "quantity": 8.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "ST5082",
+      "name": "Vải Roller ST5082 W 200cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "T201",
+      "name": "Vải Roller T201 W 200cm",
+      "unit": "m",
+      "quantity": 8.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TF13590-002",
+      "name": "Vải Chính TF13590-002 W 140cm",
+      "unit": "m",
+      "quantity": 65.0,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TF13590-4",
+      "name": "TF13590-4 W 140cm",
+      "unit": "m",
+      "quantity": 38.98,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TF13950-006",
+      "name": "Vải TF13950-006 khổ 140cm",
+      "unit": "m",
+      "quantity": 102.8,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TM17-37",
+      "name": "Vải chính TM17-37 thượng mỹ khổ 280cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "TP01623-00229",
+      "name": "TP01623-229 W 140cm",
+      "unit": "m",
+      "quantity": 46.0,
+      "location": "T4 F1,2+ T2E2",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "TP01623-0035",
+      "name": "Vải TP01623-35 W 140cm",
+      "unit": "m",
+      "quantity": 81.03,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TP01623-219",
+      "name": "Vải chính TP01623-219 khổ 140cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TP01623-222",
+      "name": "Vải chính TP01623-222 khổ 140cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 F3",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "TP01623-224",
+      "name": "Vải chính TP01623-224 khổ 140cm",
+      "unit": "m",
+      "quantity": 12.5,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TP01623-228",
+      "name": "Vải chính TP01623-228 khổ 140cm",
+      "unit": "m",
+      "quantity": 5.9,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "TP01623-6010",
+      "name": "Vải TP01623-6010 W 140cm",
+      "unit": "m",
+      "quantity": 54.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TP13590-003",
+      "name": "Vải TP13590-003 W 140cm",
+      "unit": "m",
+      "quantity": 92.0,
+      "location": "T4.H2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TP229",
+      "name": "Vải Chính TP229 W 140cm",
+      "unit": "m",
+      "quantity": 17.0,
+      "location": "T4 F2",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "UN 1371",
+      "name": "Vải Mành Roller EUROSCREEN W 280cm",
+      "unit": "m",
+      "quantity": 5.5,
+      "location": "T4.G2.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "V01",
+      "name": "Vải V01 W 280cm",
+      "unit": "m",
+      "quantity": 25.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "vải nhung màu be",
+      "name": "Vải vải nhung màu be W 140cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 F1",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "Vải nhung màu xanh",
+      "name": "Vải Vải nhung màu xanh W 140cm",
+      "unit": "m",
+      "quantity": 7.8,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "VELVET NAMPA 282-4101",
+      "name": "Vải VELVET NAMPA 282- 4101  khổ 140cm",
+      "unit": "m",
+      "quantity": 33.0,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "VELVET NAMPA 284-54247",
+      "name": "Vải VELVET NAMPA 284- 54247  khổ 140cm",
+      "unit": "m",
+      "quantity": 36.6,
+      "location": "T4 G3.1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "VN 10808",
+      "name": "Vải chính VN 10808 khổ 145cm",
+      "unit": "m",
+      "quantity": 10.8,
+      "location": "T4.H1",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "VOAN HỒNG",
+      "name": "VẢI VOAN HỒNG W 280cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 E2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "Voile R/B Cream",
+      "name": "Vải Roller Voile R/B Cream W 200cm",
+      "unit": "m",
+      "quantity": 55.0,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "Voile R/B White",
+      "name": "Vải Roller Voile R/B White W 200cm",
+      "unit": "m",
+      "quantity": 40.5,
+      "location": "T4 D3+E3",
+      "type": "Roller",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "VR1000-06",
+      "name": "Vải chính MP637 145 NJ VR1000-06 khổ 145cm",
+      "unit": "m",
+      "quantity": 39.8,
+      "location": "T4 F2",
+      "type": "Vải bọc",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "w5601-6",
+      "name": "Vải w5601-6 khổ 140cm",
+      "unit": "m",
+      "quantity": 72.0,
+      "location": "T4.K2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "W5601-9",
+      "name": "Vải mành W5601-9 W 140cm",
+      "unit": "m",
+      "quantity": 123.5,
+      "location": "T4.K2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "YB0822-1",
+      "name": "Vải màu xanh - Duckegg ( 300 ) W 280cm",
+      "unit": "m",
+      "quantity": 49.8,
+      "location": "T4 B2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "YB180904-9",
+      "name": "YB180904-9- bán trong nước W 280cm",
+      "unit": "m",
+      "quantity": 126.0,
+      "location": "T4 D1 + E1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "YBJS0617",
+      "name": "Vải chính YBJS0617 khổ 280cm",
+      "unit": "m",
+      "quantity": 109.0,
+      "location": "T4.K1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "YY2156-10",
+      "name": "Vải chính YY2156-10 khổ 280cm",
+      "unit": "m",
+      "quantity": 33.0,
+      "location": "T4.K1",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "YY2156-12",
+      "name": "Vải chính YY2156-12 khổ 280cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4.A2.2",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "FS FLAX-NG",
+      "name": "Vải FS FLAX-NG W280",
+      "unit": "m",
+      "quantity": 46.0,
+      "location": "Pallet tầng 2",
+      "type": "Roller",
+      "status": "damaged",
+      "note": ""
+    },
+    {
+      "code": "DCT-BO-TB01-NG",
+      "name": "Vải TREEBARK BO ROLLER BLIND FABRIC W 280 CM",
+      "unit": "m",
+      "quantity": 33.0,
+      "location": "Pallet tầng 2",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "VL-BF45(H)-NG",
+      "name": "VẢI VALENTINE FRESH BLACKOUT W250 ( SN-BF45)",
+      "unit": "m",
+      "quantity": 80.0,
+      "location": "Pallet tầng 2",
+      "type": "Suntrip",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "HARMONY-OXC B003-NG",
+      "name": "VẢI HARMONY-003 BLACKOUT-NG W280",
+      "unit": "m",
+      "quantity": 38.0,
+      "location": "Pallet tầng 2",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "D2070-008-NG",
+      "name": "VẢI D2070-008-NG LỖI PHAI MÀU W280",
+      "unit": "m",
+      "quantity": 405.0,
+      "location": "Pallet tầng 2",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "D2082-001-NG",
+      "name": "D2082-001 LÕI VÕNG NẶNG W280",
+      "unit": "m",
+      "quantity": 300.0,
+      "location": "Pallet tầng 2",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "NN-12-DK",
+      "name": "VẢI SUNSTRIP MÀU TRẮNG W280 (ICE WHITE B2G)",
+      "unit": "m",
+      "quantity": 180.0,
+      "location": "Pallet tầng 2",
+      "type": "Suntrip",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "HQ-1",
+      "name": "Vải HQ-1 khổ 280cm",
+      "unit": "m",
+      "quantity": 25.9,
+      "location": "Pallet giữa kệ A và B Tầng 4",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "YB14005-3",
+      "name": "Vải YB14005-3 Khổ 300cm",
+      "unit": "m",
+      "quantity": 29.5,
+      "location": "Pallet giữa kệ A và B Tầng 4",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "DCR-L4001-12122",
+      "name": "Vải voan DCR-L4001-12122 khổ 300cm",
+      "unit": "m",
+      "quantity": 57.3,
+      "location": "Pallet giữa kệ A và B Tầng 4",
+      "type": "voan",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "VLIET-PURE WHITE A",
+      "name": "Vải voan VLIET-PURE WHITE A khổ 280cm",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "Pallet giữa kệ A và B Tầng 4",
+      "type": "voan",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "BWB-8036-1",
+      "name": "Vải BWB-8036-1 Khổ 280cm",
+      "unit": "m",
+      "quantity": 9.9,
+      "location": "T4B1.2",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "A5583-2",
+      "name": "Vải voan A5583-2  Khổ 280cm",
+      "unit": "m",
+      "quantity": 62.0,
+      "location": "T4F3+T2G2",
+      "type": "voan",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "31405014",
+      "name": "AS22803-12 - 6% linen, 94% Polyeste W288cm, color: 12",
+      "unit": "m",
+      "quantity": 92.0,
+      "location": "T4C3",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "YB0822-2",
+      "name": "Vải YB0822-2 khổ 280cm",
+      "unit": "m",
+      "quantity": 65.0,
+      "location": "T4B2.2 Nhập thêm vào kho",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "TP01623-140",
+      "name": "Vải TP01623-140 khổ 140cm",
+      "unit": "m",
+      "quantity": 29.2,
+      "location": "T4F1 nhập thêm vào kho",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "Dymondmie - Straw",
+      "name": "Vải Dymondmie - Straw khổ 140cm",
+      "unit": "m",
+      "quantity": 50.0,
+      "location": "T4F2 Nhập thêm vào kho",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "JNF-173-17104120",
+      "name": "Vải JNF-173-17104120 khổ 280cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4C3 Nhập thêm vào kho",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "BWB-8043",
+      "name": "Vải màu hồng họa tiết khổ 280 cm",
+      "unit": "m",
+      "quantity": 57.38,
+      "location": "Tầng 4 giữa kệ A và B",
+      "type": "fabric",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCT-BO-LT-06",
+      "name": "Vải Roller khổ 280cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DL202143311",
+      "name": "Vải suntrip khổ 280cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 dưới sàn",
+      "type": "Suntrip",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "SG21-19-4007",
+      "name": "Vải  SG21-19-4007 khổ 280cm",
+      "unit": "m",
+      "quantity": 68.0,
+      "location": "T4C3",
+      "type": "fabric",
+      "status": "available",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "EB16306D5",
+      "name": "Vải  EB16306D5 khổ 280cm",
+      "unit": "m",
+      "quantity": 50.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "SG màu đen",
+      "name": "Vải SG màu đen khổ 280cm",
+      "unit": "m",
+      "quantity": 12.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "SG21-14-C434",
+      "name": "Vải SG21-14-C434 khổ 280cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "AS22878-6",
+      "name": "Vải AS22878-6 khổ 280cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "FB15151A3",
+      "name": "Vải FB15151A3 khổ 280cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": ""
+    },
+    {
+      "code": "W5601-24",
+      "name": "Vải W5601-24 khổ 280cm",
+      "unit": "m",
+      "quantity": 34.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "FB15090A-21",
+      "name": "Vải FB15090A-21 khổ 280cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "JNF-15-new",
+      "name": "Vải JNF-15-new khổ 280cm",
+      "unit": "m",
+      "quantity": 24.5,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "AS228388-3",
+      "name": "Vải AS228388-3 khổ 280cm",
+      "unit": "m",
+      "quantity": 25.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HA1449-W",
+      "name": "Vải HA1449-W khổ 280cm",
+      "unit": "m",
+      "quantity": 39.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "JNF161",
+      "name": "Vải JNF161 khổ 280cm",
+      "unit": "m",
+      "quantity": 35.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "THCO-14",
+      "name": "Vải THCO-14 khổ 280cm",
+      "unit": "m",
+      "quantity": 20.0,
+      "location": "T4C4",
+      "type": "fabric",
+      "status": "available",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCT-BO-TB07",
+      "name": "Vải DCT-BO-TB07 khổ 280cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "DLWG202136055",
+      "name": "Vải DLWG202136055 khổ 280cm",
+      "unit": "m",
+      "quantity": 5.0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "DUSK XTRA VIVID",
+      "name": "Vải DUSK XTRA VIVID khổ 300cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "EB48500186 WINSPRAY GREY",
+      "name": "Vải EB48500186 WINSPRAY GREY khổ 300cm",
+      "unit": "m",
+      "quantity": 15.0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HARMONY-OXC B003-NG (TRẮNG)",
+      "name": "Vải HARMONY-OXC B003-NG (TRẮNG) khổ 280cm",
+      "unit": "m",
+      "quantity": 10.0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HARMONY-OXC B014",
+      "name": "Vải HARMONY-OXC B014 khổ 280cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "HARMONY-OXC B12-NG",
+      "name": "Vải HARMONY-OXC B12-NG khổ 280cm",
+      "unit": "m",
+      "quantity": 22.2,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "VL-BFAT 45",
+      "name": "Vải VL-BFAT 45 khổ 280cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 dưới sàn",
+      "type": "Suntrip",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "VL-BFAT12 (H)",
+      "name": "Vải VL-BFAT12 (H) khổ 280cm",
+      "unit": "m",
+      "quantity": 18.0,
+      "location": "T4 dưới sàn",
+      "type": "Suntrip",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "VL-BFAT96",
+      "name": "Vải VL-BFAT96 khổ 280cm",
+      "unit": "m",
+      "quantity": 35.0,
+      "location": "T4 dưới sàn",
+      "type": "Suntrip",
+      "status": "damaged",
+      "note": "Vải tồn VQ, ko có giá"
+    },
+    {
+      "code": "VL-FQAT42 (H)",
+      "name": "Vải VL-FQAT42 (H) khổ 280cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 dưới sàn",
+      "type": "Suntrip",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "DCT-BO-ZH",
+      "name": "Vải DCT-BO-ZH khổ 280cm",
+      "unit": "m",
+      "quantity": 0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HARMONY-OXC B010",
+      "name": "Vải HARMONY-OXC B010 khổ 280cm",
+      "unit": "m",
+      "quantity": 40.0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "SC-UDPL 15 FR",
+      "name": "Vải SC-UDPL 15 FR khổ 240cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4 dưới sàn",
+      "type": "Roller",
+      "status": "damaged",
+      "note": "ko có giá"
+    },
+    {
+      "code": "HA 1754- Italy-5",
+      "name": "Vải chính HA 1754-10 khổ 145cm",
+      "unit": "m",
+      "quantity": 30.0,
+      "location": "T4F1",
+      "type": "fabric",
+      "status": "damaged",
+      "note": ""
+    }
+  ]
+}
