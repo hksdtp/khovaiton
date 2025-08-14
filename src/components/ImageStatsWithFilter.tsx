@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import { Image, ImageOff, Package, Filter, EyeOff, Trash2 } from 'lucide-react'
+import { Image, ImageOff, Package, Filter, EyeOff } from 'lucide-react'
 import { useFabricStats } from '@/features/inventory/hooks/useFabrics'
 import { useInventoryStore } from '@/features/inventory/store/inventoryStore'
 import { useFabrics } from '@/features/inventory/hooks/useFabrics'

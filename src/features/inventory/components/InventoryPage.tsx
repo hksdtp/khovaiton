@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Package, MoreHorizontal, TrendingUp, AlertTriangle, Filter, ArrowUpDown, RefreshCw } from 'lucide-react'
+import { Package, MoreHorizontal, TrendingUp, AlertTriangle, Filter } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useFabricStats } from '../hooks/useFabrics'
@@ -26,7 +26,7 @@ import { ImageViewerModal } from '@/components/ImageViewerModal'
 import { ImageEditor } from '@/components/ImageEditor'
 import { ImageStatsWithFilter } from '@/components/ImageStatsWithFilter'
 import { useQueryClient } from '@tanstack/react-query'
-import { FilterDebug } from '@/debug/FilterDebug'
+// import { FilterDebug } from '@/debug/FilterDebug'
 import { HiddenProductsAnalyzer } from '@/tools/HiddenProductsAnalyzer'
 
 
@@ -42,8 +42,8 @@ export function InventoryPage() {
     fabricCode?: string
   }>({ type: null, message: '' })
   // Tạm comment các state không sử dụng
-  const [showSyncPanel, setShowSyncPanel] = useState(false)
-  const [isSortOpen, setIsSortOpen] = useState(false)
+  // const [showSyncPanel, setShowSyncPanel] = useState(false)
+  // const [isSortOpen, setIsSortOpen] = useState(false)
 
   // Image viewer and editor states
   const [imageViewerState, setImageViewerState] = useState<{

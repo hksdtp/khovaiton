@@ -195,7 +195,6 @@ class LocalStorageService {
     updates[fabricId] = {
       ...existing,
       isDeleted: false,
-      deletedAt: undefined,
       updatedAt: new Date().toISOString()
     }
 

@@ -6,8 +6,7 @@ import {
   FabricStats
 } from '../types'
 import { PaginationParams, PaginationResponse } from '@/shared/types'
-import { mockFabrics, getMockFabrics } from '@/shared/mocks/fabricData'
-import { hasRealImage } from '@/data/fabricImageMapping'
+import { getMockFabrics } from '@/shared/mocks/fabricData'
 import { localStorageService } from '../services/localStorageService'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
@@ -101,7 +100,7 @@ async function initializeRealData() {
     console.log(`✅ Initialized with ${realFabrics.length} fabrics from Supabase`)
   } catch (error) {
     console.warn('❌ Failed to load from Supabase, using fallback fabric data:', error)
-    realFabrics = getMockFabrics()
+    realFabrics = await getMockFabrics()
     console.log(`📦 Using ${realFabrics.length} mock fabrics as fallback`)
   }
 }
@@ -173,7 +172,7 @@ export const fabricApi = {
         console.log(`✅ Loaded ${realFabrics.length} fabrics from Supabase`)
       } catch (error) {
         console.warn('❌ Could not load from Supabase, using mock data:', error)
-        realFabrics = getMockFabrics()
+        realFabrics = await getMockFabrics()
         console.log(`📦 Using ${realFabrics.length} mock fabrics as fallback`)
       }
     }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Download, Eye, EyeOff, Image, ImageOff } from 'lucide-react'
+import { Download, Eye, EyeOff, ImageOff } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { useFabrics } from '@/features/inventory/hooks/useFabrics'
 import { Fabric } from '@/features/inventory/types'
@@ -21,7 +21,7 @@ export function HiddenProductsAnalyzer({ onClose }: HiddenProductsAnalyzerProps)
   const [analysis, setAnalysis] = useState<ProductAnalysis | null>(null)
 
   useEffect(() => {
-    if (fabrics.length > 0) {
+    if (Array.isArray(fabrics) && fabrics.length > 0) {
       analyzeProducts(fabrics)
     }
   }, [fabrics])
