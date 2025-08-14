@@ -1,0 +1,47 @@
+[
+  {
+    "code": "HARMONY-OXC B003-NG (TRẮNG)",
+    "name": "Vải HARMONY-OXC B003-NG (TRẮNG) khổ 280cm",
+    "type": "Roller",
+    "quantity": 10.0,
+    "unit": "m",
+    "price": 0,
+    "liquidation_price": 50000.0,
+    "location": "T4 dưới sàn",
+    "condition": "Lỗi, bẩn",
+    "notes": "ko có giá",
+    "is_deleted": false,
+    "created_at": "now()",
+    "updated_at": "now()"
+  },
+  {
+    "code": "VL-BFAT12 (H)",
+    "name": "Vải VL-BFAT12 (H) khổ 280cm",
+    "type": "Suntrip",
+    "quantity": 18.0,
+    "unit": "m",
+    "price": 0,
+    "liquidation_price": 50000.0,
+    "location": "T4 dưới sàn",
+    "condition": "Lỗi, bẩn",
+    "notes": "ko có giá",
+    "is_deleted": false,
+    "created_at": "now()",
+    "updated_at": "now()"
+  },
+  {
+    "code": "VL-FQAT42 (H)",
+    "name": "Vải VL-FQAT42 (H) khổ 280cm",
+    "type": "Suntrip",
+    "quantity": 30.0,
+    "unit": "m",
+    "price": 0,
+    "liquidation_price": 50000.0,
+    "location": "T4 dưới sàn",
+    "condition": "Lỗi, bẩn",
+    "notes": "ko có giá",
+    "is_deleted": false,
+    "created_at": "now()",
+    "updated_at": "now()"
+  }
+]

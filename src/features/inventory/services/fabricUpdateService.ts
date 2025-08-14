@@ -20,6 +20,8 @@ function convertDatabaseToApp(data: any): Fabric {
     priceNote: data.price_note,
     priceUpdatedAt: data.price_updated_at ? new Date(data.price_updated_at) : undefined,
     isHidden: data.is_hidden || false,
+    isDeleted: data.is_deleted || false,
+    deletedAt: data.deleted_at ? new Date(data.deleted_at) : undefined,
     customImageUrl: data.custom_image_url,
     customImageUpdatedAt: data.custom_image_updated_at ? new Date(data.custom_image_updated_at) : undefined,
     createdAt: new Date(data.created_at),
@@ -340,6 +342,164 @@ class FabricUpdateService {
   }
 
   /**
+   * Delete product permanently
+   */
+  async deleteProduct(fabricId: number): Promise<FabricUpdateResult> {
+    // Check if Supabase is configured
+    if (!isSupabaseConfigured) {
+      console.warn('⚠️ Supabase not configured, using localStorage for product deletion')
+      localStorageService.deleteProduct(fabricId)
+      return {
+        success: true
+      }
+    }
+
+    try {
+      console.log(`🗑️ Permanently deleting fabric ${fabricId}`)
+
+      const { error } = await supabase
+        .from('fabrics')
+        .delete()
+        .eq('id', fabricId)
+
+      if (error) {
+        console.error('❌ Supabase error deleting product:', error)
+        return {
+          success: false,
+          error: `Không thể xóa sản phẩm: ${error.message}`
+        }
+      }
+
+      console.log('✅ Product deleted successfully')
+
+      return {
+        success: true
+      }
+    } catch (error) {
+      console.error('❌ Exception deleting product:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+
+      if (errorMessage.includes('Failed to fetch') || errorMessage.includes('NetworkError')) {
+        return {
+          success: false,
+          error: 'Không thể kết nối đến database. Vui lòng kiểm tra kết nối mạng và thử lại.'
+        }
+      }
+
+      return {
+        success: false,
+        error: `Lỗi xóa sản phẩm: ${errorMessage}`
+      }
+    }
+  }
+
+  /**
+   * Soft delete product (mark as deleted but keep in database)
+   */
+  async softDeleteProduct(fabricId: number): Promise<FabricUpdateResult> {
+    // Check if Supabase is configured
+    if (!isSupabaseConfigured) {
+      console.warn('⚠️ Supabase not configured, using localStorage for soft delete')
+      localStorageService.softDeleteProduct(fabricId)
+      return {
+        success: true
+      }
+    }
+
+    try {
+      console.log(`🗑️ Soft deleting fabric ${fabricId}`)
+
+      const updateData = {
+        is_deleted: true,
+        deleted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+
+      const { data, error } = await supabase
+        .from('fabrics')
+        .update(updateData)
+        .eq('id', fabricId)
+        .select()
+
+      if (error) {
+        console.error('❌ Supabase error soft deleting product:', error)
+        return {
+          success: false,
+          error: `Không thể xóa sản phẩm: ${error.message}`
+        }
+      }
+
+      console.log('✅ Product soft deleted successfully:', data)
+
+      return {
+        success: true,
+        fabric: data && data.length > 0 ? convertDatabaseToApp(data[0]) : undefined
+      }
+    } catch (error) {
+      console.error('❌ Exception soft deleting product:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+
+      return {
+        success: false,
+        error: `Lỗi xóa sản phẩm: ${errorMessage}`
+      }
+    }
+  }
+
+  /**
+   * Restore soft deleted product
+   */
+  async restoreProduct(fabricId: number): Promise<FabricUpdateResult> {
+    // Check if Supabase is configured
+    if (!isSupabaseConfigured) {
+      console.warn('⚠️ Supabase not configured, using localStorage for restore')
+      localStorageService.restoreProduct(fabricId)
+      return {
+        success: true
+      }
+    }
+
+    try {
+      console.log(`🔄 Restoring fabric ${fabricId}`)
+
+      const updateData = {
+        is_deleted: false,
+        deleted_at: null,
+        updated_at: new Date().toISOString()
+      }
+
+      const { data, error } = await supabase
+        .from('fabrics')
+        .update(updateData)
+        .eq('id', fabricId)
+        .select()
+
+      if (error) {
+        console.error('❌ Supabase error restoring product:', error)
+        return {
+          success: false,
+          error: `Không thể khôi phục sản phẩm: ${error.message}`
+        }
+      }
+
+      console.log('✅ Product restored successfully:', data)
+
+      return {
+        success: true,
+        fabric: data && data.length > 0 ? convertDatabaseToApp(data[0]) : undefined
+      }
+    } catch (error) {
+      console.error('❌ Exception restoring product:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+
+      return {
+        success: false,
+        error: `Lỗi khôi phục sản phẩm: ${errorMessage}`
+      }
+    }
+  }
+
+  /**
    * Get fabric statistics including hidden and priced items
    */
   async getFabricStats(): Promise<{
@@ -348,33 +508,37 @@ class FabricUpdateService {
     hidden: number
     withPrice: number
     withoutPrice: number
+    deleted: number
   }> {
     try {
       const { data, error } = await supabase
         .from('fabrics')
-        .select('id, is_hidden, price')
+        .select('id, is_hidden, price, is_deleted')
 
       if (error) {
         console.error('❌ Error getting fabric stats:', error)
-        return { total: 0, visible: 0, hidden: 0, withPrice: 0, withoutPrice: 0 }
+        return { total: 0, visible: 0, hidden: 0, withPrice: 0, withoutPrice: 0, deleted: 0 }
       }
 
       const total = data.length
-      const hidden = data.filter(f => f.is_hidden).length
-      const visible = total - hidden
-      const withPrice = data.filter(f => f.price !== null && f.price !== undefined).length
-      const withoutPrice = total - withPrice
+      const deleted = data.filter(f => f.is_deleted).length
+      const active = data.filter(f => !f.is_deleted)
+      const hidden = active.filter(f => f.is_hidden).length
+      const visible = active.length - hidden
+      const withPrice = active.filter(f => f.price !== null && f.price !== undefined).length
+      const withoutPrice = active.length - withPrice
 
       return {
         total,
         visible,
         hidden,
         withPrice,
-        withoutPrice
+        withoutPrice,
+        deleted
       }
     } catch (error) {
       console.error('❌ Exception getting fabric stats:', error)
-      return { total: 0, visible: 0, hidden: 0, withPrice: 0, withoutPrice: 0 }
+      return { total: 0, visible: 0, hidden: 0, withPrice: 0, withoutPrice: 0, deleted: 0 }
     }
   }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Package, MoreHorizontal, TrendingUp, AlertTriangle } from 'lucide-react'
+import { Package, MoreHorizontal, TrendingUp, AlertTriangle, Filter, ArrowUpDown, RefreshCw } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
 import { useFabrics, useFabricStats } from '../hooks/useFabrics'
@@ -14,7 +14,7 @@ import { useInventoryStore, useInventorySelectors } from '../store/inventoryStor
 import { FabricGrid } from './FabricGrid'
 import { SearchBar } from './SearchBar'
 {/* Tạm comment các import không sử dụng */}
-{/* import { FilterPanel } from './FilterPanel' */}
+import { FilterPanel } from './FilterPanel'
 {/* import { SortPanel } from './SortPanel' */}
 {/* import { ImageStatusFilter } from './ImageStatusFilter' */}
 import { Pagination } from './Pagination'
@@ -42,8 +42,8 @@ export function InventoryPage() {
     fabricCode?: string
   }>({ type: null, message: '' })
   // Tạm comment các state không sử dụng
-  // const [showSyncPanel, setShowSyncPanel] = useState(false)
-  // const [isSortOpen, setIsSortOpen] = useState(false)
+  const [showSyncPanel, setShowSyncPanel] = useState(false)
+  const [isSortOpen, setIsSortOpen] = useState(false)
 
   // Image viewer and editor states
   const [imageViewerState, setImageViewerState] = useState<{
@@ -79,19 +79,19 @@ export function InventoryPage() {
     // sortOptions, // Tạm comment vì không dùng
     searchTerm,
     selectedFabric,
-    // isFilterOpen, // Tạm comment vì không dùng
+    isFilterOpen,
     isUploadModalOpen,
     uploadingForId,
     itemsPerPage,
     setSearchTerm,
     setSelectedFabric,
-    // setFilterOpen, // Tạm comment vì không dùng
+    setFilterOpen,
     setUploadModal,
-    // setFilters, // Tạm comment vì không dùng
+    setFilters,
     // setSortOptions, // Tạm comment vì không dùng
     setCurrentPage,
     setItemsPerPage,
-    // resetFilters, // Tạm comment vì không dùng
+    resetFilters,
   } = useInventoryStore()
 
   const { getPaginationParams } = useInventorySelectors()
@@ -382,6 +382,44 @@ export function InventoryPage() {
     }
   }
 
+  // Handle product deletion
+  const handleProductDelete = async (fabricId: number, permanent: boolean) => {
+    try {
+      const result = permanent
+        ? await fabricUpdateService.deleteProduct(fabricId)
+        : await fabricUpdateService.updateVisibility(fabricId, true) // Soft delete by hiding
+
+      if (result.success) {
+        console.log(`✅ Product ${permanent ? 'deleted permanently' : 'hidden'}`)
+
+        // Show success message
+        if (result.error) {
+          // Mock mode - show warning
+          const action = permanent ? 'xóa' : 'ẩn'
+          alert(`⚠️ Sản phẩm đã được ${action} tạm thời.\n\n${result.error}`)
+        } else {
+          // Real database update
+          const action = permanent ? 'xóa vĩnh viễn' : 'ẩn'
+          alert(`✅ Sản phẩm đã được ${action} thành công!`)
+        }
+
+        // Close modal if product was deleted
+        if (selectedFabric && selectedFabric.id === fabricId) {
+          setSelectedFabric(null)
+        }
+
+        // Refresh data
+        await queryClient.invalidateQueries({ queryKey: ['fabrics'] })
+        await queryClient.invalidateQueries({ queryKey: ['fabric-stats'] })
+      } else {
+        throw new Error(result.error || 'Failed to delete product')
+      }
+    } catch (error) {
+      console.error('❌ Exception deleting product:', error)
+      alert(`❌ ${(error as Error).message}`)
+    }
+  }
+
   // Handle opening image editor
   const handleEditImage = (imageUrl: string, fabricCode: string) => {
     setImageViewerState({ isOpen: false, imageUrl: '', fabricCode: '', fabricName: '' })
@@ -490,17 +528,20 @@ export function InventoryPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                {/* Tạm ẩn các nút Lọc, Sắp xếp, Đồng bộ theo yêu cầu */}
-                {/* <Button
-                  variant={isFilterOpen ? "primary" : "secondary"}
-                  onClick={() => setFilterOpen(!isFilterOpen)}
-                  size="sm"
-                >
-                  <Filter className="w-4 h-4" />
-                  Lọc
-                </Button>
+                {/* Filter button - Only show in SALE mode */}
+                {!isMarketingVersion && (
+                  <Button
+                    variant={isFilterOpen ? "primary" : "secondary"}
+                    onClick={() => setFilterOpen(!isFilterOpen)}
+                    size="sm"
+                  >
+                    <Filter className="w-4 h-4" />
+                    Lọc
+                  </Button>
+                )}
 
-                <Button
+                {/* Tạm ẩn các nút Sort và Sync */}
+                {/* <Button
                   variant={isSortOpen ? "primary" : "secondary"}
                   onClick={() => setIsSortOpen(!isSortOpen)}
                   size="sm"
@@ -535,6 +576,7 @@ export function InventoryPage() {
                   <RefreshCw className="w-4 h-4" />
                   Sync Manager
                 </Button> */}
+
                 {/* Button More - HIDDEN */}
                 {false && (
                   <Button variant="ghost" size="sm">
@@ -550,16 +592,17 @@ export function InventoryPage() {
               onChange={setSearchTerm}
             />
 
-            {/* Tạm ẩn các panel theo yêu cầu */}
-            {/* Advanced Filter Panel */}
-            {/* <FilterPanel
-              isOpen={isFilterOpen}
-              onClose={() => setFilterOpen(false)}
-              filters={filters}
-              onFiltersChange={setFilters}
-              onResetFilters={resetFilters}
-              resultCount={fabricsData?.total}
-            /> */}
+            {/* Advanced Filter Panel - Only show in SALE mode */}
+            {!isMarketingVersion && (
+              <FilterPanel
+                isOpen={isFilterOpen}
+                onClose={() => setFilterOpen(false)}
+                filters={filters}
+                onFiltersChange={setFilters}
+                onResetFilters={resetFilters}
+                resultCount={fabricsData?.total}
+              />
+            )}
 
             {/* Sort Panel */}
             {/* {isSortOpen && (
@@ -601,7 +644,9 @@ export function InventoryPage() {
           onViewImage={handleViewImage}
           onPriceUpdate={handlePriceUpdate}
           onVisibilityToggle={isMarketingVersion ? undefined : handleVisibilityToggle}
+          onDelete={isMarketingVersion ? undefined : handleProductDelete}
           isMarketingMode={isMarketingVersion}
+          isSaleMode={!isMarketingVersion}
           isLoading={isLoading}
         />
 
@@ -630,6 +675,8 @@ export function InventoryPage() {
           onViewImage={handleViewImage}
           onPriceUpdate={isMarketingVersion ? undefined : handlePriceUpdate}
           onVisibilityToggle={isMarketingVersion ? undefined : handleVisibilityToggle}
+          onDelete={isMarketingVersion ? undefined : handleProductDelete}
+          isSaleMode={!isMarketingVersion}
         />
       )}
 

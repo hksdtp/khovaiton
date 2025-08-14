@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Liquidation Price Display</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .fabric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .fabric-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #e5e5e5;
+        }
+        .fabric-code {
+            background: #3b82f6;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .fabric-name {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1f2937;
+        }
+        .price-section {
+            margin-top: 15px;
+        }
+        .price-regular {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+        .price-liquidation {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        .price-label {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .price-regular .price-label {
+            color: #15803d;
+        }
+        .price-liquidation .price-label {
+            color: #c2410c;
+        }
+        .price-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .price-regular .price-value {
+            color: #15803d;
+        }
+        .price-liquidation .price-value {
+            color: #c2410c;
+        }
+        .no-price {
+            background: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            color: #6b7280;
+        }
+        .log {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            margin-bottom: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .status.success {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+        .status.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        .status.info {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 Test Liquidation Price Display</h1>
+        <p>Kiểm tra hiển thị giá thanh lý từ database Supabase</p>
+        <button onclick="testLiquidationDisplay()" style="background: #3b82f6; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">
+            🔄 Test Display
+        </button>
+    </div>
+
+    <div id="status"></div>
+    <div id="log" class="log"></div>
+    <div id="fabricGrid" class="fabric-grid"></div>
+
+    <script>
+        // Supabase config
+        const SUPABASE_URL = 'https://zgrfqkytbmahxcbgpkxx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncmZxa3l0Ym1haHhjYmdwa3h4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxNjI1MTAsImV4cCI6MjA2MTczODUxMH0.a6giZZFMrj6jBhLip3ShOFCyTHt5dbe31UDGCECh0Zs';
+        
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function setStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(price);
+        }
+        
+        function createFabricCard(fabric) {
+            const hasRegularPrice = fabric.price !== null && fabric.price !== undefined;
+            const hasLiquidationPrice = fabric.liquidation_price !== null && fabric.liquidation_price !== undefined;
+            
+            let priceSection = '';
+            
+            if (hasRegularPrice || hasLiquidationPrice) {
+                priceSection = '<div class="price-section">';
+                
+                // Giá bán thông thường
+                if (hasRegularPrice) {
+                    priceSection += `
+                        <div class="price-regular">
+                            <div class="price-label">💰 Giá bán</div>
+                            <div class="price-value">${formatPrice(fabric.price)}</div>
+                            ${fabric.price_note ? `<div style="font-size: 12px; margin-top: 4px; color: #15803d;">${fabric.price_note}</div>` : ''}
+                        </div>
+                    `;
+                }
+                
+                // Giá thanh lý
+                if (hasLiquidationPrice) {
+                    priceSection += `
+                        <div class="price-liquidation">
+                            <div class="price-label">🏷️ Giá thanh lý</div>
+                            <div class="price-value">${formatPrice(fabric.liquidation_price)}</div>
+                        </div>
+                    `;
+                }
+                
+                priceSection += '</div>';
+            } else {
+                priceSection = `
+                    <div class="price-section">
+                        <div class="no-price">
+                            💰 Chưa có giá
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return `
+                <div class="fabric-card">
+                    <div class="fabric-code">${fabric.code}</div>
+                    <div class="fabric-name">${fabric.name || 'Không có tên'}</div>
+                    <div style="font-size: 14px; color: #6b7280; margin-bottom: 10px;">
+                        Số lượng: <strong>${fabric.quantity || 0} ${fabric.unit || 'pieces'}</strong>
+                    </div>
+                    ${priceSection}
+                    <div style="margin-top: 15px; font-size: 12px; color: #9ca3af;">
+                        <div>Regular Price: ${hasRegularPrice ? '✅' : '❌'}</div>
+                        <div>Liquidation Price: ${hasLiquidationPrice ? '✅' : '❌'}</div>
+                        <div>Updated: ${fabric.updated_at ? new Date(fabric.updated_at).toLocaleString('vi-VN') : 'N/A'}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        async function testLiquidationDisplay() {
+            setStatus('🔄 Đang test hiển thị giá thanh lý...', 'info');
+            log('🧪 Bắt đầu test liquidation price display');
+            
+            try {
+                // Fetch fabrics with liquidation prices
+                log('📡 Fetching fabrics with liquidation prices...');
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fabrics?select=*&liquidation_price=not.is.null&limit=20&order=updated_at.desc`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const fabrics = await response.json();
+                log(`✅ Fetched ${fabrics.length} fabrics with liquidation prices`);
+                
+                if (fabrics.length === 0) {
+                    setStatus('⚠️ Không tìm thấy fabrics nào có liquidation price', 'error');
+                    return;
+                }
+                
+                // Display fabrics
+                const fabricGrid = document.getElementById('fabricGrid');
+                fabricGrid.innerHTML = '';
+                
+                fabrics.forEach(fabric => {
+                    fabricGrid.innerHTML += createFabricCard(fabric);
+                });
+                
+                // Statistics
+                const withRegularPrice = fabrics.filter(f => f.price !== null && f.price !== undefined).length;
+                const withLiquidationPrice = fabrics.filter(f => f.liquidation_price !== null && f.liquidation_price !== undefined).length;
+                const withBothPrices = fabrics.filter(f => 
+                    (f.price !== null && f.price !== undefined) && 
+                    (f.liquidation_price !== null && f.liquidation_price !== undefined)
+                ).length;
+                
+                log(`📊 Statistics:`);
+                log(`   - Total fabrics: ${fabrics.length}`);
+                log(`   - With regular price: ${withRegularPrice}`);
+                log(`   - With liquidation price: ${withLiquidationPrice}`);
+                log(`   - With both prices: ${withBothPrices}`);
+                
+                setStatus(`✅ Hiển thị ${fabrics.length} fabrics có liquidation price`, 'success');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+                setStatus(`❌ Lỗi: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-run on page load
+        window.addEventListener('load', () => {
+            log('🚀 Page loaded, ready to test');
+            testLiquidationDisplay();
+        });
+    </script>
+</body>
+</html>

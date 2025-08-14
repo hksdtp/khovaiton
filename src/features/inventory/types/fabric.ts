@@ -41,6 +41,11 @@ export interface Fabric extends BaseEntity {
   price?: number | undefined // Giá bán (VND)
   priceNote?: string | undefined // Ghi chú về giá
   priceUpdatedAt?: Date | undefined // Thời gian cập nhật giá
+  liquidationPrice?: number | undefined // Giá thanh lý (VND)
+
+  // Deletion management
+  isDeleted?: boolean | undefined // Đánh dấu sản phẩm đã xóa (soft delete)
+  deletedAt?: Date | undefined // Thời gian xóa
 
   // Custom image URL override
   customImageUrl?: string | undefined // URL ảnh tùy chỉnh thủ công

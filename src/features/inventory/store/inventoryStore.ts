@@ -29,6 +29,8 @@ const getFiltersFromURL = (): { filters: FabricFilters; page: number; itemsPerPa
     location: params.get('location') || 'all' as const,
     status: (params.get('status') as any) || 'all' as const,
     imageStatus: (params.get('imageStatus') as any) || 'all' as const,
+    priceStatus: (params.get('priceStatus') as any) || 'all' as const,
+    showHidden: params.get('showHidden') === 'true',
   }
 
   const minQuantity = params.get('minQuantity')
@@ -183,6 +185,9 @@ export const useInventoryStore = create<InventoryState>()(
               type: 'all' as const,
               location: 'all' as const,
               status: 'all' as const,
+              imageStatus: 'all' as const,
+              priceStatus: 'all' as const,
+              showHidden: false,
             }
             const newPage = 1
 

@@ -7,6 +7,7 @@ import { ManualUrlForm } from './ManualUrlForm'
 import { StatusBadge } from './StatusBadge'
 import { PriceManager } from './PriceManager'
 import { VisibilityManager } from './VisibilityManager'
+import { ProductDeletionManager } from './ProductDeletionManager'
 
 interface FabricCardProps {
   fabric: Fabric
@@ -15,7 +16,9 @@ interface FabricCardProps {
   onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
   onPriceUpdate?: ((fabricId: number, price: number | null, note?: string) => Promise<void>) | undefined
   onVisibilityToggle?: ((fabricId: number, isHidden: boolean) => Promise<void>) | undefined
+  onDelete?: ((fabricId: number, permanent: boolean) => Promise<void>) | undefined
   isMarketingMode?: boolean
+  isSaleMode?: boolean
   className?: string
 }
 
@@ -26,7 +29,9 @@ export function FabricCard({
   onViewImage,
   onPriceUpdate,
   onVisibilityToggle,
+  onDelete,
   isMarketingMode = false,
+  isSaleMode = false,
   className = ''
 }: FabricCardProps) {
   const location = useLocation()
@@ -90,16 +95,18 @@ export function FabricCard({
           </div>
         )}
 
-        {/* Floating Camera Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            onUploadImage(fabric.id)
-          }}
-          className="absolute top-3 right-3 p-2 bg-white/90 rounded-lg border border-gray-200 text-gray-700 opacity-0 group-hover:opacity-100 hover:bg-white transition-all duration-200 shadow-sm"
-        >
-          <Camera className="w-4 h-4" />
-        </button>
+        {/* Floating Camera Button - Ẩn trong phiên bản Marketing */}
+        {!isMarketingVersion && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onUploadImage(fabric.id)
+            }}
+            className="absolute top-3 right-3 p-2 bg-white/90 rounded-lg border border-gray-200 text-gray-700 opacity-0 group-hover:opacity-100 hover:bg-white transition-all duration-200 shadow-sm"
+          >
+            <Camera className="w-4 h-4" />
+          </button>
+        )}
 
         {/* Hidden Badge */}
         {fabric.isHidden && (
@@ -163,36 +170,60 @@ export function FabricCard({
 
         {/* Price Display & Management */}
         <div className="mb-3">
-          {fabric.price ? (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xl font-bold text-green-700">
-                    {new Intl.NumberFormat('vi-VN', {
-                      style: 'currency',
-                      currency: 'VND',
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0
-                    }).format(fabric.price)}
+          {(fabric.price || fabric.liquidationPrice) ? (
+            <div className="space-y-2">
+              {/* Giá bán thông thường */}
+              {fabric.price && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-lg font-bold text-green-700">
+                        {new Intl.NumberFormat('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND',
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0
+                        }).format(fabric.price)}
+                      </div>
+                      {fabric.priceNote && (
+                        <div className="text-sm text-green-600 mt-1">{fabric.priceNote}</div>
+                      )}
+                    </div>
+                    {onPriceUpdate && !isMarketingVersion && (
+                      <div className="flex items-center gap-1">
+                        <PriceManager
+                          fabric={fabric}
+                          onPriceUpdate={onPriceUpdate}
+                          compact={true}
+                        />
+                      </div>
+                    )}
                   </div>
-                  {fabric.priceNote && (
-                    <div className="text-sm text-green-600 mt-1">{fabric.priceNote}</div>
-                  )}
                 </div>
-                {onPriceUpdate && (
-                  <div className="flex items-center gap-1">
-                    <PriceManager
-                      fabric={fabric}
-                      onPriceUpdate={onPriceUpdate}
-                      compact={true}
-                    />
+              )}
+
+              {/* Giá thanh lý */}
+              {fabric.liquidationPrice && (
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-orange-600 font-medium mb-1">🏷️ Giá thanh lý</div>
+                      <div className="text-lg font-bold text-orange-700">
+                        {new Intl.NumberFormat('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND',
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0
+                        }).format(fabric.liquidationPrice)}
+                      </div>
+                    </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="mb-3">
-              {onPriceUpdate && (
+              {onPriceUpdate && !isMarketingVersion && (
                 <PriceManager
                   fabric={fabric}
                   onPriceUpdate={onPriceUpdate}
@@ -203,16 +234,31 @@ export function FabricCard({
           )}
         </div>
 
-        {/* Visibility Management */}
-        <div className="flex items-center justify-end mb-3">
-          {onVisibilityToggle && (
-            <VisibilityManager
-              fabric={fabric}
-              onVisibilityToggle={onVisibilityToggle}
-              compact={true}
-            />
-          )}
-        </div>
+        {/* Visibility Management - Ẩn trong phiên bản Marketing */}
+        {!isMarketingVersion && (
+          <div className="flex items-center justify-end mb-3 gap-2">
+            {onVisibilityToggle && (
+              <VisibilityManager
+                fabric={fabric}
+                onVisibilityToggle={onVisibilityToggle}
+                compact={true}
+              />
+            )}
+
+            {/* Product Deletion Management - Only in SALE mode */}
+            {isSaleMode && onDelete && (
+              <ProductDeletionManager
+                fabric={fabric}
+                onDelete={onDelete}
+                onVisibilityToggle={onVisibilityToggle || (() => Promise.resolve())}
+                compact={true}
+                showDeleteButton={true}
+                showHideButton={false} // Already handled by VisibilityManager
+                showRestoreButton={false}
+              />
+            )}
+          </div>
+        )}
 
         {/* Remarks */}
         {fabric.remarks && (

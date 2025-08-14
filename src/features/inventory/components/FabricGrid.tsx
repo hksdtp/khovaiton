@@ -8,7 +8,9 @@ interface FabricGridProps {
   onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
   onPriceUpdate?: ((fabricId: number, price: number | null, note?: string) => Promise<void>) | undefined
   onVisibilityToggle?: ((fabricId: number, isHidden: boolean) => Promise<void>) | undefined
+  onDelete?: ((fabricId: number, permanent: boolean) => Promise<void>) | undefined
   isMarketingMode?: boolean
+  isSaleMode?: boolean
   isLoading?: boolean
 }
 
@@ -19,7 +21,9 @@ export function FabricGrid({
   onViewImage,
   onPriceUpdate,
   onVisibilityToggle,
+  onDelete,
   isMarketingMode = false,
+  isSaleMode = false,
   isLoading = false
 }: FabricGridProps) {
   if (isLoading) {
@@ -74,7 +78,9 @@ export function FabricGrid({
           onViewImage={onViewImage || (() => {})}
           onPriceUpdate={onPriceUpdate}
           onVisibilityToggle={onVisibilityToggle}
+          onDelete={onDelete}
           isMarketingMode={isMarketingMode}
+          isSaleMode={isSaleMode}
           className="animate-fade-in"
         />
       ))}

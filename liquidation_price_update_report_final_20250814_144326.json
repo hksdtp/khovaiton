@@ -1,0 +1,41 @@
+{
+  "start_time": "2025-08-14T14:24:43.081489",
+  "excel_records": 335,
+  "valid_records": 214,
+  "updated_records": 214,
+  "failed_records": 0,
+  "errors": [],
+  "sample_updates": [
+    {
+      "code": "3 PASS BO - WHITE - COL 15",
+      "name": "Vải 3 PASS BO - WHITE - COL 15 Khổ 280cm",
+      "old_liquidation_price": null,
+      "new_liquidation_price": 50000.0
+    },
+    {
+      "code": "33139-2-270",
+      "name": "Vải 33139-2-270 Khổ 280cm",
+      "old_liquidation_price": null,
+      "new_liquidation_price": 50000.0
+    },
+    {
+      "code": "71022-10",
+      "name": "Vải lá màu trắng W280 cm",
+      "old_liquidation_price": null,
+      "new_liquidation_price": 50000.0
+    },
+    {
+      "code": "71022-7",
+      "name": "Vải 71022-7 Khổ 280cm",
+      "old_liquidation_price": null,
+      "new_liquidation_price": 50000.0
+    },
+    {
+      "code": "8015-1",
+      "name": "Vải 8015-1 Khổ 290cm",
+      "old_liquidation_price": null,
+      "new_liquidation_price": 50000.0
+    }
+  ],
+  "end_time": "2025-08-14T14:27:29.369184"
+}

@@ -1,0 +1,12 @@
+{
+  "start_time": "2025-08-14T14:20:44.460295",
+  "excel_records": 0,
+  "valid_records": 0,
+  "updated_records": 0,
+  "failed_records": 0,
+  "errors": [
+    "Critical error: Không tìm thấy cột 'Giá thanh lý' trong file Excel"
+  ],
+  "sample_updates": [],
+  "end_time": "2025-08-14T14:20:49.417563"
+}

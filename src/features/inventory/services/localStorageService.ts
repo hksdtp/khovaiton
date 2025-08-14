@@ -9,6 +9,8 @@ interface FabricUpdate {
   isHidden?: boolean
   customImageUrl?: string
   customImageUpdatedAt?: string
+  isDeleted?: boolean
+  deletedAt?: string
   updatedAt: string
 }
 
@@ -153,6 +155,52 @@ class LocalStorageService {
     }
 
     return updatedFabric
+  }
+
+  /**
+   * Delete product permanently (remove from localStorage)
+   */
+  deleteProduct(fabricId: number): void {
+    const updates = this.getUpdates()
+    delete updates[fabricId]
+    this.saveUpdates(updates)
+    console.log(`🗑️ [LocalStorage] Permanently deleted fabric ${fabricId}`)
+  }
+
+  /**
+   * Soft delete product (mark as deleted)
+   */
+  softDeleteProduct(fabricId: number): void {
+    const updates = this.getUpdates()
+    const existing = updates[fabricId] || { id: fabricId, updatedAt: new Date().toISOString() }
+
+    updates[fabricId] = {
+      ...existing,
+      isDeleted: true,
+      deletedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+
+    this.saveUpdates(updates)
+    console.log(`🗑️ [LocalStorage] Soft deleted fabric ${fabricId}`)
+  }
+
+  /**
+   * Restore soft deleted product
+   */
+  restoreProduct(fabricId: number): void {
+    const updates = this.getUpdates()
+    const existing = updates[fabricId] || { id: fabricId, updatedAt: new Date().toISOString() }
+
+    updates[fabricId] = {
+      ...existing,
+      isDeleted: false,
+      deletedAt: undefined,
+      updatedAt: new Date().toISOString()
+    }
+
+    this.saveUpdates(updates)
+    console.log(`🔄 [LocalStorage] Restored fabric ${fabricId}`)
   }
 }
 

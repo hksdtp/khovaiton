@@ -40,6 +40,7 @@ async function loadFabricsFromSupabase(): Promise<Fabric[]> {
     const { data, error } = await supabase
       .from('fabrics')
       .select('*')
+      .or('is_deleted.is.null,is_deleted.eq.false') // Exclude deleted products
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -67,6 +68,7 @@ async function loadFabricsFromSupabase(): Promise<Fabric[]> {
       price: row.price,
       priceNote: row.price_note,
       priceUpdatedAt: row.price_updated_at ? new Date(row.price_updated_at) : undefined,
+      liquidationPrice: row.liquidation_price, // Thêm giá thanh lý
       isHidden: row.is_hidden || false,
       customImageUrl: row.custom_image_url,
       customImageUpdatedAt: row.custom_image_updated_at ? new Date(row.custom_image_updated_at) : undefined,
@@ -221,6 +223,9 @@ export const fabricApi = {
     if (filters.maxQuantity !== undefined) {
       filteredFabrics = filteredFabrics.filter(fabric => fabric.quantity <= filters.maxQuantity!)
     }
+
+    // Apply deletion filter - ALWAYS exclude deleted products (soft deleted)
+    filteredFabrics = filteredFabrics.filter(fabric => !fabric.isDeleted)
 
     // Apply visibility filter - IMPORTANT: Filter hidden products unless explicitly requested
     if (!filters.showHidden) {

@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import { Image, ImageOff, Package, Filter } from 'lucide-react'
+import { Image, ImageOff, Package, Filter, EyeOff, Trash2 } from 'lucide-react'
 import { useFabricStats } from '@/features/inventory/hooks/useFabrics'
 import { useInventoryStore } from '@/features/inventory/store/inventoryStore'
 import { useFabrics } from '@/features/inventory/hooks/useFabrics'
@@ -34,9 +34,13 @@ export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageS
   const withImagesQuery = useFabrics({ ...baseFilters, imageStatus: 'with_images' }, { page: 1, limit: 1000 })
   const withoutImagesQuery = useFabrics({ ...baseFilters, imageStatus: 'without_images' }, { page: 1, limit: 1000 })
 
+  // Get hidden products stats
+  const hiddenFabricsQuery = useFabrics({ ...baseFilters, showHidden: true }, { page: 1, limit: 1000 })
+
   const allCount = allFabricsQuery.data?.total || 0
   const withImagesCount = withImagesQuery.data?.total || 0
   const withoutImagesCount = withoutImagesQuery.data?.total || 0
+  const hiddenCount = (hiddenFabricsQuery.data?.total || 0) - allCount // Hidden = Total with hidden - Total without hidden
 
   // Listen for realtime updates
   useEffect(() => {
@@ -76,8 +80,10 @@ export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageS
   const totalFabrics = allCount || statsData.totalItems || 0
   const fabricsWithImages = withImagesCount || 0
   const fabricsWithoutImages = withoutImagesCount || 0
+  const fabricsHidden = hiddenCount || 0
 
   const imagePercentage = totalFabrics > 0 ? Math.round((fabricsWithImages / totalFabrics) * 100) : 0
+  const hiddenPercentage = (totalFabrics + fabricsHidden) > 0 ? Math.round((fabricsHidden / (totalFabrics + fabricsHidden)) * 100) : 0
 
   const handleFilterChange = (imageStatus: string | null) => {
     setFilters({
@@ -86,34 +92,50 @@ export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageS
     })
   }
 
+  const handleHiddenToggle = () => {
+    setFilters({
+      ...activeFilters,
+      showHidden: !activeFilters.showHidden
+    })
+  }
+
   return (
     <div className={`bg-white rounded-lg border border-gray-200 p-4 ${className}`}>
       {/* Stats Display */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 flex-wrap">
           <div className="flex items-center space-x-2">
             <Package className="h-5 w-5 text-blue-600" />
             <span className="text-sm font-medium text-gray-700">
-              Tổng: <span className="text-blue-600 font-semibold">{totalFabrics}</span>
+              Hiển thị: <span className="text-blue-600 font-semibold">{totalFabrics}</span>
             </span>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <Image className="h-5 w-5 text-green-600" />
             <span className="text-sm font-medium text-gray-700">
               Có ảnh: <span className="text-green-600 font-semibold">{fabricsWithImages}</span>
             </span>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <ImageOff className="h-5 w-5 text-orange-600" />
             <span className="text-sm font-medium text-gray-700">
               Chưa có ảnh: <span className="text-orange-600 font-semibold">{fabricsWithoutImages}</span>
             </span>
           </div>
-          
+
+          {fabricsHidden > 0 && (
+            <div className="flex items-center space-x-2">
+              <EyeOff className="h-5 w-5 text-red-600" />
+              <span className="text-sm font-medium text-gray-700">
+                Đã ẩn: <span className="text-red-600 font-semibold">{fabricsHidden}</span>
+              </span>
+            </div>
+          )}
+
           <div className="text-sm text-gray-500">
-            ({imagePercentage}% có ảnh)
+            ({imagePercentage}% có ảnh{fabricsHidden > 0 ? `, ${hiddenPercentage}% đã ẩn` : ''})
           </div>
         </div>
 
@@ -160,6 +182,20 @@ export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageS
           }`}
         >
           Chưa có ảnh ({withoutImagesCount})
+        </button>
+
+        {/* Hidden products toggle */}
+        <button
+          onClick={handleHiddenToggle}
+          className={`px-3 py-1 text-xs rounded-full border transition-colors ${
+            activeFilters.showHidden
+              ? 'bg-red-100 text-red-700 border-red-300'
+              : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
+          }`}
+          title={activeFilters.showHidden ? 'Ẩn sản phẩm đã ẩn' : 'Hiển thị sản phẩm đã ẩn'}
+        >
+          <EyeOff className="w-3 h-3 inline mr-1" />
+          {activeFilters.showHidden ? 'Ẩn SP đã ẩn' : `Hiện SP đã ẩn (${fabricsHidden})`}
         </button>
       </div>
     </div>

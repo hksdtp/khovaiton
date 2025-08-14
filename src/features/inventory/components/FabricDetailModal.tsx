@@ -6,6 +6,7 @@ import { Fabric } from '../types'
 import { ManualUrlForm } from './ManualUrlForm'
 import { PriceManager } from './PriceManager'
 import { VisibilityManager } from './VisibilityManager'
+import { ProductDeletionManager } from './ProductDeletionManager'
 
 
 interface FabricDetailModalProps {
@@ -16,6 +17,8 @@ interface FabricDetailModalProps {
   onViewImage?: (imageUrl: string, fabricCode: string, fabricName: string) => void
   onPriceUpdate?: ((fabricId: number, price: number | null, note?: string) => Promise<void>) | undefined
   onVisibilityToggle?: ((fabricId: number, isHidden: boolean) => Promise<void>) | undefined
+  onDelete?: ((fabricId: number, permanent: boolean) => Promise<void>) | undefined
+  isSaleMode?: boolean
 }
 
 export function FabricDetailModal({
@@ -26,6 +29,8 @@ export function FabricDetailModal({
   onViewImage,
   onPriceUpdate,
   onVisibilityToggle,
+  onDelete,
+  isSaleMode = false,
 }: FabricDetailModalProps) {
   const location = useLocation()
   const isMarketingVersion = location.pathname === '/marketing'
@@ -237,6 +242,21 @@ export function FabricDetailModal({
               fabric={fabric}
               onVisibilityToggle={onVisibilityToggle}
               compact={false}
+            />
+          </div>
+        )}
+
+        {/* Product Deletion Management - Only in SALE mode */}
+        {isSaleMode && onDelete && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <ProductDeletionManager
+              fabric={fabric}
+              onDelete={onDelete}
+              onVisibilityToggle={onVisibilityToggle || (() => Promise.resolve())}
+              compact={false}
+              showDeleteButton={true}
+              showHideButton={false} // Already handled by VisibilityManager above
+              showRestoreButton={false}
             />
           </div>
         )}

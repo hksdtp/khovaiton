@@ -144,12 +144,73 @@ export class DataService {
    * Lấy danh sách tất cả vải
    */
   async getAllFabrics(): Promise<Fabric[]> {
-    // Temporary: Use mock data directly to fix the issue
-    console.log('📦 Loading fabrics from mock data...')
-    const { getMockFabrics } = await import('@/shared/mocks/fabricData')
-    const fabrics = await getMockFabrics()
-    console.log(`✅ Loaded ${fabrics.length} fabrics from mock data`)
-    return fabrics
+    // Use Supabase data instead of mock data
+    console.log('☁️ Loading fabrics from Supabase...')
+
+    try {
+      const { supabase, isSupabaseConfigured } = await import('@/lib/supabase')
+
+      if (!isSupabaseConfigured) {
+        console.log('📦 Supabase not configured, using mock data')
+        const { getMockFabrics } = await import('@/shared/mocks/fabricData')
+        return await getMockFabrics()
+      }
+
+      const { data, error } = await supabase
+        .from('fabrics')
+        .select('*')
+        .or('is_deleted.is.null,is_deleted.eq.false') // Exclude deleted products
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('❌ Supabase error:', error)
+        console.log('📦 Falling back to mock data')
+        const { getMockFabrics } = await import('@/shared/mocks/fabricData')
+        return await getMockFabrics()
+      }
+
+      if (!data || data.length === 0) {
+        console.log('📦 No data in Supabase, using mock data')
+        const { getMockFabrics } = await import('@/shared/mocks/fabricData')
+        return await getMockFabrics()
+      }
+
+      // Convert Supabase data to Fabric format
+      const fabrics: Fabric[] = data.map(row => ({
+        id: row.id,
+        code: row.code,
+        name: row.name,
+        type: row.type || 'unknown',
+        quantity: row.quantity || 0,
+        unit: row.unit || 'pieces',
+        location: row.location || 'Unknown',
+        status: row.status || 'available',
+        image: row.custom_image_url || row.image || '',
+        price: row.price,
+        priceNote: row.price_note,
+        priceUpdatedAt: row.price_updated_at ? new Date(row.price_updated_at) : undefined,
+        liquidationPrice: row.liquidation_price, // Thêm giá thanh lý
+        isHidden: row.is_hidden || false,
+        customImageUrl: row.custom_image_url,
+        customImageUpdatedAt: row.custom_image_updated_at ? new Date(row.custom_image_updated_at) : undefined,
+        createdAt: new Date(row.created_at),
+        updatedAt: new Date(row.updated_at)
+      }))
+
+      console.log(`✅ Loaded ${fabrics.length} fabrics from Supabase`)
+
+      // Debug: Count fabrics with liquidation prices
+      const withLiquidation = fabrics.filter(f => f.liquidationPrice !== null && f.liquidationPrice !== undefined).length
+      console.log(`💰 Fabrics with liquidation price: ${withLiquidation}`)
+
+      return fabrics
+
+    } catch (error) {
+      console.error('❌ Error loading from Supabase:', error)
+      console.log('📦 Falling back to mock data')
+      const { getMockFabrics } = await import('@/shared/mocks/fabricData')
+      return await getMockFabrics()
+    }
   }
 
   /**
