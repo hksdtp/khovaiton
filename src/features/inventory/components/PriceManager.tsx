@@ -15,14 +15,7 @@ export function PriceManager({ fabric, onPriceUpdate, compact = false }: PriceMa
   const [note, setNote] = useState(fabric.priceNote || '')
   const [loading, setLoading] = useState(false)
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(price)
-  }
+
 
   const formatInputPrice = (value: string) => {
     // Remove non-digits
@@ -113,7 +106,9 @@ export function PriceManager({ fabric, onPriceUpdate, compact = false }: PriceMa
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Giá bán (VND)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Giá bán (₫/{fabric.unit || 'm'})
+                  </label>
                   <input
                     type="text"
                     value={price}
@@ -196,7 +191,7 @@ export function PriceManager({ fabric, onPriceUpdate, compact = false }: PriceMa
       {isEditing ? (
         <div className="space-y-3">
           <div>
-            <label className="block text-sm text-gray-600 mb-1">Giá bán (VND)</label>
+            <label className="block text-sm text-gray-600 mb-1">Giá bán (₫/{fabric.unit || 'm'})</label>
             <input
               type="text"
               value={price}
@@ -257,7 +252,10 @@ export function PriceManager({ fabric, onPriceUpdate, compact = false }: PriceMa
           {fabric.price ? (
             <div>
               <div className="text-lg font-semibold text-green-600">
-                {formatPrice(fabric.price)}
+                {new Intl.NumberFormat('vi-VN', {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0
+                }).format(fabric.price)} ₫/{fabric.unit || 'm'}
               </div>
               {fabric.priceNote && (
                 <div className="text-sm text-gray-600 mt-1">

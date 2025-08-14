@@ -179,11 +179,9 @@ export function FabricCard({
                     <div>
                       <div className="text-lg font-bold text-green-700">
                         {new Intl.NumberFormat('vi-VN', {
-                          style: 'currency',
-                          currency: 'VND',
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0
-                        }).format(fabric.price)}
+                        }).format(fabric.price)} ₫/{fabric.unit || 'm'}
                       </div>
                       {fabric.priceNote && (
                         <div className="text-sm text-green-600 mt-1">{fabric.priceNote}</div>
@@ -210,11 +208,9 @@ export function FabricCard({
                       <div className="text-sm text-orange-600 font-medium mb-1">🏷️ Giá thanh lý</div>
                       <div className="text-lg font-bold text-orange-700">
                         {new Intl.NumberFormat('vi-VN', {
-                          style: 'currency',
-                          currency: 'VND',
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0
-                        }).format(fabric.liquidationPrice)}
+                        }).format(fabric.liquidationPrice)} ₫/{fabric.unit || 'm'}
                       </div>
                     </div>
                   </div>
