@@ -11,6 +11,8 @@ const updateURLParams = (filters: FabricFilters, page: number, itemsPerPage: num
   if (filters.location && filters.location !== 'all') params.set('location', filters.location)
   if (filters.status && filters.status !== 'all') params.set('status', filters.status)
   if (filters.imageStatus && filters.imageStatus !== 'all') params.set('imageStatus', filters.imageStatus)
+  if (filters.showHidden) params.set('showHidden', 'true')
+  if (filters.onlyHidden) params.set('onlyHidden', 'true')
   if (filters.minQuantity) params.set('minQuantity', filters.minQuantity.toString())
   if (filters.maxQuantity) params.set('maxQuantity', filters.maxQuantity.toString())
   if (page > 1) params.set('page', page.toString())
@@ -31,6 +33,7 @@ const getFiltersFromURL = (): { filters: FabricFilters; page: number; itemsPerPa
     imageStatus: (params.get('imageStatus') as any) || 'all' as const,
     priceStatus: (params.get('priceStatus') as any) || 'all' as const,
     showHidden: params.get('showHidden') === 'true',
+    onlyHidden: params.get('onlyHidden') === 'true',
   }
 
   const minQuantity = params.get('minQuantity')
@@ -188,6 +191,7 @@ export const useInventoryStore = create<InventoryState>()(
               imageStatus: 'all' as const,
               priceStatus: 'all' as const,
               showHidden: false,
+              onlyHidden: false,
             }
             const newPage = 1
 

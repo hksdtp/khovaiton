@@ -26,21 +26,33 @@ export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageS
   // Use override filters if provided, otherwise use store filters
   const activeFilters = overrideFilters || filters
 
-  // Get fabric counts for each image status - THEO CONTEXT HIỆN TẠI
+  // Get fabric counts efficiently with single query
   const baseFilters = { ...activeFilters }
   delete baseFilters.imageStatus
+  delete baseFilters.showHidden
 
-  const allFabricsQuery = useFabrics(baseFilters, { page: 1, limit: 1000 })
-  const withImagesQuery = useFabrics({ ...baseFilters, imageStatus: 'with_images' }, { page: 1, limit: 1000 })
-  const withoutImagesQuery = useFabrics({ ...baseFilters, imageStatus: 'without_images' }, { page: 1, limit: 1000 })
+  // Single query to get all visible fabrics
+  const visibleFabricsQuery = useFabrics(baseFilters, { page: 1, limit: 1000 })
 
-  // Get hidden products stats
-  const hiddenFabricsQuery = useFabrics({ ...baseFilters, showHidden: true }, { page: 1, limit: 1000 })
+  // Single query to get only hidden fabrics
+  const hiddenOnlyQuery = useFabrics({
+    ...baseFilters,
+    showHidden: true,
+    onlyHidden: true // New filter to get ONLY hidden products
+  }, { page: 1, limit: 1000 })
 
-  const allCount = allFabricsQuery.data?.total || 0
-  const withImagesCount = withImagesQuery.data?.total || 0
-  const withoutImagesCount = withoutImagesQuery.data?.total || 0
-  const hiddenCount = (hiddenFabricsQuery.data?.total || 0) - allCount // Hidden = Total with hidden - Total without hidden
+  // Calculate counts from the single query data
+  const visibleFabrics = Array.isArray(visibleFabricsQuery.data)
+    ? visibleFabricsQuery.data
+    : visibleFabricsQuery.data?.data || []
+  const hiddenFabrics = Array.isArray(hiddenOnlyQuery.data)
+    ? hiddenOnlyQuery.data
+    : hiddenOnlyQuery.data?.data || []
+
+  const allCount = visibleFabrics.length
+  const withImagesCount = visibleFabrics.filter((f: any) => f.image && f.image.trim() !== '').length
+  const withoutImagesCount = visibleFabrics.filter((f: any) => !f.image || f.image.trim() === '').length
+  const hiddenCount = hiddenFabrics.length
 
   // Listen for realtime updates
   useEffect(() => {
@@ -93,10 +105,19 @@ export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageS
   }
 
   const handleHiddenToggle = () => {
-    setFilters({
-      ...activeFilters,
-      showHidden: !activeFilters.showHidden
-    })
+    const newFilters = { ...activeFilters }
+
+    if (activeFilters.showHidden) {
+      // Currently showing hidden products, switch back to normal view
+      delete newFilters.showHidden
+      delete newFilters.onlyHidden
+    } else {
+      // Currently showing normal products, switch to show ONLY hidden products
+      newFilters.showHidden = true
+      newFilters.onlyHidden = true
+    }
+
+    setFilters(newFilters)
   }
 
   return (
@@ -188,14 +209,21 @@ export function ImageStatsWithFilter({ className = '', overrideFilters }: ImageS
         <button
           onClick={handleHiddenToggle}
           className={`px-3 py-1 text-xs rounded-full border transition-colors ${
-            activeFilters.showHidden
+            activeFilters.showHidden && activeFilters.onlyHidden
               ? 'bg-red-100 text-red-700 border-red-300'
               : 'bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200'
           }`}
-          title={activeFilters.showHidden ? 'Ẩn sản phẩm đã ẩn' : 'Hiển thị sản phẩm đã ẩn'}
+          title={
+            activeFilters.showHidden && activeFilters.onlyHidden
+              ? 'Quay lại hiển thị sản phẩm thông thường'
+              : 'Chỉ hiển thị sản phẩm đã ẩn'
+          }
         >
           <EyeOff className="w-3 h-3 inline mr-1" />
-          {activeFilters.showHidden ? 'Ẩn SP đã ẩn' : `Hiện SP đã ẩn (${fabricsHidden})`}
+          {activeFilters.showHidden && activeFilters.onlyHidden
+            ? 'Quay lại bình thường'
+            : `Chỉ xem SP ẩn (${hiddenCount})`
+          }
         </button>
       </div>
     </div>

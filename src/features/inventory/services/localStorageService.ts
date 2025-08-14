@@ -201,6 +201,23 @@ class LocalStorageService {
     this.saveUpdates(updates)
     console.log(`🔄 [LocalStorage] Restored fabric ${fabricId}`)
   }
+
+  /**
+   * Update fabric properties (generic method)
+   */
+  updateFabric(fabricId: number, updates: Partial<FabricUpdate>): void {
+    const allUpdates = this.getUpdates()
+    const existing = allUpdates[fabricId] || { id: fabricId, updatedAt: new Date().toISOString() }
+
+    allUpdates[fabricId] = {
+      ...existing,
+      ...updates,
+      updatedAt: new Date().toISOString()
+    }
+
+    this.saveUpdates(allUpdates)
+    console.log(`🔄 [LocalStorage] Updated fabric ${fabricId}:`, updates)
+  }
 }
 
 export const localStorageService = LocalStorageService.getInstance()

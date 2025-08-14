@@ -107,10 +107,35 @@ export function useDeleteFabric() {
     onSuccess: (_, deletedId) => {
       // Remove from cache
       queryClient.removeQueries({ queryKey: fabricKeys.detail(deletedId) })
-      
+
       // Invalidate lists
       queryClient.invalidateQueries({ queryKey: fabricKeys.lists() })
       queryClient.invalidateQueries({ queryKey: fabricKeys.stats() })
+    },
+  })
+}
+
+/**
+ * Hook to update fabric visibility (hide/show)
+ */
+export function useUpdateFabricVisibility() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ fabricId, isHidden }: { fabricId: number; isHidden: boolean }) =>
+      fabricApi.updateFabricVisibility(fabricId, isHidden),
+    onSuccess: (_, { fabricId, isHidden }) => {
+      // Update the specific fabric in cache
+      queryClient.setQueryData(
+        fabricKeys.detail(fabricId),
+        (oldData: any) => oldData ? { ...oldData, isHidden } : oldData
+      )
+
+      // Invalidate lists and stats to refresh counts
+      queryClient.invalidateQueries({ queryKey: fabricKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: fabricKeys.stats() })
+
+      console.log(`✅ Visibility updated for fabric ${fabricId}: ${isHidden ? 'hidden' : 'visible'}`)
     },
   })
 }
@@ -130,9 +155,12 @@ export function useUploadFabricImage() {
         fabricKeys.detail(fabricId),
         (oldData: any) => oldData ? { ...oldData, image: imageUrl } : oldData
       )
-      
-      // Invalidate lists to show updated image
+
+      // Invalidate lists and stats to show updated image and counts
       queryClient.invalidateQueries({ queryKey: fabricKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: fabricKeys.stats() })
+
+      console.log(`✅ Image uploaded for fabric ${fabricId}, cache updated`)
     },
   })
 }

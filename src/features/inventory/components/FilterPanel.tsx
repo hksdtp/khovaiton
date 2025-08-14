@@ -232,19 +232,57 @@ export function FilterPanel({
 
         {/* Visibility Filter */}
         <div>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={localFilters.showHidden || false}
-              onChange={(e) => handleLocalFilterChange('showHidden', e.target.checked)}
-              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <span className="text-sm font-medium text-gray-700">
-              Hiển thị sản phẩm đã ẩn
-            </span>
-          </label>
-          <p className="text-xs text-gray-500 mt-1">
-            Bao gồm các sản phẩm đã bị ẩn khỏi danh sách chính
+          <div className="space-y-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="visibility"
+                checked={!localFilters.showHidden && !localFilters.onlyHidden}
+                onChange={() => {
+                  handleLocalFilterChange('showHidden', false)
+                  handleLocalFilterChange('onlyHidden', false)
+                }}
+                className="border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Chỉ sản phẩm hiển thị
+              </span>
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="visibility"
+                checked={localFilters.showHidden && !localFilters.onlyHidden}
+                onChange={() => {
+                  handleLocalFilterChange('showHidden', true)
+                  handleLocalFilterChange('onlyHidden', false)
+                }}
+                className="border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Tất cả sản phẩm (hiển thị + ẩn)
+              </span>
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="visibility"
+                checked={localFilters.onlyHidden}
+                onChange={() => {
+                  handleLocalFilterChange('showHidden', true)
+                  handleLocalFilterChange('onlyHidden', true)
+                }}
+                className="border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Chỉ sản phẩm đã ẩn
+              </span>
+            </label>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            Chọn loại sản phẩm muốn hiển thị trong danh sách
           </p>
         </div>
       </div>

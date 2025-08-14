@@ -226,11 +226,15 @@ export const fabricApi = {
     // Apply deletion filter - ALWAYS exclude deleted products (soft deleted)
     filteredFabrics = filteredFabrics.filter(fabric => !fabric.isDeleted)
 
-    // Apply visibility filter - IMPORTANT: Filter hidden products unless explicitly requested
-    if (!filters.showHidden) {
+    // Apply visibility filter - IMPORTANT: Smart hidden product filtering
+    if (filters.onlyHidden) {
+      // Show ONLY hidden products
+      filteredFabrics = filteredFabrics.filter(fabric => fabric.isHidden)
+    } else if (!filters.showHidden) {
       // By default, hide products that are marked as hidden
       filteredFabrics = filteredFabrics.filter(fabric => !fabric.isHidden)
     }
+    // If showHidden is true but onlyHidden is false/undefined, show all products (visible + hidden)
 
     // Apply price status filter
     if (filters.priceStatus && filters.priceStatus !== 'all') {
@@ -351,7 +355,7 @@ export const fabricApi = {
    */
   async deleteFabric(id: number): Promise<void> {
     await delay(300)
-    
+
     if (shouldSimulateError()) {
       throw new Error('Failed to delete fabric')
     }
@@ -362,6 +366,33 @@ export const fabricApi = {
     }
 
     realFabrics.splice(index, 1)
+  },
+
+  /**
+   * Update fabric visibility (hide/show)
+   */
+  async updateFabricVisibility(fabricId: number, isHidden: boolean): Promise<Fabric> {
+    await delay(300)
+
+    if (shouldSimulateError()) {
+      throw new Error('Failed to update fabric visibility')
+    }
+
+    const fabric = realFabrics.find(f => f.id === fabricId)
+    if (!fabric) {
+      throw new Error('Fabric not found')
+    }
+
+    // Update visibility in memory
+    fabric.isHidden = isHidden
+    fabric.updatedAt = new Date()
+
+    // Also update in localStorage for persistence
+    localStorageService.updateFabric(fabricId, { isHidden })
+
+    console.log(`✅ Fabric ${fabricId} visibility updated: ${isHidden ? 'hidden' : 'visible'}`)
+
+    return fabric
   },
 
   /**

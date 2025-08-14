@@ -85,6 +85,7 @@ export interface FabricFilters {
   maxQuantity?: number
   imageStatus?: 'all' | 'with_images' | 'without_images'
   showHidden?: boolean // Hiển thị sản phẩm đã ẩn
+  onlyHidden?: boolean // Chỉ hiển thị sản phẩm đã ẩn (không hiển thị visible)
   priceStatus?: 'all' | 'with_price' | 'without_price' // Lọc theo có giá hay không
 }
 
