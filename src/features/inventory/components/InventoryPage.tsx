@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Package, MoreHorizontal, TrendingUp, AlertTriangle, Filter } from 'lucide-react'
+import { Package, MoreHorizontal, TrendingUp, AlertTriangle, Filter, RefreshCw } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { MainLayout } from '@/common/layouts'
-import { useFabrics, useFabricStats } from '../hooks/useFabrics'
+import { useFabrics, useFabricStats, useRefreshFabricData } from '../hooks/useFabrics'
 import { cloudinaryService } from '@/services/cloudinaryService'
 
 import { imageUpdateService } from '@/services/imageUpdateService'
@@ -105,6 +105,7 @@ export function InventoryPage() {
   )
 
   const { data: statsData } = useFabricStats()
+  const refreshFabricData = useRefreshFabricData()
 
   // Listen for auto-sync updates to refresh data
   useEffect(() => {
@@ -539,6 +540,17 @@ export function InventoryPage() {
                     Lọc
                   </Button>
                 )}
+
+                {/* Refresh Data Button */}
+                <Button
+                  variant="secondary"
+                  onClick={refreshFabricData}
+                  size="sm"
+                  title="Làm mới dữ liệu sau khi thay đổi bulk"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Làm mới
+                </Button>
 
                 {/* Tạm ẩn các nút Sort và Sync */}
                 {/* <Button

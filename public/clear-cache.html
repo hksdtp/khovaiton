@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Clear Cache & Reset Pagination</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .action-button {
+            background: #4299e1;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px;
+            transition: background 0.2s;
+            display: block;
+            width: 100%;
+        }
+        .action-button:hover {
+            background: #3182ce;
+        }
+        .action-button.danger {
+            background: #e53e3e;
+        }
+        .action-button.danger:hover {
+            background: #c53030;
+        }
+        .action-button.success {
+            background: #38a169;
+        }
+        .action-button.success:hover {
+            background: #2f855a;
+        }
+        .log {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+        .status.success {
+            background: #f0fff4;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #feb2b2;
+        }
+        .status.info {
+            background: #ebf8ff;
+            color: #2a4365;
+            border: 1px solid #90cdf4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Cache & Pagination Reset Tool</h1>
+            <p>Công cụ để khắc phục vấn đề hiển thị sau rollback operation</p>
+        </div>
+
+        <div id="status" class="status info">
+            ℹ️ Sẵn sàng thực hiện các thao tác reset
+        </div>
+
+        <button class="action-button" onclick="clearReactQueryCache()">
+            🗑️ Clear React Query Cache
+        </button>
+
+        <button class="action-button" onclick="clearLocalStorage()">
+            🧹 Clear LocalStorage
+        </button>
+
+        <button class="action-button" onclick="resetPagination()">
+            📄 Reset Pagination to Page 1
+        </button>
+
+        <button class="action-button" onclick="setLargePageSize()">
+            📊 Set Page Size to 100
+        </button>
+
+        <button class="action-button success" onclick="performFullReset()">
+            ✨ Full Reset (All Actions)
+        </button>
+
+        <button class="action-button danger" onclick="forceReload()">
+            🔄 Force Reload Page
+        </button>
+
+        <div class="log" id="log">
+            <div>📋 Action log will appear here...</div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f0fff4; border-radius: 8px; border: 1px solid #9ae6b4;">
+            <h3 style="color: #22543d; margin-bottom: 15px;">🎯 Expected Results:</h3>
+            <ul style="color: #22543d; margin-left: 20px;">
+                <li>✅ Web app should display all 249 visible products</li>
+                <li>✅ Pagination should reset to page 1</li>
+                <li>✅ Page size should be 100 items</li>
+                <li>✅ Cache should be fresh and up-to-date</li>
+                <li>✅ Statistics should show correct counts</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function setStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+        }
+
+        function clearReactQueryCache() {
+            try {
+                // Try to access React Query client from window
+                if (window.queryClient) {
+                    window.queryClient.clear();
+                    log('✅ React Query cache cleared');
+                    setStatus('✅ React Query cache cleared successfully', 'success');
+                } else {
+                    log('⚠️ React Query client not found in window object');
+                    setStatus('⚠️ React Query client not accessible', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error clearing React Query cache: ${error.message}`);
+                setStatus('❌ Failed to clear React Query cache', 'error');
+            }
+        }
+
+        function clearLocalStorage() {
+            try {
+                // Clear inventory store
+                localStorage.removeItem('inventory-store');
+                
+                // Clear any other fabric-related storage
+                const keys = Object.keys(localStorage);
+                keys.forEach(key => {
+                    if (key.includes('fabric') || key.includes('inventory')) {
+                        localStorage.removeItem(key);
+                        log(`🗑️ Removed localStorage key: ${key}`);
+                    }
+                });
+                
+                log('✅ LocalStorage cleared');
+                setStatus('✅ LocalStorage cleared successfully', 'success');
+            } catch (error) {
+                log(`❌ Error clearing localStorage: ${error.message}`);
+                setStatus('❌ Failed to clear localStorage', 'error');
+            }
+        }
+
+        function resetPagination() {
+            try {
+                // Update URL to reset pagination
+                const url = new URL(window.location);
+                url.searchParams.set('page', '1');
+                url.searchParams.set('limit', '100');
+                
+                window.history.replaceState({}, '', url);
+                log('✅ URL pagination parameters reset');
+                
+                // Try to access store directly
+                if (window.useInventoryStore) {
+                    const store = window.useInventoryStore.getState();
+                    if (store.setCurrentPage) {
+                        store.setCurrentPage(1);
+                        log('✅ Store pagination reset to page 1');
+                    }
+                    if (store.setItemsPerPage) {
+                        store.setItemsPerPage(100);
+                        log('✅ Store page size set to 100');
+                    }
+                }
+                
+                setStatus('✅ Pagination reset successfully', 'success');
+            } catch (error) {
+                log(`❌ Error resetting pagination: ${error.message}`);
+                setStatus('❌ Failed to reset pagination', 'error');
+            }
+        }
+
+        function setLargePageSize() {
+            try {
+                const url = new URL(window.location);
+                url.searchParams.set('limit', '100');
+                window.history.replaceState({}, '', url);
+                
+                log('✅ Page size set to 100 in URL');
+                setStatus('✅ Page size updated to 100', 'success');
+            } catch (error) {
+                log(`❌ Error setting page size: ${error.message}`);
+                setStatus('❌ Failed to set page size', 'error');
+            }
+        }
+
+        function performFullReset() {
+            log('🚀 Starting full reset...');
+            setStatus('🔄 Performing full reset...', 'info');
+            
+            clearReactQueryCache();
+            setTimeout(() => {
+                clearLocalStorage();
+                setTimeout(() => {
+                    resetPagination();
+                    setTimeout(() => {
+                        setLargePageSize();
+                        setTimeout(() => {
+                            log('✅ Full reset completed!');
+                            setStatus('✅ Full reset completed successfully!', 'success');
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+
+        function forceReload() {
+            log('🔄 Force reloading page...');
+            setStatus('🔄 Reloading page...', 'info');
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 1000);
+        }
+
+        // Initialize
+        log('🔧 Cache reset tool loaded');
+        log('📋 Ready to perform reset operations');
+        
+        // Try to detect if we're in the main app
+        if (window.location.pathname.includes('/inventory') || window.location.pathname === '/') {
+            log('✅ Detected inventory page context');
+        } else {
+            log('⚠️ Not on inventory page - some operations may not work');
+        }
+    </script>
+</body>
+</html>
