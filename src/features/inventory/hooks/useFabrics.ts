@@ -141,30 +141,6 @@ export function useUpdateFabricVisibility() {
 }
 
 /**
- * Hook to force refresh all fabric data (useful after bulk operations)
- */
-export function useRefreshFabricData() {
-  const queryClient = useQueryClient()
-
-  return () => {
-    console.log('🔄 Force refreshing all fabric data...')
-
-    // Clear all fabric-related cache
-    queryClient.removeQueries({ queryKey: fabricKeys.all })
-    queryClient.invalidateQueries({ queryKey: fabricKeys.lists() })
-    queryClient.invalidateQueries({ queryKey: fabricKeys.stats() })
-
-    // Reset pagination to page 1 if possible
-    const inventoryStore = (window as any).inventoryStore
-    if (inventoryStore?.setCurrentPage) {
-      inventoryStore.setCurrentPage(1)
-    }
-
-    console.log('✅ Fabric data refresh initiated')
-  }
-}
-
-/**
  * Hook to upload fabric image
  */
 export function useUploadFabricImage() {

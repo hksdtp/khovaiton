@@ -45,7 +45,7 @@ const getFiltersFromURL = (): { filters: FabricFilters; page: number; itemsPerPa
   return {
     filters,
     page: parseInt(params.get('page') || '1'),
-    itemsPerPage: parseInt(params.get('limit') || '100'),
+    itemsPerPage: parseInt(params.get('limit') || '20'),
   }
 }
 
@@ -83,7 +83,7 @@ interface InventoryState {
 const urlData = typeof window !== 'undefined' ? getFiltersFromURL() : {
   filters: { search: '', type: 'all' as const, location: 'all' as const, status: 'all' as const },
   page: 1,
-  itemsPerPage: 100 // Default to 100 items for better UX
+  itemsPerPage: 20
 }
 
 const initialFilters: FabricFilters = urlData.filters

@@ -73,7 +73,6 @@ export function Pagination({
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
-            <option value={500}>Tất cả</option>
           </select>
           <span className="text-sm text-gray-700">/ trang</span>
         </div>
@@ -103,7 +102,6 @@ export function Pagination({
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
-            <option value={500}>Tất cả</option>
           </select>
         </div>
 
