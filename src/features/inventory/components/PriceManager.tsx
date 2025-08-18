@@ -257,7 +257,7 @@ export function PriceManager({ fabric, onPriceUpdate, compact = false }: PriceMa
                   maximumFractionDigits: 0
                 }).format(fabric.price)} ₫/{fabric.unit || 'm'}
               </div>
-              {fabric.priceNote && (
+              {fabric.priceNote && fabric.priceNote !== "Không có giá" && fabric.priceNote !== "Vải tồn VQ" && (
                 <div className="text-sm text-gray-600 mt-1">
                   {fabric.priceNote}
                 </div>

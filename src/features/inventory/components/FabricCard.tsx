@@ -183,7 +183,7 @@ export function FabricCard({
                           maximumFractionDigits: 0
                         }).format(fabric.price)} ₫/{fabric.unit || 'm'}
                       </div>
-                      {fabric.priceNote && (
+                      {fabric.priceNote && fabric.priceNote !== "Không có giá" && fabric.priceNote !== "Vải tồn VQ" && (
                         <div className="text-sm text-green-600 mt-1">{fabric.priceNote}</div>
                       )}
                     </div>
