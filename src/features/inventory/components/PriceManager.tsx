@@ -3,6 +3,23 @@ import { DollarSign, Edit3, Trash2 } from 'lucide-react'
 import { Button } from '@/common/design-system/components'
 import { Fabric } from '../types'
 
+// Helper function to check if price note should be hidden
+const shouldHidePriceNote = (priceNote: string | null | undefined): boolean => {
+  if (!priceNote) return true
+  
+  const note = priceNote.toLowerCase().trim()
+  const hiddenPhrases = [
+    'không có giá',
+    'ko có giá', 
+    'vải tồn vq',
+    'ko có giá',
+    'no price',
+    'chưa có giá'
+  ]
+  
+  return hiddenPhrases.some(phrase => note.includes(phrase))
+}
+
 interface PriceManagerProps {
   fabric: Fabric
   onPriceUpdate: (fabricId: number, price: number | null, note?: string) => Promise<void>
@@ -257,7 +274,7 @@ export function PriceManager({ fabric, onPriceUpdate, compact = false }: PriceMa
                   maximumFractionDigits: 0
                 }).format(fabric.price)} ₫/{fabric.unit || 'm'}
               </div>
-              {fabric.priceNote && fabric.priceNote !== "Không có giá" && fabric.priceNote !== "Vải tồn VQ" && (
+              {!shouldHidePriceNote(fabric.priceNote) && (
                 <div className="text-sm text-gray-600 mt-1">
                   {fabric.priceNote}
                 </div>

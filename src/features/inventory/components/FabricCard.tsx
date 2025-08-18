@@ -9,6 +9,23 @@ import { PriceManager } from './PriceManager'
 import { VisibilityManager } from './VisibilityManager'
 import { ProductDeletionManager } from './ProductDeletionManager'
 
+// Helper function to check if price note should be hidden
+const shouldHidePriceNote = (priceNote: string | null | undefined): boolean => {
+  if (!priceNote) return true
+  
+  const note = priceNote.toLowerCase().trim()
+  const hiddenPhrases = [
+    'không có giá',
+    'ko có giá', 
+    'vải tồn vq',
+    'ko có giá',
+    'no price',
+    'chưa có giá'
+  ]
+  
+  return hiddenPhrases.some(phrase => note.includes(phrase))
+}
+
 interface FabricCardProps {
   fabric: Fabric
   onSelect: (fabric: Fabric) => void
@@ -183,7 +200,7 @@ export function FabricCard({
                           maximumFractionDigits: 0
                         }).format(fabric.price)} ₫/{fabric.unit || 'm'}
                       </div>
-                      {fabric.priceNote && fabric.priceNote !== "Không có giá" && fabric.priceNote !== "Vải tồn VQ" && (
+                      {!shouldHidePriceNote(fabric.priceNote) && (
                         <div className="text-sm text-green-600 mt-1">{fabric.priceNote}</div>
                       )}
                     </div>
