@@ -15,6 +15,9 @@ export interface CustomerLead {
   source: 'marketing_modal' | 'contact_form' | 'other'
   status: 'new' | 'contacted' | 'converted' | 'lost'
   notes?: string
+  deviceFingerprint?: string // For duplicate prevention
+  userAgent?: string // Browser info
+  screenResolution?: string // Screen info
 }
 
 export interface LeadStorageOptions {
@@ -43,20 +46,48 @@ class LeadStorageService {
   }
 
   /**
-   * Lưu thông tin lead mới
+   * Lưu thông tin lead mới với duplicate prevention
    */
   async saveLead(leadData: Omit<CustomerLead, 'id' | 'timestamp' | 'status'>): Promise<CustomerLead> {
+    // Kiểm tra duplicate trước khi lưu
+    const existingLeads = await this.getAllLeads()
+
+    // Check for duplicate by device fingerprint
+    if (leadData.deviceFingerprint) {
+      const duplicateByDevice = existingLeads.find(lead =>
+        lead.deviceFingerprint === leadData.deviceFingerprint
+      )
+
+      if (duplicateByDevice) {
+        console.log('⚠️ Duplicate lead detected by device fingerprint:', leadData.deviceFingerprint)
+        throw new Error('DUPLICATE_DEVICE')
+      }
+    }
+
+    // Check for duplicate by phone + name combination
+    const duplicateByInfo = existingLeads.find(lead =>
+      lead.phone === leadData.phone &&
+      lead.name.toLowerCase() === leadData.name.toLowerCase()
+    )
+
+    if (duplicateByInfo) {
+      console.log('⚠️ Duplicate lead detected by phone + name:', leadData.phone, leadData.name)
+      throw new Error('DUPLICATE_INFO')
+    }
+
     const lead: CustomerLead = {
       ...leadData,
       id: this.generateId(),
       timestamp: new Date().toISOString(),
-      status: 'new'
+      status: 'new',
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown',
+      screenResolution: typeof screen !== 'undefined' ? `${screen.width}x${screen.height}` : 'Unknown'
     }
 
     try {
       // Lưu vào storage được chọn
       await this.saveToStorage(lead)
-      
+
       // Auto backup nếu được bật
       if (this.options.autoBackup) {
         await this.createBackup()
@@ -66,7 +97,9 @@ class LeadStorageService {
       console.log('📊 Lead saved successfully:', {
         id: lead.id,
         source: lead.source,
-        timestamp: lead.timestamp
+        timestamp: lead.timestamp,
+        deviceFingerprint: lead.deviceFingerprint,
+        isUnique: true
       })
 
       // Gửi đến Google Sheets (nếu được bật)

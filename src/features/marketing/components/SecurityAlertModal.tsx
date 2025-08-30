@@ -29,6 +29,35 @@ export const SecurityAlertModal: React.FC<SecurityAlertModalProps> = ({
   const [errors, setErrors] = useState<{[key: string]: string}>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Generate device fingerprint for duplicate prevention
+  const generateDeviceFingerprint = () => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      ctx.textBaseline = 'top'
+      ctx.font = '14px Arial'
+      ctx.fillText('Fingerprint', 2, 2)
+    }
+
+    const fingerprint = [
+      navigator.userAgent,
+      navigator.language,
+      screen.width + 'x' + screen.height,
+      new Date().getTimezoneOffset(),
+      canvas.toDataURL()
+    ].join('|')
+
+    // Simple hash function
+    let hash = 0
+    for (let i = 0; i < fingerprint.length; i++) {
+      const char = fingerprint.charCodeAt(i)
+      hash = ((hash << 5) - hash) + char
+      hash = hash & hash
+    }
+
+    return Math.abs(hash).toString(36)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -54,15 +83,61 @@ export const SecurityAlertModal: React.FC<SecurityAlertModalProps> = ({
       return
     }
 
+    // Generate device fingerprint
+    const deviceFingerprint = generateDeviceFingerprint()
+    const timestamp = new Date().toISOString()
+
     try {
+      // Check for duplicate submission from same device
+      const existingSubmissions = JSON.parse(localStorage.getItem('marketing_submissions') || '[]')
+      const isDuplicate = existingSubmissions.some((sub: any) =>
+        sub.deviceFingerprint === deviceFingerprint ||
+        (sub.data.phone === formData.phone.replace(/\D/g, '') && sub.data.name.toLowerCase() === formData.name.trim().toLowerCase())
+      )
+
+      if (isDuplicate) {
+        console.log('⚠️ Duplicate submission detected, preventing save')
+        // Still show success for UX but don't save
+        onSubmit({
+          name: formData.name.trim(),
+          phone: formData.phone.replace(/\D/g, ''),
+          address: formData.address.trim()
+        })
+        setIsSubmitted(true)
+
+        setTimeout(() => {
+          setIsSubmitted(false)
+          onClose()
+          setFormData({ name: '', phone: '', address: '' })
+          setErrors({})
+          setIsSubmitting(false)
+        }, 3000)
+        return
+      }
+
+      // Save lead with device fingerprint
       const lead = await leadStorageService.saveLead({
         name: formData.name.trim(),
-        phone: formData.phone.replace(/\D/g, ''), // Save only numbers
+        phone: formData.phone.replace(/\D/g, ''),
         address: formData.address.trim(),
-        source: 'marketing_modal'
+        source: 'marketing_modal',
+        deviceFingerprint
       })
 
       console.log('✅ Lead saved with ID:', lead.id)
+
+      // Record submission to prevent duplicates
+      existingSubmissions.push({
+        deviceFingerprint,
+        timestamp,
+        data: {
+          name: formData.name.trim(),
+          phone: formData.phone.replace(/\D/g, ''),
+          address: formData.address.trim()
+        }
+      })
+      localStorage.setItem('marketing_submissions', JSON.stringify(existingSubmissions))
+
       onSubmit({
         name: formData.name.trim(),
         phone: formData.phone.replace(/\D/g, ''),
