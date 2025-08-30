@@ -155,13 +155,15 @@ export function FabricCard({
           {fabric.name}
         </h3>
 
-        {/* Quantity */}
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-gray-600 text-sm">Số lượng:</span>
-          <span className="font-semibold text-green-600 text-base">
-            {formatQuantity(fabric.quantity, fabric.unit)}
-          </span>
-        </div>
+        {/* Quantity - Ẩn trong phiên bản Marketing */}
+        {!isMarketingVersion && (
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-gray-600 text-sm">Số lượng:</span>
+            <span className="font-semibold text-green-600 text-base">
+              {formatQuantity(fabric.quantity, fabric.unit)}
+            </span>
+          </div>
+        )}
 
         {/* Material & Width */}
         {(fabric.material || fabric.width) && (

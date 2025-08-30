@@ -112,15 +112,18 @@ export function FabricDetailModal({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                Số lượng
-              </label>
-              <p className="text-xl font-bold text-green-700 bg-green-50 rounded-lg p-4 border border-green-200">
-                {formatQuantity(fabric.quantity, fabric.unit)}
-              </p>
-            </div>
+          <div className={`grid gap-4 ${isMarketingVersion ? 'grid-cols-1' : 'grid-cols-2'}`}>
+            {/* Quantity - Ẩn trong phiên bản Marketing */}
+            {!isMarketingVersion && (
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-2">
+                  Số lượng
+                </label>
+                <p className="text-xl font-bold text-green-700 bg-green-50 rounded-lg p-4 border border-green-200">
+                  {formatQuantity(fabric.quantity, fabric.unit)}
+                </p>
+              </div>
+            )}
 
             <div>
               <label className="block text-gray-700 text-sm font-medium mb-2">
