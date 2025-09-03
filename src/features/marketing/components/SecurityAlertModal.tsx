@@ -29,33 +29,52 @@ export const SecurityAlertModal: React.FC<SecurityAlertModalProps> = ({
   const [errors, setErrors] = useState<{[key: string]: string}>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Generate device fingerprint for duplicate prevention
+  // Generate device fingerprint for duplicate prevention with safety checks
   const generateDeviceFingerprint = () => {
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    if (ctx) {
-      ctx.textBaseline = 'top'
-      ctx.font = '14px Arial'
-      ctx.fillText('Fingerprint', 2, 2)
+    try {
+      // Safety checks for browser environment
+      if (typeof window === 'undefined' || typeof document === 'undefined') {
+        return 'server-' + Date.now().toString(36)
+      }
+
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+
+      let canvasFingerprint = 'no-canvas'
+      if (ctx) {
+        try {
+          ctx.textBaseline = 'top'
+          ctx.font = '14px Arial'
+          ctx.fillText('Fingerprint', 2, 2)
+          canvasFingerprint = canvas.toDataURL()
+        } catch (canvasError) {
+          console.warn('⚠️ Canvas fingerprinting failed:', canvasError)
+          canvasFingerprint = 'canvas-blocked'
+        }
+      }
+
+      const fingerprint = [
+        typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown-ua',
+        typeof navigator !== 'undefined' ? navigator.language : 'unknown-lang',
+        typeof screen !== 'undefined' ? `${screen.width}x${screen.height}` : 'unknown-screen',
+        new Date().getTimezoneOffset().toString(),
+        canvasFingerprint
+      ].join('|')
+
+      // Simple hash function
+      let hash = 0
+      for (let i = 0; i < fingerprint.length; i++) {
+        const char = fingerprint.charCodeAt(i)
+        hash = ((hash << 5) - hash) + char
+        hash = hash & hash
+      }
+
+      return Math.abs(hash).toString(36)
+    } catch (error) {
+      console.error('❌ Error generating device fingerprint:', error)
+      // Fallback: timestamp-based ID
+      return 'fallback-' + Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 7)
     }
-
-    const fingerprint = [
-      navigator.userAgent,
-      navigator.language,
-      screen.width + 'x' + screen.height,
-      new Date().getTimezoneOffset(),
-      canvas.toDataURL()
-    ].join('|')
-
-    // Simple hash function
-    let hash = 0
-    for (let i = 0; i < fingerprint.length; i++) {
-      const char = fingerprint.charCodeAt(i)
-      hash = ((hash << 5) - hash) + char
-      hash = hash & hash
-    }
-
-    return Math.abs(hash).toString(36)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,11 +107,22 @@ export const SecurityAlertModal: React.FC<SecurityAlertModalProps> = ({
     const timestamp = new Date().toISOString()
 
     try {
-      // Check for duplicate submission from same device
-      const existingSubmissions = JSON.parse(localStorage.getItem('marketing_submissions') || '[]')
+      // Check for duplicate submission from same device with safety checks
+      let existingSubmissions: any[] = []
+
+      if (typeof localStorage !== 'undefined') {
+        try {
+          const stored = localStorage.getItem('marketing_submissions')
+          existingSubmissions = stored ? JSON.parse(stored) : []
+        } catch (parseError) {
+          console.warn('⚠️ Failed to parse existing submissions:', parseError)
+          existingSubmissions = []
+        }
+      }
+
       const isDuplicate = existingSubmissions.some((sub: any) =>
         sub.deviceFingerprint === deviceFingerprint ||
-        (sub.data.phone === formData.phone.replace(/\D/g, '') && sub.data.name.toLowerCase() === formData.name.trim().toLowerCase())
+        (sub.data?.phone === formData.phone.replace(/\D/g, '') && sub.data?.name?.toLowerCase() === formData.name.trim().toLowerCase())
       )
 
       if (isDuplicate) {
@@ -126,17 +156,23 @@ export const SecurityAlertModal: React.FC<SecurityAlertModalProps> = ({
 
       console.log('✅ Lead saved with ID:', lead.id)
 
-      // Record submission to prevent duplicates
-      existingSubmissions.push({
-        deviceFingerprint,
-        timestamp,
-        data: {
-          name: formData.name.trim(),
-          phone: formData.phone.replace(/\D/g, ''),
-          address: formData.address.trim()
+      // Record submission to prevent duplicates with safety checks
+      if (typeof localStorage !== 'undefined') {
+        try {
+          existingSubmissions.push({
+            deviceFingerprint,
+            timestamp,
+            data: {
+              name: formData.name.trim(),
+              phone: formData.phone.replace(/\D/g, ''),
+              address: formData.address.trim()
+            }
+          })
+          localStorage.setItem('marketing_submissions', JSON.stringify(existingSubmissions))
+        } catch (storageError) {
+          console.warn('⚠️ Failed to save submission record:', storageError)
         }
-      })
-      localStorage.setItem('marketing_submissions', JSON.stringify(existingSubmissions))
+      }
 
       onSubmit({
         name: formData.name.trim(),

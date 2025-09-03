@@ -20,28 +20,50 @@ export function MarketingInventoryPage() {
   const [showGoogleSheetsTest, setShowGoogleSheetsTest] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false) // Track initialization
 
-  // Kiểm tra localStorage khi component mount
+  // Kiểm tra localStorage khi component mount với safety checks
   useEffect(() => {
     const checkSubmissionStatus = () => {
-      const hasSubmitted = localStorage.getItem('marketing_info_submitted')
-      const existingData = localStorage.getItem('marketing_customer_data')
+      try {
+        // Safety check for localStorage availability
+        if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+          setShowSecurityModal(true)
+          setIsInitialized(true)
+          return
+        }
 
-      if (hasSubmitted && existingData) {
-        // Đã submit rồi, không hiển thị form
-        setShowSecurityModal(false)
-        setShowBottomBanner(false)
-        setCustomerData(JSON.parse(existingData))
-        console.log('✅ User already submitted form, skipping modal')
-      } else {
-        // Chưa submit, hiển thị form
+        const hasSubmitted = localStorage.getItem('marketing_info_submitted')
+        const existingData = localStorage.getItem('marketing_customer_data')
+
+        if (hasSubmitted && existingData) {
+          try {
+            const parsedData = JSON.parse(existingData)
+            // Đã submit rồi, không hiển thị form
+            setShowSecurityModal(false)
+            setShowBottomBanner(false)
+            setCustomerData(parsedData)
+            console.log('✅ User already submitted form, skipping modal')
+          } catch (parseError) {
+            console.warn('⚠️ Failed to parse existing customer data:', parseError)
+            // Fallback: show form if data is corrupted
+            setShowSecurityModal(true)
+          }
+        } else {
+          // Chưa submit, hiển thị form
+          setShowSecurityModal(true)
+          console.log('📝 First time user, showing form')
+        }
+      } catch (error) {
+        console.error('❌ Error checking submission status:', error)
+        // Fallback: show form on error
         setShowSecurityModal(true)
-        console.log('📝 First time user, showing form')
+      } finally {
+        setIsInitialized(true)
       }
-
-      setIsInitialized(true)
     }
 
-    checkSubmissionStatus()
+    // Delay execution to ensure DOM is ready
+    const timeoutId = setTimeout(checkSubmissionStatus, 100)
+    return () => clearTimeout(timeoutId)
   }, [])
 
   // Chỉ render khi đã initialized để tránh flash
@@ -49,79 +71,125 @@ export function MarketingInventoryPage() {
     return <div className="min-h-screen bg-gray-50" /> // Loading state
   }
 
-  // Tạo unique device identifier để tránh trùng lặp
+  // Tạo unique device identifier để tránh trùng lặp với safety checks
   const generateDeviceId = () => {
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    ctx!.textBaseline = 'top'
-    ctx!.font = '14px Arial'
-    ctx!.fillText('Device fingerprint', 2, 2)
+    try {
+      // Safety checks for browser environment
+      if (typeof window === 'undefined' || typeof document === 'undefined') {
+        return 'server-' + Date.now().toString(36)
+      }
 
-    const fingerprint = [
-      navigator.userAgent,
-      navigator.language,
-      screen.width + 'x' + screen.height,
-      new Date().getTimezoneOffset(),
-      canvas.toDataURL()
-    ].join('|')
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
 
-    // Tạo hash đơn giản
-    let hash = 0
-    for (let i = 0; i < fingerprint.length; i++) {
-      const char = fingerprint.charCodeAt(i)
-      hash = ((hash << 5) - hash) + char
-      hash = hash & hash // Convert to 32-bit integer
+      let canvasFingerprint = 'no-canvas'
+      if (ctx) {
+        try {
+          ctx.textBaseline = 'top'
+          ctx.font = '14px Arial'
+          ctx.fillText('Device fingerprint', 2, 2)
+          canvasFingerprint = canvas.toDataURL()
+        } catch (canvasError) {
+          console.warn('⚠️ Canvas fingerprinting failed:', canvasError)
+          canvasFingerprint = 'canvas-blocked'
+        }
+      }
+
+      const fingerprint = [
+        typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown-ua',
+        typeof navigator !== 'undefined' ? navigator.language : 'unknown-lang',
+        typeof screen !== 'undefined' ? `${screen.width}x${screen.height}` : 'unknown-screen',
+        new Date().getTimezoneOffset().toString(),
+        canvasFingerprint
+      ].join('|')
+
+      // Tạo hash đơn giản
+      let hash = 0
+      for (let i = 0; i < fingerprint.length; i++) {
+        const char = fingerprint.charCodeAt(i)
+        hash = ((hash << 5) - hash) + char
+        hash = hash & hash // Convert to 32-bit integer
+      }
+
+      return Math.abs(hash).toString(36)
+    } catch (error) {
+      console.error('❌ Error generating device ID:', error)
+      // Fallback: timestamp-based ID
+      return 'fallback-' + Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 7)
     }
-
-    return Math.abs(hash).toString(36)
   }
 
   const handleSecuritySubmit = (data: CustomerData) => {
-    const deviceId = generateDeviceId()
-    const timestamp = new Date().toISOString()
+    try {
+      const deviceId = generateDeviceId()
+      const timestamp = new Date().toISOString()
 
-    // Kiểm tra xem device này đã submit chưa
-    const existingSubmissions = JSON.parse(localStorage.getItem('marketing_submissions') || '[]')
-    const alreadySubmitted = existingSubmissions.some((sub: any) => sub.deviceId === deviceId)
+      // Safety check for localStorage
+      if (typeof localStorage === 'undefined') {
+        console.warn('⚠️ localStorage not available, proceeding without duplicate check')
+        setCustomerData(data)
+        setShowBottomBanner(false)
+        return
+      }
 
-    if (alreadySubmitted) {
-      console.log('⚠️ Device already submitted, preventing duplicate')
-      // Vẫn hiển thị success để UX tốt, nhưng không gửi duplicate data
+      // Kiểm tra xem device này đã submit chưa
+      let existingSubmissions: any[] = []
+      try {
+        const stored = localStorage.getItem('marketing_submissions')
+        existingSubmissions = stored ? JSON.parse(stored) : []
+      } catch (parseError) {
+        console.warn('⚠️ Failed to parse existing submissions:', parseError)
+        existingSubmissions = []
+      }
+
+      const alreadySubmitted = existingSubmissions.some((sub: any) => sub.deviceId === deviceId)
+
+      if (alreadySubmitted) {
+        console.log('⚠️ Device already submitted, preventing duplicate')
+        // Vẫn hiển thị success để UX tốt, nhưng không gửi duplicate data
+        setCustomerData(data)
+        setShowBottomBanner(false)
+        return
+      }
+
+      // Lưu thông tin submission mới
+      const submissionRecord = {
+        deviceId,
+        timestamp,
+        data,
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+        screenResolution: typeof screen !== 'undefined' ? `${screen.width}x${screen.height}` : 'unknown'
+      }
+
+      try {
+        existingSubmissions.push(submissionRecord)
+        localStorage.setItem('marketing_submissions', JSON.stringify(existingSubmissions))
+        localStorage.setItem('marketing_info_submitted', 'true')
+        localStorage.setItem('marketing_customer_data', JSON.stringify(data))
+        localStorage.setItem('marketing_device_id', deviceId)
+      } catch (storageError) {
+        console.warn('⚠️ Failed to save to localStorage:', storageError)
+      }
+
+      setCustomerData(data)
+      setShowBottomBanner(false) // Ẩn banner sau khi submit thành công
+
+      // Log for analytics với device info
+      console.log('📊 Marketing Lead Captured:', {
+        ...data,
+        deviceId,
+        timestamp,
+        isUnique: true
+      })
+
+      // You can send to your CRM/backend here with device ID
+      // sendToBackend({ ...data, deviceId, timestamp })
+    } catch (error) {
+      console.error('❌ Error in handleSecuritySubmit:', error)
+      // Fallback: still update UI for good UX
       setCustomerData(data)
       setShowBottomBanner(false)
-      return
     }
-
-    // Lưu thông tin submission mới
-    const submissionRecord = {
-      deviceId,
-      timestamp,
-      data,
-      userAgent: navigator.userAgent,
-      screenResolution: `${screen.width}x${screen.height}`
-    }
-
-    existingSubmissions.push(submissionRecord)
-    localStorage.setItem('marketing_submissions', JSON.stringify(existingSubmissions))
-
-    setCustomerData(data)
-    setShowBottomBanner(false) // Ẩn banner sau khi submit thành công
-
-    // Save to localStorage to prevent showing again
-    localStorage.setItem('marketing_info_submitted', 'true')
-    localStorage.setItem('marketing_customer_data', JSON.stringify(data))
-    localStorage.setItem('marketing_device_id', deviceId)
-
-    // Log for analytics với device info
-    console.log('📊 Marketing Lead Captured:', {
-      ...data,
-      deviceId,
-      timestamp,
-      isUnique: true
-    })
-
-    // You can send to your CRM/backend here with device ID
-    // sendToBackend({ ...data, deviceId, timestamp })
   }
 
   const handleModalClose = () => {
