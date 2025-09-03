@@ -66,6 +66,53 @@ export function MarketingInventoryPage() {
     return () => clearTimeout(timeoutId)
   }, [])
 
+  // Admin reset function (defined before any conditional returns)
+  const resetMarketingForm = () => {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('marketing_info_submitted')
+        localStorage.removeItem('marketing_customer_data')
+        localStorage.removeItem('marketing_device_id')
+        localStorage.removeItem('marketing_submissions')
+      }
+      setCustomerData(null)
+      setShowSecurityModal(true)
+      setShowBottomBanner(false)
+      console.log('🔄 Marketing form reset successfully')
+    } catch (error) {
+      console.error('❌ Error resetting marketing form:', error)
+    }
+  }
+
+  // Expose reset function to window for admin access
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).resetMarketingForm = resetMarketingForm
+      console.log('🔧 Admin function available: window.resetMarketingForm()')
+    }
+  }, [])
+
+  // Keyboard shortcut for admin reset (Ctrl+Shift+R)
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+        e.preventDefault()
+        const confirm = window.confirm('Reset marketing form for this device?')
+        if (confirm) {
+          resetMarketingForm()
+        }
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', handleKeyPress)
+      return () => window.removeEventListener('keydown', handleKeyPress)
+    }
+
+    // Return cleanup function even when window is undefined
+    return () => {}
+  }, [])
+
   // Chỉ render khi đã initialized để tránh flash
   if (!isInitialized) {
     return <div className="min-h-screen bg-gray-50" /> // Loading state
@@ -210,41 +257,7 @@ export function MarketingInventoryPage() {
     setShowSecurityModal(true)
   }
 
-  // Admin reset function (hidden, accessible via console)
-  const resetMarketingForm = () => {
-    localStorage.removeItem('marketing_info_submitted')
-    localStorage.removeItem('marketing_customer_data')
-    localStorage.removeItem('marketing_device_id')
-    localStorage.removeItem('marketing_submissions')
-    setCustomerData(null)
-    setShowSecurityModal(true)
-    setShowBottomBanner(false)
-    console.log('🔄 Marketing form reset successfully')
-  }
 
-  // Expose reset function to window for admin access
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (window as any).resetMarketingForm = resetMarketingForm
-      console.log('🔧 Admin function available: window.resetMarketingForm()')
-    }
-  }, [])
-
-  // Keyboard shortcut for admin reset (Ctrl+Shift+R)
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'R') {
-        e.preventDefault()
-        const confirm = window.confirm('Reset marketing form for this device?')
-        if (confirm) {
-          resetMarketingForm()
-        }
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [])
 
   return (
     <div className="relative">
